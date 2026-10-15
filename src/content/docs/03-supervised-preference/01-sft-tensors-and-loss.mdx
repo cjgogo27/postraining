@@ -1,0 +1,50 @@
+---
+title: "3.1 SFT：模型在模仿哪些位置"
+description: "两份回答分别有2个和3个有效目标位置，工程师把各自平均loss再求平均，结果与拼成一个batch不同。"
+---
+
+import SectionQA from '../../../components/SectionQA.astro';
+
+
+## 现场问题
+
+两份回答分别有2个和3个有效目标位置，工程师把各自平均loss再求平均，结果与拼成一个batch不同。
+
+> 同样是交叉熵，归一化究竟给谁分配了权重？
+
+<SectionQA id="3.1" mode="ask" />
+
+## 从logits到回答损失
+
+**监督微调（Supervised Fine-Tuning，SFT）**在指定条件下模仿示范。小模型输入为 `[B,32]`，输出logits为 `[B,32,257]`。对词表维做log_softmax，再用labels取目标得分，回答mask选择需要学习的位置。以自然对数计算时，NLL单位为nats/有效目标位置。
+
+$$L_{SFT}=-\frac{\sum_{i,t}m_{i,t}\log\pi_\theta(y_{i,t}\mid x_i,y_{i,<t})}{\sum_{i,t}m_{i,t}}.$$
+
+本项目学习回答字节与EOS，prompt和右padding不直接计loss。**mask置零没有省掉该位置的全部计算**：默认仍计算完整logits，prompt还要构建上下文。计算优化与监督定义是不同问题。
+
+## 两个回答，手算一次
+
+假设A有2个目标位置、平均loss为2；B有3个、平均loss为4。token加权均值为 `(2×2+3×4)/5=3.2`；直接平均两个均值则为3。前者给A/B的梯度权重是2/5、3/5；后者是1/2、1/2。二者都可以被定义为目标，但不能实现一种、报告另一种。
+
+| 对象 | 本代码约定 | 检查依据 |
+| --- | --- | --- |
+| batch | 8条有放回抽样的示范 | 样本索引与seed |
+| 标签 | prompt+回答+EOS右移 | 打印ID和mask |
+| 损失分母 | batch内有效回答位置之和 | mask.sum |
+| 更新 | FP32、裁剪后AdamW | optimizer step与checkpoint |
+
+`sequence_logps`返回每个回答的log概率**和**与有效位置数；SFT在全batch求和再除总位置数。不要直接复用DPO的pair平均，也不要在PPL计算时混入prompt的零权重位置。
+
+## 教师强制为什么不等于会生成
+
+训练时位置t看的是示范的真实历史，这称为**teacher forcing**。生成时看的是自己的历史，一个早期错误可能改变后续分布。小实验SFT300步后，验证NLL约1.113，而贪心严格正确只有1/23；这是实际结果，不是实现成功就应自动变好的矛盾。必须同时检查真实输出与固定的结束条件。
+
+> **一句话听懂**：先核对回答位置与分母，再解释SFT loss；真实生成需要单独验收。
+
+<SectionQA id="3.1" mode="answer" />
+
+## 参考资料
+
+[1] [PyTorch CrossEntropyLoss](https://docs.pytorch.org/docs/2.11/generated/torch.nn.CrossEntropyLoss.html)。
+
+[2] [InstructGPT：监督示范、偏好与强化学习](https://arxiv.org/html/2203.02155v1)。

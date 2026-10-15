@@ -1,0 +1,48 @@
+---
+title: "4.1 一条轨迹究竟由哪版策略生成"
+description: "采样引擎还在用版本10，训练器已经更新到版本12；队列只保留回答文本，没有保存当时概率。"
+---
+
+import SectionQA from '../../../components/SectionQA.astro';
+
+
+## 现场问题
+
+采样引擎还在用版本10，训练器已经更新到版本12；队列只保留回答文本，没有保存当时概率。
+
+> 这条回答还能被称为当前策略的数据吗？
+
+<SectionQA id="4.1" mode="ask" />
+
+## rollout是一份带身份的经历
+
+**rollout**记录在指定条件下生成的动作序列。对语言模型，一次动作通常是一个token，状态是prompt和已生成前缀。至少保存prompt/response ID、动作token、有效mask、生成结束原因、行为策略版本、生成设置、old logp和奖励版本。只有文本不够复核概率比。[1][2]
+
+```text
+prompt_id → actor_version → response_ids / old_logp / eos_or_truncated
+          → verifier_version / reward_status → training_batch_id
+```
+
+旧策略对应实际行为分布，本轮复用轨迹时保持固定；当前策略参与更新，下一轮采样再刷新。参考策略可长时间冻结，不应随着每次更新覆盖。日志要区分“rollout轮数”“优化器更新次数”和“权重同步次数”。
+
+## 一个简单版本算例
+
+第k轮用版本v采8个候选，保存old logp；在同一批上更新两次后得到v+2，再启动下一轮。第一次更新前，在相同模型、输入和概率定义下ratio应约为1；第二次可以偏离。若第一次就异常，先查版本、模板、温度、mask或缓存，而不是先把clip范围放宽。
+
+本书有限动作实验正采用这个节奏：80轮rollout、每轮2次更新，共160次optimizer step；最后一轮actor_version为158。它没有异步队列，不能推论生产系统可无损容忍任意陈旧数据。
+
+## 采样设置也属于分布
+
+温度、top-p、top-k、重复惩罚会改变行为分布。生成时按截断分布采样、训练时却把原始softmax当行为概率，重要性比值可能不再对应所假设的分布。生产实现需要明确处理这一差异；本代码从完整categorical分布直接采样，不做截断或温度变换。
+
+长回答因长度上限中断时，不能悄悄把它当作自然EOS。截断状态会影响奖励、mask与回报；保留结束原因，才有办法诊断“模型学会早点结束”还是“系统把尾部丢了”。
+
+> **一句话听懂**：轨迹包含行为版本、概率与结束原因，回答文本只是其中一部分。
+
+<SectionQA id="4.1" mode="answer" />
+
+## 参考资料
+
+[1] [Proximal Policy Optimization Algorithms](https://arxiv.org/abs/1707.06347)。
+
+[2] [HybridFlow：RLHF 的混合编排](https://arxiv.org/abs/2409.19256)。

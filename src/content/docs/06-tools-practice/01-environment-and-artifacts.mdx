@@ -1,0 +1,67 @@
+---
+title: "6.1 准备CPU环境与可追溯运行目录"
+description: "你拿到一条训练命令，却不知道它用哪个Python、是否会下载权重，以及新运行会不会覆盖旧检查点。"
+---
+
+import SectionQA from '../../../components/SectionQA.astro';
+
+
+## 现场问题
+
+你拿到一条训练命令，却不知道它用哪个Python、是否会下载权重，以及新运行会不会覆盖旧检查点。
+
+> 怎样把一个后训练实验装进可复核的工程？
+
+<SectionQA id="6.1" mode="ask" />
+
+## 两套依赖，分别准备
+
+网站使用Node.js24与npm，训练使用Python3.12和PyTorch2.11。阅读/构建文档不需要torch，运行实验不需要启动网站。建议独立环境：
+
+```bash
+python -m venv .venv
+```
+
+Windows PowerShell用 `.\.venv\Scripts\Activate.ps1`，Linux/macOS用 `source .venv/bin/activate`，或直接调用虚拟环境Python。
+
+```bash
+python -m pip install -r examples/requirements.txt
+python examples/prepare_data.py --out runs/data
+python examples/train.py --data runs/data --out runs/sft
+```
+
+安装需要取得依赖；依赖准备好后，实验本身不下载模型/语料、不调用API。若找不到torch，先核对pip和解释器是否来自同一环境。
+
+## 目录约定
+
+| 路径 | 内容与身份 |
+| --- | --- |
+| examples/postcore.py | 模型、编码、loss、组优势、验证器 |
+| examples/train.py | SFT/DPO、评测、阶段交接与严格恢复 |
+| examples/rlvr.py | 有限动作RL机制与rollout边界恢复 |
+| examples/verify.py | 数值/掩码/恢复与拒绝行为检查 |
+| examples/results/ | 发布的环境、配置、原始指标与输出 |
+| runs/ | 数据、日志、大权重；默认不提交 |
+
+每次新运行选独立 `--out`。若目录已有latest.pt或metrics，语言模型脚本拒绝混写。恢复用 `--resume`，开始新阶段用 `--init`，两者互斥。
+
+## 只在维护网站时准备Node
+
+```bash
+npm ci
+npm run check:docs
+npm run build
+npm run check:built
+```
+
+网站默认base是`/postraining/`。页面、折叠问答、图示和DPO手算器与实验记录使用同一仓库版本。静态构建通过不等于浏览器布局已截图验收；实际范围见仓库VALIDATION.md。
+
+> **一句话听懂**：先分清环境、输入、源码和输出目录，实验才能独立重跑。
+
+<SectionQA id="6.1" mode="answer" />
+
+## 参考资料
+
+[1] [PyTorch：保存与加载模型](https://docs.pytorch.org/tutorials/beginner/saving_loading_models.html)。
+
+[2] [PyTorch：可复现性限制](https://docs.pytorch.org/docs/2.11/notes/randomness.html)。

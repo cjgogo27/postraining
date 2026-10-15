@@ -1,0 +1,77 @@
+---
+title: 全书章节与系统架构
+---
+
+import SystemMap from '../../../components/SystemMap.astro';
+
+## 本书的目标
+
+从“2+3，只输出数字”追踪示范、偏好、轨迹、奖励和梯度，能核对模板、掩码、概率、计数与模型版本，并用离线CPU小实验验证机制。
+
+六章29节、87个角色问答。面向跨部门工程师、学生、产品/PR；先建立系统关系，再看公式和实现。默认不要求下载大模型或接入API。
+
+## 后训练系统总图
+
+<SystemMap />
+
+三条路径可选择或组合，不是必须依次执行的层级。生产基座、数据与评分约定是输入；每阶段独立验收，不能把优化反馈和实验决策混成同一种循环。
+
+## 章节与每章的产物
+
+### 第1章 系统总览
+
+- [1.1 模型会续写，为什么还要后训练](/postraining/01-system-overview/01-what-is-posttraining/)
+- [1.2 示范、偏好、奖励分别告诉模型什么](/postraining/01-system-overview/02-feedback-and-model-roles/)
+- [1.3 从用户问题到策略权重：后训练系统如何运行](/postraining/01-system-overview/03-posttraining-system-architecture/)
+
+### 第2章 数据与监督接口
+
+- [2.1 先定义任务分布，再决定数据量](/postraining/02-data-supervision/01-task-distribution/)
+- [2.2 对话模板、右移标签与回答掩码](/postraining/02-data-supervision/02-template-and-mask/)
+- [2.3 偏好对比较的究竟是不是同一件事](/postraining/02-data-supervision/03-preference-pairs/)
+- [2.4 验证器怎样评分，拒绝采样筛掉什么](/postraining/02-data-supervision/04-verifier-and-rejection/)
+- [2.5 合成数据怎样留下可复核的来源](/postraining/02-data-supervision/05-synthetic-data-and-provenance/)
+
+### 第3章 监督与偏好优化
+
+- [3.1 SFT：模型在模仿哪些位置](/postraining/03-supervised-preference/01-sft-tensors-and-loss/)
+- [3.2 全参数与LoRA：到底更新哪一组权重](/postraining/03-supervised-preference/02-full-finetune-and-lora/)
+- [3.3 批量、长度和训练步数怎样改变学习](/postraining/03-supervised-preference/03-optimization-and-forgetting/)
+- [3.4 DPO：相对参考的偏好概率比](/postraining/03-supervised-preference/04-dpo-objective/)
+- [3.5 偏好优化方法怎样比较，而不是背缩写](/postraining/03-supervised-preference/05-preference-methods/)
+
+### 第4章 在线强化学习与蒸馏
+
+- [4.1 一条轨迹究竟由哪版策略生成](/postraining/04-online-rl-distillation/01-rollout-and-policy-versions/)
+- [4.2 PPO：奖励、优势、概率比和KL](/postraining/04-online-rl-distillation/02-ppo-advantage-and-kl/)
+- [4.3 GRPO与RLVR：从一组试答估计相对信号](/postraining/04-online-rl-distillation/03-grpo-and-rlvr/)
+- [4.4 奖励工程：怎样防止分数取代目标](/postraining/04-online-rl-distillation/04-reward-engineering/)
+- [4.5 蒸馏：教师回答与教师分布不是同一种监督](/postraining/04-online-rl-distillation/05-distillation-and-opd/)
+- [4.6 推理预算怎样改变训练与评测结论](/postraining/04-online-rl-distillation/06-test-time-budget/)
+
+### 第5章 评测、系统与诊断
+
+- [5.1 评测：先冻结题目、模板与生成协议](/postraining/05-evaluation-diagnosis/01-paired-evaluation/)
+- [5.2 模型裁判、顺序偏差与排名](/postraining/05-evaluation-diagnosis/02-judge-and-ranking/)
+- [5.3 安全、过度拒答与能力回退怎样分开测](/postraining/05-evaluation-diagnosis/03-safety-and-regression/)
+- [5.4 系统：训练、采样、评分怎样编排](/postraining/05-evaluation-diagnosis/04-training-rollout-orchestration/)
+- [5.5 用现象、证据、解释和最小验证排查](/postraining/05-evaluation-diagnosis/05-diagnosis/)
+
+### 第6章 工具与实践
+
+- [6.1 准备CPU环境与可追溯运行目录](/postraining/06-tools-practice/01-environment-and-artifacts/)
+- [6.2 离线跑通SFT与DPO，并保留回退结果](/postraining/06-tools-practice/02-offline-sft-dpo/)
+- [6.3 有限动作RLVR：看清采样、组优势与更新](/postraining/06-tools-practice/03-finite-action-rlvr/)
+- [6.4 新阶段与严格恢复：继承哪些状态](/postraining/06-tools-practice/04-stage-handoff-and-resume/)
+- [6.5 把权重、协议、结果与局限一起交付](/postraining/06-tools-practice/05-delivery-and-model-card/)
+
+## 先看哪条路线
+
+- [跨部门工程师](/postraining/00-reading-guides/01-engineer/)：接口、版本、计量和诊断。
+- [在校学生](/postraining/00-reading-guides/02-student/)：手算、掩码、数值检查与实验。
+- [产品/PR](/postraining/00-reading-guides/03-product-pr/)：反馈、质量与证据边界。
+- [训练阶段怎样交接](/postraining/00-reading-guides/04-stage-connections/)：同一权重怎样进入新目标，哪些状态该重建。
+
+## 哪些是实测，哪些没有运行
+
+SFT/DPO使用68,608参数随机小语言模型，有限动作RL只有48个参数。它们不是成熟基座上的能力复现。正文保留DPO的生成回退，16项CPU检查与原始记录见[VALIDATION.md](https://github.com/cjgogo27/postraining/blob/main/VALIDATION.md)。LoRA、完整PPO/语言模型GRPO、OPD、裁判、安全和分布式编排只讲机制/方案，未填本站成绩。

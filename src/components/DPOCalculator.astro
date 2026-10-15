@@ -1,0 +1,32 @@
+<div class="dpo-calculator" data-dpo-calculator>
+  <p><strong>动手核对：只改变一组logp，观察margin和loss</strong></p>
+  <div class="inputs">
+    <label>当前 chosen logp<input type="number" value="-3" max="0" step="any" data-field="pc" /></label>
+    <label>当前 rejected logp<input type="number" value="-5" max="0" step="any" data-field="pr" /></label>
+    <label>参考 chosen logp<input type="number" value="-4" max="0" step="any" data-field="rc" /></label>
+    <label>参考 rejected logp<input type="number" value="-4" max="0" step="any" data-field="rr" /></label>
+    <label>β<input type="number" value="0.1" min="0.001" max="100" step="any" data-field="beta" /></label>
+  </div>
+  <output aria-live="polite">margin=0.200000；loss=0.598139（手算示例）</output>
+  <p class="hint">输入是同prompt下完整回答（含EOS）的联合log概率，不是logits；本组件不会调用模型。</p>
+</div>
+<script>
+  import { dpoMetrics } from '../lib/objectives.mjs';
+  for(const root of document.querySelectorAll('[data-dpo-calculator]')) {
+    const fields=['pc','pr','rc','rr','beta'].map(name=>root.querySelector(`[data-field="${name}"]`) as HTMLInputElement);
+    const output=root.querySelector('output')!;
+    function update() {
+      try {
+        if(fields.some(field=>field.value.trim()===''||!field.checkValidity())) throw new Error('请按输入约束填写所有字段。');
+        const {margin,loss}=dpoMetrics(...fields.map(field=>field.valueAsNumber));
+        output.textContent=`margin=${margin.toFixed(6)}；loss=${loss.toFixed(6)}`;
+      } catch(error) { output.textContent=error instanceof Error?error.message:'输入无效'; }
+    }
+    fields.forEach(field=>field.addEventListener('input',update));
+    update();
+  }
+</script>
+<style>
+  .dpo-calculator { padding: 1rem; border: 1px solid var(--sl-color-gray-4); border-radius: .6rem; margin-block: 1.5rem; }.inputs { display:grid;grid-template-columns:1fr 1fr;gap:.7rem; }label { display:flex;flex-direction:column;font-size:.9rem; }input { background:var(--sl-color-bg);color:var(--sl-color-text);border:1px solid var(--sl-color-gray-4);border-radius:.3rem;padding:.5rem;min-width:0; }output { display:block; margin-top:1rem;font-weight:bold; }.hint { font-size:.85rem; }
+  @media(max-width:34rem) { .inputs { grid-template-columns:1fr; } }
+</style>

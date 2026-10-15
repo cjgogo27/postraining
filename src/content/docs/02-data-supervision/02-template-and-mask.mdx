@@ -1,0 +1,53 @@
+---
+title: "2.2 对话模板、右移标签与回答掩码"
+description: "同一份对话在训练时末尾有assistant标记，评测时却没有。模型开始复述用户问题，训练loss看起来仍很低。"
+---
+
+import SectionQA from '../../../components/SectionQA.astro';
+
+
+## 现场问题
+
+同一份对话在训练时末尾有assistant标记，评测时却没有。模型开始复述用户问题，训练loss看起来仍很低。
+
+> 哪些token是条件，哪些token是要学的答案？
+
+<SectionQA id="2.2" mode="ask" />
+
+## 模板是模型接口的一部分
+
+**对话模板（Chat template）**把system/user/assistant消息序列化为模型实际读取的token序列。角色不是JSON里有个字段就自动生效；控制标记、结束符和生成提示都必须与基座约定一致。官方模板文档也提醒，额外重复特殊token会改变输入。[1]
+
+本项目不下载聊天tokenizer，使用明确的ASCII模板 `Q:2+3\nA:`。下列无padding的极短例子完全可以运行核对：
+
+```text
+input_ids: [81,58,50,43,51,10,65,58,53]
+labels:    [58,50,43,51,10,65,58,53,256]
+loss_mask: [ 0, 0, 0, 0, 0, 0, 0, 1,  1]
+```
+
+位置7的输入是冒号58，预测回答首字节53；位置8的输入是53，预测EOS256。**mask对应右移后的目标位置**，不是简单从原始回答下标开始盖章。8个prompt字节、1个回答字节加EOS，提供2个有效监督位置。
+
+## 两种mask不能混淆
+
+因果注意力允许位置t看输入0…t，禁止看未来；loss_mask只选择哪些目标参与目标函数。上例位置7仍能看完整prompt。把prompt的loss置零不会阻断所有prompt参数梯度，因为回答通过条件上下文依赖它。
+
+右侧padding补到长度32，padding目标不计loss；真实位置在padding之前，因果结构保证看不到右侧填充，所以本代码不额外传key-padding mask。若改成左padding、非因果任务或不同位置编号，就必须重新核对，不能推广此简化。多文档packing还需说明是否跨文档可见，不能只拼接input_ids。
+
+## 三个最小检查
+
+1. 打印一条样本的原文、ID、labels和mask，确认回答首token与EOS。
+2. 只改不计loss位置的labels，loss应不变；不要同时改输入，否则条件已变。
+3. 改未来输入，过去logits应不变；这验证的是注意力，不是loss屏蔽。
+
+`examples/verify.py`实际检查这三点。模板版本或截断策略改变时，应重算偏好缓存与评分输入身份；不能沿用旧logp而只改文本文件名。
+
+> **一句话听懂**：注意力决定能看什么，回答掩码决定在哪些目标上学习。
+
+<SectionQA id="2.2" mode="answer" />
+
+## 参考资料
+
+[1] [Hugging Face：Chat templates](https://huggingface.co/docs/transformers/chat_templating)。
+
+[2] [PyTorch CrossEntropyLoss](https://docs.pytorch.org/docs/2.11/generated/torch.nn.CrossEntropyLoss.html)。

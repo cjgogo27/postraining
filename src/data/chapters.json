@@ -1,0 +1,118 @@
+[
+  {
+    "path": "01-system-overview/01-what-is-posttraining",
+    "title": "1.1 模型会续写，为什么还要后训练"
+  },
+  {
+    "path": "01-system-overview/02-feedback-and-model-roles",
+    "title": "1.2 示范、偏好、奖励分别告诉模型什么"
+  },
+  {
+    "path": "01-system-overview/03-posttraining-system-architecture",
+    "title": "1.3 从用户问题到策略权重：后训练系统如何运行"
+  },
+  {
+    "path": "02-data-supervision/01-task-distribution",
+    "title": "2.1 先定义任务分布，再决定数据量"
+  },
+  {
+    "path": "02-data-supervision/02-template-and-mask",
+    "title": "2.2 对话模板、右移标签与回答掩码"
+  },
+  {
+    "path": "02-data-supervision/03-preference-pairs",
+    "title": "2.3 偏好对比较的究竟是不是同一件事"
+  },
+  {
+    "path": "02-data-supervision/04-verifier-and-rejection",
+    "title": "2.4 验证器怎样评分，拒绝采样筛掉什么"
+  },
+  {
+    "path": "02-data-supervision/05-synthetic-data-and-provenance",
+    "title": "2.5 合成数据怎样留下可复核的来源"
+  },
+  {
+    "path": "03-supervised-preference/01-sft-tensors-and-loss",
+    "title": "3.1 SFT：模型在模仿哪些位置"
+  },
+  {
+    "path": "03-supervised-preference/02-full-finetune-and-lora",
+    "title": "3.2 全参数与LoRA：到底更新哪一组权重"
+  },
+  {
+    "path": "03-supervised-preference/03-optimization-and-forgetting",
+    "title": "3.3 批量、长度和训练步数怎样改变学习"
+  },
+  {
+    "path": "03-supervised-preference/04-dpo-objective",
+    "title": "3.4 DPO：相对参考的偏好概率比"
+  },
+  {
+    "path": "03-supervised-preference/05-preference-methods",
+    "title": "3.5 偏好优化方法怎样比较，而不是背缩写"
+  },
+  {
+    "path": "04-online-rl-distillation/01-rollout-and-policy-versions",
+    "title": "4.1 一条轨迹究竟由哪版策略生成"
+  },
+  {
+    "path": "04-online-rl-distillation/02-ppo-advantage-and-kl",
+    "title": "4.2 PPO：奖励、优势、概率比和KL"
+  },
+  {
+    "path": "04-online-rl-distillation/03-grpo-and-rlvr",
+    "title": "4.3 GRPO与RLVR：从一组试答估计相对信号"
+  },
+  {
+    "path": "04-online-rl-distillation/04-reward-engineering",
+    "title": "4.4 奖励工程：怎样防止分数取代目标"
+  },
+  {
+    "path": "04-online-rl-distillation/05-distillation-and-opd",
+    "title": "4.5 蒸馏：教师回答与教师分布不是同一种监督"
+  },
+  {
+    "path": "04-online-rl-distillation/06-test-time-budget",
+    "title": "4.6 推理预算怎样改变训练与评测结论"
+  },
+  {
+    "path": "05-evaluation-diagnosis/01-paired-evaluation",
+    "title": "5.1 评测：先冻结题目、模板与生成协议"
+  },
+  {
+    "path": "05-evaluation-diagnosis/02-judge-and-ranking",
+    "title": "5.2 模型裁判、顺序偏差与排名"
+  },
+  {
+    "path": "05-evaluation-diagnosis/03-safety-and-regression",
+    "title": "5.3 安全、过度拒答与能力回退怎样分开测"
+  },
+  {
+    "path": "05-evaluation-diagnosis/04-training-rollout-orchestration",
+    "title": "5.4 系统：训练、采样、评分怎样编排"
+  },
+  {
+    "path": "05-evaluation-diagnosis/05-diagnosis",
+    "title": "5.5 用现象、证据、解释和最小验证排查"
+  },
+  {
+    "path": "06-tools-practice/01-environment-and-artifacts",
+    "title": "6.1 准备CPU环境与可追溯运行目录"
+  },
+  {
+    "path": "06-tools-practice/02-offline-sft-dpo",
+    "title": "6.2 离线跑通SFT与DPO，并保留回退结果"
+  },
+  {
+    "path": "06-tools-practice/03-finite-action-rlvr",
+    "title": "6.3 有限动作RLVR：看清采样、组优势与更新"
+  },
+  {
+    "path": "06-tools-practice/04-stage-handoff-and-resume",
+    "title": "6.4 新阶段与严格恢复：继承哪些状态"
+  },
+  {
+    "path": "06-tools-practice/05-delivery-and-model-card",
+    "title": "6.5 把权重、协议、结果与局限一起交付"
+  }
+]

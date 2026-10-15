@@ -1,0 +1,27 @@
+{
+  "status": "PASS",
+  "torch": "2.11.0+cpu",
+  "checks": [
+    "real_byte_ids_shift_response_mask_and_eos",
+    "prompt_and_padding_labels_excluded",
+    "causal_future_invariance",
+    "sum_logps_include_variable_length_and_eos",
+    "dpo_ln2_hand_case_and_gradient_direction",
+    "group_population_std_and_constant_reward_zero",
+    "ppo_clip_positive_and_negative_advantages",
+    "verifier_exact_format_counterexamples",
+    "sft_exact_update_boundary_resume",
+    "dpo_exact_update_boundary_resume",
+    "dpo_frozen_reference_and_new_stage_optimizer",
+    "changed_training_plan_rejected",
+    "changed_torch_and_world_size_rejected",
+    "changed_executable_lr_code_rejected",
+    "changed_data_rejected",
+    "finite_action_rl_exact_rollout_boundary_resume"
+  ],
+  "count": 16,
+  "training_code_sha256": "ce985a0f19a482a4090b220f96390992f4c9f39c63b91bf6fa31979053b76c7a",
+  "rl_code_sha256": "2531d44bcdb3f7ac9c3a9f017ba5d79cb5006a68a04433d1725f88760d196d37",
+  "scope": "CPU FP32; same layout; normal update/rollout boundary restart; no CUDA/DDP/production fault test",
+  "date": "2026-10-15"
+}

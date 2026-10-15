@@ -1,0 +1,44 @@
+---
+title: 《听懂大模型后训练》
+description: 从监督信号到策略更新，读懂后训练的数据、算法、系统与验证。
+template: splash
+hero:
+  tagline: 示范、偏好、奖励，怎样经过一套系统改变模型的回答？
+  actions:
+    - text: 先看章节与架构
+      link: /postraining/00-reading-guides/00-outline/
+      icon: right-arrow
+      variant: primary
+    - text: GitHub 源码与实验
+      link: https://github.com/cjgogo27/postraining
+      icon: external
+---
+
+import { Aside, CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+## 这本书回答什么
+
+模型会续写，不等于会按用户目标完成任务。从“2+3，只输出数字”开始，追踪示范、偏好、采样轨迹、奖励、梯度与模型版本，解释SFT、DPO、PPO/GRPO、RLVR和蒸馏怎样连接。
+
+六章29个教学小节、87个角色问答。借鉴参考教程的场景、接口表、总图、反馈与共用支撑，正文和图示围绕后训练重新编写。公式服务于机制与检查，不要求读者先背缩写。
+
+## 按你的问题选择路线
+
+<CardGrid>
+  <LinkCard title="跨部门工程师" description="核对数据、概率、版本与系统交接，沿证据诊断。" href="/postraining/00-reading-guides/01-engineer/" />
+  <LinkCard title="在校学生" description="先手算两个回答位置，再跑CPU实验与恢复检查。" href="/postraining/00-reading-guides/02-student/" />
+  <LinkCard title="产品 / PR" description="区分训练得分、任务完成与可以对外表达的证据。" href="/postraining/00-reading-guides/03-product-pr/" />
+  <LinkCard title="直接做实验" description="无模型/API下载，实际SFT/DPO与有限动作RL。" href="/postraining/06-tools-practice/01-environment-and-artifacts/" />
+</CardGrid>
+
+## 每一节怎样读
+
+现场问题 → 三类读者问题 → 术语/对象/图表 → 手算或实验解释 → 一句话听懂 → 折叠参考答案 → 一手资料。1.3是全书接口地图；阶段导读说明同一权重进入新目标时怎样交接状态。
+
+<Aside type="note" title="保留真实结果，也保留边界">
+  小语言模型从随机权重开始，只检验机制。SFT后生成仍很弱，DPO最终生成回退也原样保留。有限动作RL是48参数表格策略，不是语言模型GRPO。16项CPU数值/恢复检查不代表生产或通用能力验收。
+</Aside>
+
+## 写作来源与许可
+
+参考[CionHuang的机器人系统架构样章](https://cionhuang.github.io/A_Brief_Tutorial_of_Humanoid_Robot/01-system-overview/03-humanoid-robot-system-architecture/)的讲解方式与阅读体验；采用Astro、Starlight、KaTeX、角色问答和自主后训练图示。归属、技术引用与许可见[附录D](/postraining/07-appendix/d-references/)及仓库ATTRIBUTION.md。

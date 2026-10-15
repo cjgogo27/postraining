@@ -1,0 +1,55 @@
+---
+title: "6.4 新阶段与严格恢复：继承哪些状态"
+description: "你想从SFT进入DPO，同时又要演练中断恢复。两个命令都加载权重，却不应该继承同一套状态。"
+---
+
+import SectionQA from '../../../components/SectionQA.astro';
+
+
+## 现场问题
+
+你想从SFT进入DPO，同时又要演练中断恢复。两个命令都加载权重，却不应该继承同一套状态。
+
+> 什么时候是新运行，什么时候才是延续原来的更新轨迹？
+
+<SectionQA id="6.4" mode="ask" />
+
+## 两种加载有不同承诺
+
+`--init`仅继承匹配架构/编码的权重，新建优化器、随机流和计数；在DPO新阶段还冻结参考权重。`--resume`恢复同一阶段的当前参数、参考参数、优化器、计数与随机状态，要求同数据、同关键计划、同训练代码、同PyTorch和world_size=1。
+
+| 状态 | 新DPO阶段 | 严格DPO恢复 |
+| --- | --- | --- |
+| 当前权重 | 来源SFT权重 | 已更新到暂停边界的权重 |
+| 参考权重 | 冻结为来源SFT | 原先冻结参考，不重建成当前权重 |
+| AdamW与步数 | 新建、从0开始 | 保留矩与更新计数 |
+| 抽样随机状态 | 新运行seed规则 | 恢复暂停时状态 |
+| 数据和代码 | 记录新身份 | 必须与原运行相同 |
+
+一个常见错误是恢复DPO时把当前模型复制成新参考；这样即使权重load成功，目标已经改变。本项目保存reference本身，恢复不依赖再读取原始SFT文件。
+
+## 自己演练更新边界暂停
+
+```bash
+python examples/train.py --data runs/data --out runs/paused --steps 300 --stop-after 100
+python examples/train.py --data runs/data --out runs/resumed --steps 300 --resume runs/paused/latest.pt
+python examples/verify.py --out runs/checks
+```
+
+两次总计划都为300，提前停止只改变本次进程终点。SFT/DPO的代码身份同时绑定规范化 `postcore.py` 与 `train.py`；改实际学习率代码1.01倍也拒绝。Git版本是来源管理的一部分，哈希不是安全签名或跨硬件逐位保证。
+
+## 实际验证覆盖到哪里
+
+本轮16项检查通过：真实字节/shift/EOS、mask不计prompt/padding、因果可见范围、变长回答logp求和、DPO手算与梯度方向、组标准差/常数奖励、正负优势clip、验证器反例；SFT和DPO各8步连续对比4步暂停恢复完全一致，参考未变且新阶段优化器重置；改变计划、PyTorch/world size、实际代码、数据均拒绝；有限动作RL在8轮连续与4轮保存恢复也完全一致。
+
+语言模型在**optimizer更新边界**保存；有限动作RL在**完整rollout轮边界**保存。没有保存更新一半的梯度或异步在途轨迹。本轮未测试写盘中断、rank崩溃、CUDA、DDP、分片和多机，不称生产容错验收。只能加载可信检查点；完整状态采用Python序列化。
+
+> **一句话听懂**：新阶段重建状态，严格恢复延续状态；参考策略也是不能丢的训练状态。
+
+<SectionQA id="6.4" mode="answer" />
+
+## 参考资料
+
+[1] [PyTorch：保存与加载模型](https://docs.pytorch.org/tutorials/beginner/saving_loading_models.html)。
+
+[2] [PyTorch：可复现性限制](https://docs.pytorch.org/docs/2.11/notes/randomness.html)。

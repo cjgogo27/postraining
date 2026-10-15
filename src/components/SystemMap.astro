@@ -1,0 +1,17 @@
+<figure class="post-map" aria-label="后训练系统三条路径：示范SFT、偏好DPO、在线奖励更新，共用版本与独立评测">
+  <figcaption><strong>从监督对象到策略更新：三条可组合路径</strong></figcaption>
+  <p class="shared">任务与验收协议 → 来源分组 / 数据版本 → 基座、tokenizer、模板身份</p>
+  <div class="paths">
+    <section><h3>示范路径 · SFT</h3><ol><li>prompt + 示范回答</li><li>编码、右移、回答mask</li><li>有效回答位置平均NLL</li><li>反向、优化器更新</li></ol><small>通常按离线批次重复训练</small></section>
+    <section><h3>偏好路径 · DPO</h3><ol><li>同prompt的chosen / rejected</li><li>当前策略 + 冻结参考logp</li><li>相对偏好margin</li><li>反向、优化器更新</li></ol><small>优化步骤内不必重新采样</small></section>
+    <section><h3>在线路径 · RL</h3><ol><li>策略快照 → 一组rollout</li><li>轨迹 / old logp / 结束原因</li><li>评分状态、reward、advantage</li><li>固定旧概率，更新当前策略</li></ol><small>新版本返回采样端；参考策略另管</small></section>
+  </div>
+  <p class="shared">各路径的版本化检查点 → 独立评测 → 接受 / 回退，或设计下一轮数据与配置实验</p>
+  <p>梯度更新是优化反馈；评测后调整方案是实验反馈。后者不会自动对当前权重反传。</p>
+  <div class="support"><span>算力 / 存储 / 通信</span><span>日志 / 配置 / 随机状态</span><span>数据 / 模板 / 权重 / 评分器版本</span></div>
+  <p class="legend">箭头表示交接，不表示固定运行耗时或机器人式实时控制层；逻辑职责与GPU、框架对象不是一一对应。</p>
+</figure>
+<style>
+  .post-map { border: 1px solid var(--sl-color-gray-4); border-radius: .7rem; padding: 1rem; margin-block: 1.5rem; font-size: .92rem; }.shared { padding: .8rem; border: 1px solid var(--sl-color-gray-4); border-radius: .35rem; text-align: center; }.paths { display: grid; grid-template-columns: repeat(3,1fr); gap: .7rem; }.paths section { background: var(--sl-color-accent-low); padding: .8rem; border-radius: .4rem; }h3 { font-size: 1rem; margin-top: 0; }ol { padding-left: 1.2rem; }li { margin-block: .6rem; }small,.legend { font-size: .8rem; }.support { display: flex; flex-wrap: wrap; gap: .5rem; }.support span { flex: 1; min-width: 8rem; border: 1px dashed var(--sl-color-gray-4); padding: .6rem; border-radius: .3rem; }
+  @media (max-width: 52rem) { .paths { grid-template-columns: 1fr; } }
+</style>

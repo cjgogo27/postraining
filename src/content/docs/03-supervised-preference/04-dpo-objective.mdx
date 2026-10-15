@@ -1,0 +1,51 @@
+---
+title: "3.4 DPO：相对参考的偏好概率比"
+description: "当前模型认为5比6更可能，DPO loss却仍不低；另一轮loss下降，正确回答的绝对概率反而下降。"
+---
+
+import SectionQA from '../../../components/SectionQA.astro';
+import DPOCalculator from '../../../components/DPOCalculator.astro';
+
+## 现场问题
+
+当前模型认为5比6更可能，DPO loss却仍不低；另一轮loss下降，正确回答的绝对概率反而下降。
+
+> DPO优化的是哪一个比较？
+
+<SectionQA id="3.4" mode="ask" />
+
+## 不是只把chosen概率调高
+
+定义回答联合log概率 $\ell_\theta(y|x)=\sum_t\log\pi_\theta(y_t|x,y_{<t})$，本项目包含EOS、不含prompt目标。原始DPO的单pair目标可写成：[1，§4与附录B]
+
+$$m=\beta[(\ell_\theta(y_w|x)-\ell_\theta(y_l|x))-(\ell_{ref}(y_w|x)-\ell_{ref}(y_l|x))],\qquad L=-\log\sigma(m).$$
+
+冻结参考策略提供起点比较。若当前等于参考，m=0，loss=ln2≈0.693147；这与模型原本能否生成正确答案无直接等价关系。DPO训练不需要在每个优化步骤新采样，但偏好对通常需要预先生成与标注。
+
+## 四个数手算
+
+取当前chosen/rejected logp为−3/−5，参考为−4/−4，β=0.1：当前差2，参考差0，m=0.2，loss≈0.598139。序列logp不是单token概率，必须用相同模板、EOS和截断口径。
+
+<DPOCalculator />
+
+β来自KL约束目标的推导关系，但在有限数据优化里还改变margin与梯度尺度。不能简单把它称作代码里另加的一项KL loss，也不应保证调大就必然让所有指标更接近参考。检查具体目标和更新轨迹。
+
+## 为什么偏好分升，生成仍会退步
+
+这个目标比较相对差，不能保证chosen的绝对概率单调增加。如果两个回答概率都下降，但rejected降得更多，margin仍可能提高。训练偏好覆盖的固定负例，也不等于生成时全部候选。
+
+本机DPO120步后，验证pair排序从14/23到17/23，但回答NLL从1.113升到1.937，贪心严格正确从1/23到0/23。不能写成“DPO提升了算术能力”，也不能据此断言DPO普遍无效；它只是这份夹具和配置下，目标与质量分离的证据。
+
+## 接口检查清单
+
+四组logp必须对应同prompt、同候选token。参考参数冻结且不进优化器；缓存依赖参考身份。用logsigmoid或softplus实现稳定计算，避免先exp长序列概率再相除。若改为长度平均，已经改了这里的原始目标，应重新命名/说明，不能只当数值优化。
+
+> **一句话听懂**：DPO学习相对参考的偏好差，不能用margin代替真实生成验收。
+
+<SectionQA id="3.4" mode="answer" />
+
+## 参考资料
+
+[1] [DPO：§4 目标与附录 B 实现](https://arxiv.org/html/2305.18290v3)。
+
+[2] [SimPO：长度归一化与无参考奖励](https://arxiv.org/abs/2405.14734)。

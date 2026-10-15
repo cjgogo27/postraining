@@ -1,0 +1,566 @@
+{
+  "date": "2026-10-15",
+  "parameters": 68608,
+  "manifest": {
+    "version": "addition-original-v1",
+    "encoding": "utf8-bytes-0-255;eos=256;right-padding-id=0-with-loss-mask",
+    "files": {
+      "train": {
+        "rows": 77,
+        "groups": 43,
+        "answer_values": [
+          0,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18
+        ],
+        "sha256": "305ee4cdde3e91bda8addea9df51a9c20da9c87bfb0fca2b4410a206035136df"
+      },
+      "val": {
+        "rows": 23,
+        "groups": 12,
+        "answer_values": [
+          1,
+          2,
+          3,
+          6,
+          8,
+          9,
+          10,
+          13,
+          16
+        ],
+        "sha256": "5796634fac874ed2367003f1f821175f43a879351b8f306b7903f9604aa089f7"
+      }
+    },
+    "scope": "Shared ASCII template and digits; grouped commuted pairs, not a general arithmetic benchmark"
+  },
+  "stages": {
+    "sft": {
+      "config": {
+        "stage": "sft",
+        "data": "runs/final-data",
+        "out": "runs/final-sft",
+        "init": null,
+        "resume": null,
+        "steps": 300,
+        "width": 64,
+        "length": 32,
+        "batch_size": 8,
+        "seed": 42,
+        "threads": 1,
+        "eval_every": 100,
+        "stop_after": null,
+        "lr": 0.001,
+        "beta": 0.5
+      },
+      "environment": {
+        "os": "Windows-11-10.0.26200-SP0",
+        "python": "3.12.5",
+        "torch": "2.11.0+cpu",
+        "threads": 1,
+        "precision": "FP32",
+        "device": "cpu"
+      },
+      "code_sha256": "ce985a0f19a482a4090b220f96390992f4c9f39c63b91bf6fa31979053b76c7a",
+      "data_hashes": {
+        "train": "305ee4cdde3e91bda8addea9df51a9c20da9c87bfb0fca2b4410a206035136df",
+        "val": "5796634fac874ed2367003f1f821175f43a879351b8f306b7903f9604aa089f7"
+      },
+      "initialization": {
+        "kind": "random-tiny-fixture",
+        "not_pretrained": true
+      },
+      "final_step": 300,
+      "examples_seen": 2400,
+      "response_positions": 6061,
+      "metrics": [
+        {
+          "stage": "sft",
+          "step": 0,
+          "examples_seen": 0,
+          "response_positions": 0,
+          "train_loss": null,
+          "elapsed_seconds": 0.06521889999567065,
+          "val_response_nll": 5.528908509474534,
+          "val_response_positions": 52,
+          "val_pair_accuracy": 0.6521739130434783,
+          "greedy_exact": 0.0
+        },
+        {
+          "stage": "sft",
+          "step": 100,
+          "examples_seen": 800,
+          "response_positions": 2031,
+          "train_loss": 1.0489095449447632,
+          "elapsed_seconds": 0.9470536000007996,
+          "val_response_nll": 1.3121959979717548,
+          "val_response_positions": 52,
+          "val_pair_accuracy": 0.4782608695652174,
+          "greedy_exact": 0.0
+        },
+        {
+          "stage": "sft",
+          "step": 200,
+          "examples_seen": 1600,
+          "response_positions": 4053,
+          "train_loss": 0.5348973274230957,
+          "elapsed_seconds": 1.8982570999942254,
+          "val_response_nll": 1.0623721709618201,
+          "val_response_positions": 52,
+          "val_pair_accuracy": 0.13043478260869565,
+          "greedy_exact": 0.0
+        },
+        {
+          "stage": "sft",
+          "step": 300,
+          "examples_seen": 2400,
+          "response_positions": 6061,
+          "train_loss": 0.4794963598251343,
+          "elapsed_seconds": 2.3114252999948803,
+          "val_response_nll": 1.1132530065683217,
+          "val_response_positions": 52,
+          "val_pair_accuracy": 0.6086956521739131,
+          "greedy_exact": 0.043478260869565216
+        }
+      ],
+      "outputs": [
+        {
+          "id": "add-0-1",
+          "generated": "0",
+          "eos": true,
+          "expected": "1",
+          "correct": false
+        },
+        {
+          "id": "add-0-2",
+          "generated": "0",
+          "eos": true,
+          "expected": "2",
+          "correct": false
+        },
+        {
+          "id": "add-0-9",
+          "generated": "11",
+          "eos": true,
+          "expected": "9",
+          "correct": false
+        },
+        {
+          "id": "add-1-0",
+          "generated": "0",
+          "eos": true,
+          "expected": "1",
+          "correct": false
+        },
+        {
+          "id": "add-1-2",
+          "generated": "0",
+          "eos": true,
+          "expected": "3",
+          "correct": false
+        },
+        {
+          "id": "add-1-7",
+          "generated": "7",
+          "eos": true,
+          "expected": "8",
+          "correct": false
+        },
+        {
+          "id": "add-2-0",
+          "generated": "0",
+          "eos": true,
+          "expected": "2",
+          "correct": false
+        },
+        {
+          "id": "add-2-1",
+          "generated": "0",
+          "eos": true,
+          "expected": "3",
+          "correct": false
+        },
+        {
+          "id": "add-2-4",
+          "generated": "5",
+          "eos": true,
+          "expected": "6",
+          "correct": false
+        },
+        {
+          "id": "add-2-6",
+          "generated": "7",
+          "eos": true,
+          "expected": "8",
+          "correct": false
+        },
+        {
+          "id": "add-2-8",
+          "generated": "11",
+          "eos": true,
+          "expected": "10",
+          "correct": false
+        },
+        {
+          "id": "add-3-3",
+          "generated": "4",
+          "eos": true,
+          "expected": "6",
+          "correct": false
+        },
+        {
+          "id": "add-4-2",
+          "generated": "5",
+          "eos": true,
+          "expected": "6",
+          "correct": false
+        },
+        {
+          "id": "add-4-5",
+          "generated": "10",
+          "eos": true,
+          "expected": "9",
+          "correct": false
+        },
+        {
+          "id": "add-5-4",
+          "generated": "10",
+          "eos": true,
+          "expected": "9",
+          "correct": false
+        },
+        {
+          "id": "add-5-8",
+          "generated": "13",
+          "eos": true,
+          "expected": "13",
+          "correct": true
+        },
+        {
+          "id": "add-6-2",
+          "generated": "7",
+          "eos": true,
+          "expected": "8",
+          "correct": false
+        },
+        {
+          "id": "add-7-1",
+          "generated": "7",
+          "eos": true,
+          "expected": "8",
+          "correct": false
+        },
+        {
+          "id": "add-7-9",
+          "generated": "15",
+          "eos": true,
+          "expected": "16",
+          "correct": false
+        },
+        {
+          "id": "add-8-2",
+          "generated": "11",
+          "eos": true,
+          "expected": "10",
+          "correct": false
+        },
+        {
+          "id": "add-8-5",
+          "generated": "12",
+          "eos": true,
+          "expected": "13",
+          "correct": false
+        },
+        {
+          "id": "add-9-0",
+          "generated": "11",
+          "eos": true,
+          "expected": "9",
+          "correct": false
+        },
+        {
+          "id": "add-9-7",
+          "generated": "15",
+          "eos": true,
+          "expected": "16",
+          "correct": false
+        }
+      ],
+      "checkpoint_sha256": "15470f158cac48321dca19bf8851b8d3062a9f9ec4668148d568f4582c89a230"
+    },
+    "dpo": {
+      "config": {
+        "stage": "dpo",
+        "data": "runs/final-data",
+        "out": "runs/final-dpo",
+        "init": "runs/final-sft/latest.pt",
+        "resume": null,
+        "steps": 120,
+        "width": 64,
+        "length": 32,
+        "batch_size": 8,
+        "seed": 42,
+        "threads": 1,
+        "eval_every": 40,
+        "stop_after": null,
+        "lr": 0.0001,
+        "beta": 0.5
+      },
+      "environment": {
+        "os": "Windows-11-10.0.26200-SP0",
+        "python": "3.12.5",
+        "torch": "2.11.0+cpu",
+        "threads": 1,
+        "precision": "FP32",
+        "device": "cpu"
+      },
+      "code_sha256": "ce985a0f19a482a4090b220f96390992f4c9f39c63b91bf6fa31979053b76c7a",
+      "data_hashes": {
+        "train": "305ee4cdde3e91bda8addea9df51a9c20da9c87bfb0fca2b4410a206035136df",
+        "val": "5796634fac874ed2367003f1f821175f43a879351b8f306b7903f9604aa089f7"
+      },
+      "initialization": {
+        "kind": "weights-only-new-stage",
+        "source_stage": "sft",
+        "source_checkpoint_sha256": "15470f158cac48321dca19bf8851b8d3062a9f9ec4668148d568f4582c89a230"
+      },
+      "final_step": 120,
+      "examples_seen": 960,
+      "response_positions": 4927,
+      "metrics": [
+        {
+          "stage": "dpo",
+          "step": 0,
+          "examples_seen": 0,
+          "response_positions": 0,
+          "train_loss": null,
+          "elapsed_seconds": 0.02604280000377912,
+          "val_response_nll": 1.1132530065683217,
+          "val_response_positions": 52,
+          "val_pair_accuracy": 0.6086956521739131,
+          "greedy_exact": 0.043478260869565216,
+          "val_dpo_margin_mean": 0.0
+        },
+        {
+          "stage": "dpo",
+          "step": 40,
+          "examples_seen": 320,
+          "response_positions": 1632,
+          "train_loss": 0.49568313360214233,
+          "elapsed_seconds": 0.38546019999921555,
+          "val_response_nll": 1.6312205974872296,
+          "val_response_positions": 52,
+          "val_pair_accuracy": 0.7391304347826086,
+          "greedy_exact": 0.043478260869565216,
+          "val_dpo_margin_mean": 0.906494184680607
+        },
+        {
+          "stage": "dpo",
+          "step": 80,
+          "examples_seen": 640,
+          "response_positions": 3291,
+          "train_loss": 0.3977327048778534,
+          "elapsed_seconds": 0.7381766000034986,
+          "val_response_nll": 1.7367031024052546,
+          "val_response_positions": 52,
+          "val_pair_accuracy": 0.7391304347826086,
+          "greedy_exact": 0.08695652173913043,
+          "val_dpo_margin_mean": 0.7742805429126906
+        },
+        {
+          "stage": "dpo",
+          "step": 120,
+          "examples_seen": 960,
+          "response_positions": 4927,
+          "train_loss": 0.4603811502456665,
+          "elapsed_seconds": 1.0928381999983685,
+          "val_response_nll": 1.9368952971238356,
+          "val_response_positions": 52,
+          "val_pair_accuracy": 0.7391304347826086,
+          "greedy_exact": 0.0,
+          "val_dpo_margin_mean": 0.6249597798223081
+        }
+      ],
+      "outputs": [
+        {
+          "id": "add-0-1",
+          "generated": "0",
+          "eos": true,
+          "expected": "1",
+          "correct": false
+        },
+        {
+          "id": "add-0-2",
+          "generated": "0",
+          "eos": true,
+          "expected": "2",
+          "correct": false
+        },
+        {
+          "id": "add-0-9",
+          "generated": "11",
+          "eos": true,
+          "expected": "9",
+          "correct": false
+        },
+        {
+          "id": "add-1-0",
+          "generated": "0",
+          "eos": true,
+          "expected": "1",
+          "correct": false
+        },
+        {
+          "id": "add-1-2",
+          "generated": "0",
+          "eos": true,
+          "expected": "3",
+          "correct": false
+        },
+        {
+          "id": "add-1-7",
+          "generated": "5",
+          "eos": true,
+          "expected": "8",
+          "correct": false
+        },
+        {
+          "id": "add-2-0",
+          "generated": "0",
+          "eos": true,
+          "expected": "2",
+          "correct": false
+        },
+        {
+          "id": "add-2-1",
+          "generated": "0",
+          "eos": true,
+          "expected": "3",
+          "correct": false
+        },
+        {
+          "id": "add-2-4",
+          "generated": "4",
+          "eos": true,
+          "expected": "6",
+          "correct": false
+        },
+        {
+          "id": "add-2-6",
+          "generated": "5",
+          "eos": true,
+          "expected": "8",
+          "correct": false
+        },
+        {
+          "id": "add-2-8",
+          "generated": "11",
+          "eos": true,
+          "expected": "10",
+          "correct": false
+        },
+        {
+          "id": "add-3-3",
+          "generated": "4",
+          "eos": true,
+          "expected": "6",
+          "correct": false
+        },
+        {
+          "id": "add-4-2",
+          "generated": "4",
+          "eos": true,
+          "expected": "6",
+          "correct": false
+        },
+        {
+          "id": "add-4-5",
+          "generated": "90",
+          "eos": true,
+          "expected": "9",
+          "correct": false
+        },
+        {
+          "id": "add-5-4",
+          "generated": "90",
+          "eos": true,
+          "expected": "9",
+          "correct": false
+        },
+        {
+          "id": "add-5-8",
+          "generated": "10",
+          "eos": true,
+          "expected": "13",
+          "correct": false
+        },
+        {
+          "id": "add-6-2",
+          "generated": "5",
+          "eos": true,
+          "expected": "8",
+          "correct": false
+        },
+        {
+          "id": "add-7-1",
+          "generated": "5",
+          "eos": true,
+          "expected": "8",
+          "correct": false
+        },
+        {
+          "id": "add-7-9",
+          "generated": "14",
+          "eos": true,
+          "expected": "16",
+          "correct": false
+        },
+        {
+          "id": "add-8-2",
+          "generated": "11",
+          "eos": true,
+          "expected": "10",
+          "correct": false
+        },
+        {
+          "id": "add-8-5",
+          "generated": "10",
+          "eos": true,
+          "expected": "13",
+          "correct": false
+        },
+        {
+          "id": "add-9-0",
+          "generated": "11",
+          "eos": true,
+          "expected": "9",
+          "correct": false
+        },
+        {
+          "id": "add-9-7",
+          "generated": "14",
+          "eos": true,
+          "expected": "16",
+          "correct": false
+        }
+      ],
+      "checkpoint_sha256": "352fcbe2c50bd8d257e3c4c4ad0575937d251c3546f48b1cbc93a1ece6828f17"
+    }
+  },
+  "scope": "random tiny mechanism fixture; single seed; no general model capability claim"
+}

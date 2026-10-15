@@ -1,0 +1,76 @@
+---
+title: "6.2 离线跑通SFT与DPO，并保留回退结果"
+description: "你想亲眼看到相同小模型从示范学习走向偏好更新，而不是只看loss公式或一张漂亮成绩表。"
+---
+
+import SectionQA from '../../../components/SectionQA.astro';
+
+
+## 现场问题
+
+你想亲眼看到相同小模型从示范学习走向偏好更新，而不是只看loss公式或一张漂亮成绩表。
+
+> 程序该产生什么，哪些数值能证明机制正确，哪些不能？
+
+<SectionQA id="6.2" mode="ask" />
+
+## 第一阶段：示范学习
+
+```bash
+python examples/prepare_data.py --out runs/data
+python examples/train.py --data runs/data --out runs/sft
+```
+
+本轮实际环境为Windows11、Python3.12.5、PyTorch2.11.0+cpu、FP32、1线程、seed42。模型68,608参数，从随机权重开始；77条train、23条val，交换加数同组。默认300步、每步8条、固定lr0.001，消费2400条示范、6061个回答位置（含EOS，含重复）。
+
+| SFT步数 | 验证回答NLL | 固定偏好对排序 | 贪心严格生成 |
+| --- | --- | --- | --- |
+| 0 | 5.528909 | 15/23 | 0/23 |
+| 100 | 1.312196 | 11/23 | 0/23 |
+| 200 | 1.062372 | 3/23 | 0/23 |
+| 300 | 1.113253 | 14/23 | 1/23 |
+
+验证共有52个回答目标位置，NLL按其加权；pair排序每题一对，按题计；生成要求自然EOS、最多4个新字节且精确匹配。初始随机模型的pair排名也可能不低，所以不能只拿它判断算术能力。
+
+## 第二阶段：冻结SFT参考，开始DPO
+
+```bash
+python examples/train.py --stage dpo --data runs/data --out runs/dpo --steps 120 --lr 0.0001 --init runs/sft/latest.pt --eval-every 40
+```
+
+新阶段继承SFT权重，建立新AdamW/RNG/计数；参考策略冻结为同份SFT权重。β=0.5，回答联合logp求和，pair均值loss。120步消费960对、4927个当前策略回答目标位置（chosen+rejected，含EOS）；参考前向和prompt计算没有被算成“新增训练token”。
+
+| DPO步数 | 验证回答NLL | 固定偏好对排序 | 贪心严格生成 |
+| --- | --- | --- | --- |
+| 0 | 1.113253 | 14/23 | 1/23 |
+| 40 | 1.631221 | 17/23 | 1/23 |
+| 80 | 1.736703 | 17/23 | 2/23 |
+| 120 | 1.936895 | 17/23 | 0/23 |
+
+![固定终点的SFT与DPO验证NLL和贪心正确率](/postraining/figures/offline-results.svg)
+
+本书保留预定终点120步，没有把80步的最高生成分数偷换成最终结果。可以看到排序指标改善和生成回退同时发生。单种子、小模板集、规则负例，不能推出DPO普遍提升或普遍失败。
+
+## 原样看看生成
+
+例如val题`Q:1+7\nA:`，SFT生成`7`并EOS，DPO120步生成`5`并EOS，期望为`8`。两者都错；没有人工改写成成功案例。完整23条输出、配置、数据/代码身份与逐点记录保存在仓库 `examples/results/offline-reference.json`。
+
+| 产物 / 验收 | 成功条件 | 常见失败与检查 |
+| --- | --- | --- |
+| manifest与JSONL | 行数/组数/哈希对应，无跨集group | 数据路径错误：先检查prepare输出 |
+| metrics.jsonl | 有限loss、终点和计数正确 | NaN先查mask、长度与学习率 |
+| latest.pt | 模型、参考、优化器和状态齐全 | DPO无init：给出可信SFT检查点 |
+| outputs.json | 每条含原始生成、EOS、期望和判定 | 不结束先查上限/模板，不删失败输出 |
+| 新目录 | 不向旧日志混入新阶段 | fresh目录报错时另选out |
+
+机制成功是运行、接口和验证正确；不要求这些指标都上涨。完整验证用 `python examples/verify.py`，恢复细节见6.4。
+
+> **一句话听懂**：把目标改善与任务质量分开，真实回退也应成为可复核的实验结果。
+
+<SectionQA id="6.2" mode="answer" />
+
+## 参考资料
+
+[1] [DPO：§4 目标与附录 B 实现](https://arxiv.org/html/2305.18290v3)。
+
+[2] [PyTorch：保存与加载模型](https://docs.pytorch.org/tutorials/beginner/saving_loading_models.html)。

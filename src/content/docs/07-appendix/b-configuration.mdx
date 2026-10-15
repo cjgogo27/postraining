@@ -1,0 +1,46 @@
+---
+title: 附录B 配置、计数与检查点接口
+---
+
+## 语言模型脚本默认值
+
+| 字段 | 默认值 | 含义 |
+| --- | --- | --- |
+| --stage | sft | sft或dpo |
+| --data | runs/data | train/val JSONL目录 |
+| --out | runs/sft | 新运行独立目录 |
+| --steps | 300 | 总optimizer更新计划 |
+| --width | 64 | 隐藏维度，4头且须整除 |
+| --length | 32 | 位置表与右padding输入长度 |
+| --batch-size | 8 | 示范数或偏好对数 |
+| --lr | 0.001 | 固定AdamW学习率；DPO示例显式改0.0001 |
+| --beta | 0.5 | DPO margin系数 |
+| --seed | 42 | 模型及独立采样随机流来源 |
+| --threads | 1 | CPU线程数 |
+| --eval-every | 100 | 固定验证与保存间隔 |
+| --stop-after | 不设 | 本进程提前结束的全局更新边界 |
+| --init | 不设 | 匹配的可信权重，新建阶段 |
+| --resume | 不设 | 同计划完整状态，与init互斥 |
+
+无CUDA、DDP、AMP和LoRA开关。AdamW weight_decay固定0.01，梯度裁剪固定1，dropout0，byte EOS256；并行环境world_size不为1时拒绝，避免多进程同时写同一目录。
+
+## 不要混用的计数
+
+| 量 | 定义 |
+| --- | --- |
+| examples_seen | SFT示范消费数 / DPO pair消费数，有放回 |
+| response_positions | 当前策略参与loss打分的回答目标位置，含EOS；DPO含chosen+rejected |
+| val_response_nll | 全部验证chosen NLL和 / 有效回答位置52 |
+| val_pair_accuracy | chosen联合logp严格大于rejected的题比例，平局不算对 |
+| greedy_exact | 贪心最多4新字节、自然EOS且文本精确匹配 |
+| elapsed_seconds | 本进程循环期间含评测/保存/日志的墙钟观测，不是GPU基准 |
+
+response_positions不等于总前向计算量：prompt、padding、参考评分等另有计算。恢复后的elapsed从新进程起计，不能把不同进程的时间直接当连续全程吞吐。
+
+## 有限动作RL默认值
+
+iterations80、group8、epochs2、seed42、lr0.05、out=runs/rlvr；stop-after和resume默认不设。12×4策略，clip[0.8,1.2]，KL到uniform系数0.02，总体标准差eps1e-8；每完整rollout轮保存。
+
+## 检查点
+
+语言模型格式1保存当前/参考、AdamW、计数、数据哈希、编码、关键计划、环境与随机状态。规范化代码身份绑定postcore.py和train.py；RL绑定postcore.py和rlvr.py。只规范UTF-8 BOM与换行，不忽略注释；这不是签名，也不保证跨硬件一致。完整快照只加载可信文件。
