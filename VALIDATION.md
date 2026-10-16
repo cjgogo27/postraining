@@ -1,5 +1,68 @@
 # 实际验证记录：《听懂大模型后训练》
 
+## 2026-10-16：教学主线与真实任务连接修订
+
+本轮基线HEAD：1dff43b2f6c189a652bed88cd127b61e8a70ebf0。先核对全部正文、阅读路线、附录、87问答、原代码与首版验证记录，再阅读参考样章及tutorial_writing_principles.md；没有只根据目录推断缺失。保留六章29节，增加一页必要基础，构建共41页。
+
+### 本轮实际完成
+
+- 必要基础连接token、条件/序列概率、交叉熵、梯度、采样与期望；1.3先解释监督对象与工单应用，字节ID留在2.2。
+- 3.1/3.4/4.2/4.3/4.5先讲动机与方法联系，再讲精确目标。2.3补显式奖励模型比较损失与独立验证；4.1补多轮动作/观察/延迟奖励。
+- 新增token/mask视图、RL四步演示、固定23题SFT/DPO输出对照；DPO预设含当前等于参考、两候选绝对概率都降。均为浏览器本地计算，不调用模型服务。
+- 角色阅读视角可选择并本地记忆，其余问题折叠；29节补具体交接关系与工作用语自检，阅读路线/术语/模型卡/来源同步。
+
+### 实际CPU检查与文档构建
+
+| 命令 / 检查 | 实际结果 |
+| --- | --- |
+| npm run check:docs | PASS：41源页面，29节，87角色问答；中文字符计数约3.28万，不含独立问答JSON |
+| npm test | PASS：7个JS测试，含DPO情境/非法输入、真实字节对齐、组梯度/常奖励和基础SGD |
+| npm run build | PASS：41 HTML，Pagefind、sitemap；仍有依赖级head-inject、i18n及404路由警告，无构建错误 |
+| npm run check:built | PASS：14个KaTeX实例，内部资源/链接/锚点缺失0，29组三角色答案完整 |
+| python examples/verify.py --out runs/checks-20261016 | PASS：原16项CPU检查全部重跑，含SFT/DPO严格恢复、改代码/数据/计划/环境拒绝与有限动作RL边界恢复 |
+| python examples/verify_teaching.py --out runs/teaching-checks-20261016 | PASS：5项CPU FP64手算/梯度/消息接口检查；生成tool-trace.json |
+| python -m compileall -q examples | PASS |
+| git diff --check | PASS（新增文件纳入暂存后再次检查） |
+
+原训练核心postcore.py/train.py/rlvr.py未变；本轮恢复检查的源码身份与首版一致。原300步SFT/120步DPO及80轮表格RL曲线没有重新训练，也没有改写其原始结果。本轮独立数值：目标概率0.2经示意SGD变为0.22031334；奖励模型分数2/1对应偏好概率0.73105858、loss0.31326169；二动作期望梯度0.1875；四候选一步概率为0.225083/0.225083/0.274917/0.274917。全部由代码实际核对，不是新能力成绩。
+
+### 真实预训练基座的可选SFT
+
+```bash
+python examples/pretrained_sft.py --download --out runs/pretrained-revision-20261016
+python examples/verify_pretrained_artifact.py --run runs/pretrained-revision-20261016 --out runs/pretrained-artifact-checks-20261016
+```
+
+- 实际下载SmolLM2-135M，revision93efa2f097d58c2a74874c7e644dbc9b0cee75a2；134,515,008独立参数。权重/tokenizer/config逐文件SHA在pretrained-reference.json。
+- Windows11、Python3.12.5、torch2.11.0+cpu、transformers5.8.0、huggingface_hub1.14.0；FP32、CPU4线程、seed42；所有依赖运行前已可用，本轮未声称重新安装它们。
+- 原创英文状态提取模板，18条训练；6个新订单ID但同模板的目标探针；3条基础续写探针。无chat template，prompt与回答分别编码后拼接，回答及EOS计loss；无静默截断。
+- 全参数AdamW，lr2e-5、weight_decay0.01、裁剪1、每步2条、固定24更新；消费48条记录/96个回答目标位置。
+- 目标严格成功0/6→6/6，回答NLL6.08691470→0.00015670（12位置）；基础续写目标NLL2.38872576→1.98072970（12位置）。基础生成仍不等于目标且未自然结束，3条不足以判断全面保留能力。
+- 保存后实际cache-only本地加载：参数量和源码身份吻合，全部9条生成token/文本/结束原因相同，两组NLL误差小于1e-6。不是优化器恢复或跨硬件验收。
+- 脚本墙钟273.2秒，含首次下载/重试、评测、训练和保存；不含依赖安装/计时前导入。下载发生read timeout后续传成功。未测峰值内存、GPU吞吐或费用，不将墙钟当纯训练速度。
+- 本轮只有一个预定计划与seed。6/6只支持同模板提取行为变化；没有客服泛化、工具调用、安全或大模型RL成绩。大权重留在忽略的runs/，只发布报告与原创任务。
+
+### 本地浏览器检查
+
+使用工作区现有Playwright与Chromium145.0.7632.6，无新增生产依赖。启动实际构建产物预览：npm run preview -- --port 4325；运行scripts/check-browser.cjs（本机通过PLAYWRIGHT_MODULE和BROWSER_EXECUTABLE指向现有运行时）。默认报告在runs/browser-checks；本次用BROWSER_CHECK_OUT=runs/browser-final-20261016。
+
+实际1280×900、390×844两个viewport：角色query/记忆与答案折叠；DPO预设、非法输入、复位与键盘激活；token切换/右移/EOS/可见范围；RL四步/全同奖励/复位；23题固定输出选择；深浅主题与页面横向溢出检查；另测关闭JS的内容回退。共13组PASS，页面JS异常0。报告为browser-checks-reference.json。
+
+实际打开组件截图检查，修正了移动端表头挤压、对照卡片错位和表格首列定位；最终RL移动端为四张候选卡。截图留在runs目录。测试脚本最初错误假设只有一个主题控件，随后又选到隐藏控件，已改为可见控件并通过移动菜单操作；截图还曾被打开的菜单遮挡，现已在关闭菜单后重拍。没有把这些失败尝试计作通过。
+
+源链接检查最初把?reader=参数当作路由，已正确忽略query后重跑通过；手算概率初稿的0.2202按实际计算修为0.2203。未据此修改原训练结果。
+
+### 当前仍未运行的范围
+
+完整语言模型PPO/GRPO、神经奖励模型、工具型LLM训练、OPD/外部裁判、安全、LoRA、CUDA/DDP/分片/多机与生产编排仍未运行。多轮只运行原创消息mask夹具；RM只运行标量损失和梯度。未做全部页面/搜索的浏览器验收，也未测Safari、Firefox、真机触控或性能。原有负结果不因新基座的小任务成功而失效。
+
+关键来源的具体支持位置补在SOURCE_AUDIT.md，InstructGPT奖励模型训练定位为§3.5，DPO推导定位§3–4与附录A；不把HTTP成功当作支持核验。
+
+---
+
+## 2026-10-15首版记录（历史，以下“未运行”仅指当时）
+
+
 日期：2026-10-15（Asia/Shanghai）。本书为独立postraining仓库，六章29节87问答、三类阅读路线、阶段交接导读、四页附录与系统总图。写作前已通读指定样章的原仓库对应源码；网页工具访问该地址失败，未声称做过原站截图比较。来源提交与许可见ATTRIBUTION.md。
 
 ## 环境与执行身份

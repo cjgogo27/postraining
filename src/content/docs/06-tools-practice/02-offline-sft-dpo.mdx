@@ -4,7 +4,10 @@ description: "你想亲眼看到相同小模型从示范学习走向偏好更新
 ---
 
 import SectionQA from '../../../components/SectionQA.astro';
+import OutputComparison from '../../../components/OutputComparison.astro';
 
+
+> **系统位置**：接收数据、权重与计划，执行前后评测和SFT/DPO，交出原始输出与计数。 [回到1.3总图](/postraining/01-system-overview/03-posttraining-system-architecture/)。
 
 ## 现场问题
 
@@ -51,6 +54,12 @@ python examples/train.py --stage dpo --data runs/data --out runs/dpo --steps 120
 
 本书保留预定终点120步，没有把80步的最高生成分数偷换成最终结果。可以看到排序指标改善和生成回退同时发生。单种子、小模板集、规则负例，不能推出DPO普遍提升或普遍失败。
 
+## 固定样本怎样变化
+
+<OutputComparison />
+
+选择的是同一23题中的固定ID，直接读取已发布原始JSON，没有重新采样或挑选成功样本。NLL与排序在全体验证题上统计；面板只解释某个样本的输出、结束原因及格式/内容结果，不能拿一题代表整体。
+
 ## 原样看看生成
 
 例如val题`Q:1+7\nA:`，SFT生成`7`并EOS，DPO120步生成`5`并EOS，期望为`8`。两者都错；没有人工改写成成功案例。完整23条输出、配置、数据/代码身份与逐点记录保存在仓库 `examples/results/offline-reference.json`。
@@ -65,7 +74,54 @@ python examples/train.py --stage dpo --data runs/data --out runs/dpo --steps 120
 
 机制成功是运行、接口和验证正确；不要求这些指标都上涨。完整验证用 `python examples/verify.py`，恢复细节见6.4。
 
+## 可选：接到已有基座的一次新SFT
+
+默认CPU机制实验保持离线。可选入口使用[SmolLM2-135M基座](https://huggingface.co/HuggingFaceTB/SmolLM2-135M)，固定revision `93efa2f097d58c2a74874c7e644dbc9b0cee75a2`；它是预训练文本基座，采用原创英文状态提取模板，不冒充聊天模型的内置模板。
+
+```bash
+python -m pip install -r examples/requirements-pretrained.txt
+python examples/pretrained_sft.py --download --out runs/pretrained-demo
+python examples/verify_pretrained_artifact.py --run runs/pretrained-demo
+```
+
+首次命令允许下载公开模型到`runs/model-cache`；缓存齐全后去掉`--download`可只读缓存。默认24次全参数FP32更新、每次2条、lr0.00002、4个CPU线程、seed42；18条训练记录与6个新订单ID的验证记录共用英文模板。另固定3条基础续写探针，观察原行为变化，不能充当全面能力保留测试。
+
+产物是`report.json`与`model/`权重/tokenizer。报告保存下载文件哈希、模板、源代码、环境、采样索引、回答位置、训练前后全部原始输出与NLL。格式、内容、EOS分开计数；成功条件是同协议完成前评测→SFT→后评测并解释变化，目标准确率无需预设上涨。模型已缓存但仍报下载错时，核对revision和cache；OOM时记录环境并改为新的小规模计划，不将未完成运行填成成绩。
+
+**本轮已实际完成，结果见下方“已有基座实测”。** 这不是严格恢复接口，不继承6.4对小模型的恢复承诺；也没有运行工具调用、偏好或RL训练。
+
+
+## 已有基座实测
+
+2026-10-16实际运行上述脚本，完整原始证据在[pretrained-reference.json](https://github.com/cjgogo27/postraining/blob/main/examples/results/pretrained-reference.json)。本次out为`runs/pretrained-revision-20261016`，其余使用CLI默认值。Windows11、Python3.12.5、PyTorch2.11.0+cpu、Transformers5.8.0、huggingface_hub1.14.0；模型独立参数134,515,008。
+
+| 固定观察对象 | 训练前 | SFT24步后 |
+| --- | --- | --- |
+| 6条新订单ID：内容完全匹配 | 0/6 | 6/6 |
+| 同6条：内容匹配且自然EOS | 0/6 | 6/6 |
+| 同6条：回答NLL（12个目标位置，含EOS） | 6.086915 | 0.000157 |
+| 3条基础续写探针：目标NLL（12个位置，含EOS） | 2.388726 | 1.980730 |
+
+24次更新累计消费48条记录、96个回答目标位置，实际训练池仍为18条。prompt与回答分别编码后拼接，不额外套chat template；标签只在回答与EOS位置学习。上述探针与前后评测协议完全相同，最长生成12个新token。
+
+一条固定状态题的前后输出（保留原字符，`\n`表示换行）：
+
+| 对象 | 训练前原始输出 / 结束 | 训练后原始输出 / 结束 |
+| --- | --- | --- |
+| order-300，期望shipped | `" 300\n\nThe order status is not shipped"` / 长度上限 | `" shipped"` / EOS |
+| 续写“There are seven days in a” | `" week, and seven days in a month.\n\nThe"` / 长度上限 | `" week.\n\nThe seventh day is the Sabbath.\n"` / 长度上限 |
+
+探针NLL降低包含对指定续写和EOS的拟合变化；生成中仍可见不合理续写或与目标不一致，不能据这3条就宣称“原能力已保留”。状态题只更换订单ID、共用模板和三种状态，**6/6只说明这个协议下的小任务行为改变**，不是客服泛化或安全成绩。
+
+本机脚本计时273.2秒，含模型下载/重试、训练前后评测、训练与保存，不含依赖安装和计时前导入；没有分项计时，不能把它称为纯训练速度。初次下载出现read timeout后自动续传并完成。未测峰值内存、GPU费用或多种子；没有编造这些成本数字。
+
+可检查产物：`report.json`保存全部9条前后输出、逐步loss和采样索引；`model/`保存新权重/tokenizer。下载基座文件SHA与训练源码SHA绑定本次运行；大模型文件留在被忽略的runs目录，只上传报告。默认随机小模型的负结果继续保留，两项实验的成绩分表说明。
+
+保存后已实际执行上述本地重载检查：参数量、训练源码身份与全部9条输出/结束原因一致，两组NLL误差小于1e−6。它验证保存/加载一致性，不是训练恢复或跨硬件保证。
+
 > **一句话听懂**：把目标改善与任务质量分开，真实回退也应成为可复核的实验结果。
+
+> **到这里，你应该已经能听懂：**“固定样本前后都保留；内容、格式和EOS分别看。”
 
 <SectionQA id="6.2" mode="answer" />
 

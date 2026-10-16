@@ -6,6 +6,8 @@ description: "团队把DPO、IPO、KTO、SimPO、ORPO排成一条“越来越先
 import SectionQA from '../../../components/SectionQA.astro';
 
 
+> **系统位置**：接收不同反馈类型与预算，比较目标约定，交出有条件的方法选择。 [回到1.3总图](/postraining/01-system-overview/03-posttraining-system-architecture/)。
+
 ## 现场问题
 
 团队把DPO、IPO、KTO、SimPO、ORPO排成一条“越来越先进”的路线，准备直接换最后一种。
@@ -39,6 +41,8 @@ IPO、KTO、SimPO、ORPO分别对应下列原始来源。它们不是每个都�
 先问手里是示范、成对偏好还是二元可取性；再问是否能承担参考计算、是否关心长度偏差、怎样测质量回退。初学者先把3.4的四组logp与冻结参考跑通，再读扩展论文。本站代码只实现SFT和原始sum-logp DPO，不提供其他方法的伪实测或“最佳配方”。
 
 > **一句话听懂**：比较监督、概率口径、约束与成本，名称本身不构成优劣顺序。
+
+> **到这里，你应该已经能听懂：**“换目标后sum和mean的口径也变了，这不是只换一个类名。”
 
 <SectionQA id="3.5" mode="answer" />
 

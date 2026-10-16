@@ -6,6 +6,8 @@ description: "你想从SFT进入DPO，同时又要演练中断恢复。两个命
 import SectionQA from '../../../components/SectionQA.astro';
 
 
+> **系统位置**：接收阶段权重或完整快照，区分新运行与恢复，交出身份一致的状态。 [回到1.3总图](/postraining/01-system-overview/03-posttraining-system-architecture/)。
+
 ## 现场问题
 
 你想从SFT进入DPO，同时又要演练中断恢复。两个命令都加载权重，却不应该继承同一套状态。
@@ -45,6 +47,8 @@ python examples/verify.py --out runs/checks
 语言模型在**optimizer更新边界**保存；有限动作RL在**完整rollout轮边界**保存。没有保存更新一半的梯度或异步在途轨迹。本轮未测试写盘中断、rank崩溃、CUDA、DDP、分片和多机，不称生产容错验收。只能加载可信检查点；完整状态采用Python序列化。
 
 > **一句话听懂**：新阶段重建状态，严格恢复延续状态；参考策略也是不能丢的训练状态。
+
+> **到这里，你应该已经能听懂：**“继续原运行要恢复参考和随机状态，新阶段则另建优化器。”
 
 <SectionQA id="6.4" mode="answer" />
 

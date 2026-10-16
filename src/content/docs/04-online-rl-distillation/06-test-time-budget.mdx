@@ -6,6 +6,8 @@ description: "模型A每题只答一次，模型B采样32次再挑最好答案�
 import SectionQA from '../../../components/SectionQA.astro';
 
 
+> **系统位置**：接收模型、候选与选择预算，形成生成协议，交给公平评测。 [回到1.3总图](/postraining/01-system-overview/03-posttraining-system-architecture/)。
+
 ## 现场问题
 
 模型A每题只答一次，模型B采样32次再挑最好答案，报告只写“B准确率更高”。
@@ -39,6 +41,8 @@ import SectionQA from '../../../components/SectionQA.astro';
 语言模型实测统一greedy、最多4个新字节token、遇EOS停止；必须自然结束且输出精确等于答案才算成功。有限动作RL不生成语言序列，不能用它和语言模型的greedy准确率比较优劣。本书未运行多候选搜索或长CoT扩展，不编写其收益数字。
 
 > **一句话听懂**：模型、采样、选择器和预算共同决定分数，比较前先固定协议。
+
+> **到这里，你应该已经能听懂：**“oracle至少一次答对不是线上选择器的成功率。”
 
 <SectionQA id="4.6" mode="answer" />
 

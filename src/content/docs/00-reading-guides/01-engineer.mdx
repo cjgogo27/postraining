@@ -18,3 +18,7 @@ title: 跨部门工程师阅读路线
 按[6.1环境](/postraining/06-tools-practice/01-environment-and-artifacts/)准备Python，完成6.2的SFT/DPO，再运行verify。重点观察：同样本的mask、DPO初始ln2、参考未更新、同边界恢复完全一致。不要因为loader成功就假定数据和概率语义正确。
 
 生产框架接口可沿原始论文/官方材料阅读，但本项目没有运行verl或多GPU。读5.4时用版本表和交接物理解拓扑，不把角色数量等同设备数。
+
+## 使用本路线的提问视角
+
+从[1.3进入本路线](/postraining/01-system-overview/03-posttraining-system-architecture/?reader=engineer)，节首默认展开对应角色的问题；也可用选择器切换。需要补概率与梯度时读[必要基础](/postraining/00-reading-guides/05-essential-foundations/)。工单助手的单轮到工具轨迹接口见[4.1](/postraining/04-online-rl-distillation/01-rollout-and-policy-versions/)，已有基座实践见[6.2](/postraining/06-tools-practice/02-offline-sft-dpo/)。

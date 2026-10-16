@@ -6,6 +6,8 @@ description: "教师模型生成一万份答案，过滤后留下八千份。一
 import SectionQA from '../../../components/SectionQA.astro';
 
 
+> **系统位置**：接收教师生成与筛选记录，冻结可追溯数据版本，交给训练与审阅。 [回到1.3总图](/postraining/01-system-overview/03-posttraining-system-architecture/)。
+
 ## 现场问题
 
 教师模型生成一万份答案，过滤后留下八千份。一个月后教师版本和提示都变了，团队已经无法重建这批数据。
@@ -37,6 +39,8 @@ import SectionQA from '../../../components/SectionQA.astro';
 `prepare_data.py`写出train/val JSONL及manifest，包含行数、来源组数、答案取值和原文件SHA-256。`train.py`恢复时重新读取实际数据计算身份，不只相信manifest。两者职责不同：清单帮助审阅，真实输入指纹阻止不知情地换数据续同一运行。更新数据应开始新阶段，而非修改旧指纹绕过拒绝。
 
 > **一句话听懂**：保留生成与筛选的来源链，才能知道模型学的是哪一批监督。
+
+> **到这里，你应该已经能听懂：**“教师版本和筛选理由要跟数据版本一起交付。”
 
 <SectionQA id="2.5" mode="answer" />
 

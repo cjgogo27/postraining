@@ -25,3 +25,16 @@
 SFT/DPO曲线、23条生成、表格RL轨迹均来自examples/results内记录，不借论文权威为本站夹具背书。LoRA、完整PPO/LLM GRPO、OPD、裁判、安全、分布式及生产速度没有本站实测。
 
 参考样章通过本地原仓库对应源码完整阅读，来源提交和许可见ATTRIBUTION.md。所有机器人照片/示意图未使用；后训练系统图由本站重新绘制。
+
+## 2026-10-16补充核验
+
+| 新增论断 | 实际阅读的一手支持位置 | 使用边界 |
+| --- | --- | --- |
+| 概率梯度与动作无关基线 | [Spinning Up Part3](https://spinningup.openai.com/en/latest/spinningup/rl_intro3.html) 的Deriving the Simplest Policy Gradient、Expected Grad-Log-Prob Lemma、Baselines in Policy Gradients | 本站用二动作枚举核对0.1875与基线抵消，不保证近似critic始终降方差 |
+| 奖励模型比较损失 | [InstructGPT §3.5 RM Eq1](https://arxiv.org/html/2203.02155v1#S3.SS5)；[DPO §3 Eq1–2](https://arxiv.org/html/2305.18290v3#S3) | 分数2/1是本站手算并实测梯度，不报告训练过神经RM |
+| 参考策略为何出现在DPO | [DPO §3 Eq3、§4 Eq4–7与附录A](https://arxiv.org/html/2305.18290v3#S4) | 条件最优分布关系与有限模型实际优化区分，不从理论最优推出本站实际质量 |
+| PPO到组基线 | [DeepSeekMath §4.1.1与Figure4](https://arxiv.org/html/2402.03300v3#S4.SS1.SSS1) | 组内均值不能代替准确逐状态critic；组件仅演示一次初始四候选SGD |
+| 已有小基座与加载方式 | [SmolLM2固定revision模型卡](https://huggingface.co/HuggingFaceTB/SmolLM2-135M/blob/93efa2f097d58c2a74874c7e644dbc9b0cee75a2/README.md)、实际下载的配置/tokenizer/权重哈希 | 只采信模型身份与接口；全部本站成绩来自本地report，不借用原卡能力成绩 |
+| 多轮工具轨迹的动作边界 | 本站原创消息/字节协议及verify_teaching.py逐位置检查；与4.1的条件动作定义一致 | 不是某真实模型的chat template，不声称执行过工具型LLM RL |
+
+本轮通读参考项目tutorial_writing_principles.md的§4–7、10–13，采用问题先行、分层深度与真实工作用语检验；所有新文字/交互仍用后训练自己的对象。

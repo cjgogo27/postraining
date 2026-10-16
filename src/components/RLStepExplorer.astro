@@ -1,0 +1,52 @@
+<section class="rl-explorer" data-rl-explorer aria-label="一组回答的奖励、优势与一次概率更新">
+  <p><strong>一轮更新拆开看：哪些对象在变化？</strong></p>
+  <div class="controls"><label>固定组情境 <select data-scenario><option value="mixed">两错两对 [0,0,1,1]</option><option value="wrong">全部错误 [0,0,0,0]</option><option value="right">全部正确 [1,1,1,1]</option></select></label></div>
+  <div class="controls" role="group" aria-label="RL观察步骤">
+    <button type="button" data-step="0" aria-pressed="true">① 采样记录</button>
+    <button type="button" data-step="1" aria-pressed="false">② 评分</button>
+    <button type="button" data-step="2" aria-pressed="false">③ 组优势</button>
+    <button type="button" data-step="3" aria-pressed="false">④ 一次更新</button>
+    <button type="button" data-reset>复位</button>
+  </div>
+  <p data-explanation aria-live="polite">预先固定四条不同候选动作，每条旧概率为0.25；这里不重新调用模型采样。</p>
+  <p>四个候选是示意动作A–D；切换情境改变示意奖励，不是给同一真实回答重新判真伪。</p>
+  <div class="scroll"><table aria-label="四候选的奖励、优势与更新后概率">
+    <thead><tr><th>候选</th><th>old概率</th><th>奖励</th><th>优势</th><th>更新后概率</th></tr></thead>
+    <tbody>{['A','B','C','D'].map((name,index)=><tr data-action={index}><th>{name}</th><td data-label="old概率">0.2500</td><td data-label="奖励"><span data-reward>—</span></td><td data-label="优势"><span data-advantage>—</span></td><td data-label="更新后概率"><meter min="0" max="1" value="0.25" aria-label={`候选${name}的更新后概率`}></meter> <span data-probability>—</span></td></tr>)}</tbody>
+  </table></div>
+  <output aria-live="polite">先看行为概率，再给出评分。</output>
+  <p>一次初始SGD，学习率0.4；总体标准差、eps=1e−8，奖励与优势停止梯度。无KL、无后续epoch，固定四候选不代表语言模型GRPO。</p>
+</section>
+<script>
+  import { groupStep } from '../lib/objectives.mjs';
+  for(const root of document.querySelectorAll<HTMLElement>('[data-rl-explorer]')) {
+    let step=0;
+    const select=root.querySelector<HTMLSelectElement>('select')!;
+    function render() {
+      const rewards=select.value==='wrong'?[0,0,0,0]:select.value==='right'?[1,1,1,1]:[0,0,1,1];
+      const result=groupStep(rewards);
+      const explanations=['固定四个不同候选动作，各old概率0.25。实际RL先采样并保存行为身份；这里使用预设记录。','评分器给出整回答奖励；此时没有改策略参数。','同题比较：减去组均值、除总体标准差。全同奖励时各优势为0。','冻结这组优势，以−mean(A×logπ)在初始均匀策略上做一次SGD；重新softmax后得到右侧概率。'];
+      root.querySelector('[data-explanation]')!.textContent=explanations[step];
+      root.querySelectorAll<HTMLButtonElement>('[data-step]').forEach(button=>button.setAttribute('aria-pressed',String(Number(button.dataset.step)===step)));
+      root.querySelectorAll<HTMLElement>('[data-action]').forEach((row,index)=>{
+        row.querySelector('[data-reward]')!.textContent=step>=1?String(rewards[index]):'—';
+        row.querySelector('[data-advantage]')!.textContent=step>=2?result.advantages[index].toFixed(2):'—';
+        row.querySelector('[data-probability]')!.textContent=step>=3?result.probabilities[index].toFixed(4):'—';
+        row.querySelector('meter')!.value=step>=3?result.probabilities[index]:.25;
+      });
+      root.querySelector('output')!.textContent=step>=2?`均值=${result.mean.toFixed(2)}；总体标准差=${result.std.toFixed(2)}。${result.std===0?'没有组内区分信号，本例策略概率保持0.25。':'正优势提高、负优势降低对应候选的概率；并非每个实际RL步骤都保证如此。'}`:'先固定记录，再逐步观察。';
+    }
+    select.addEventListener('change',()=>{step=0;render();});
+    root.querySelectorAll<HTMLButtonElement>('[data-step]').forEach(button=>button.addEventListener('click',()=>{step=Number(button.dataset.step);render();}));
+    root.querySelector('[data-reset]')!.addEventListener('click',()=>{select.value='mixed';step=0;render();});
+    render();
+  }
+</script>
+<style>
+  .rl-explorer {padding:1rem;border:1px solid var(--sl-color-gray-4);border-radius:.6rem;margin-block:1.5rem;}.controls {display:flex;flex-wrap:wrap;gap:.5rem;margin-block:.7rem;}button,select {padding:.5rem;background:var(--sl-color-bg);color:var(--sl-color-text);border:1px solid var(--sl-color-gray-4);border-radius:.35rem;max-width:100%;}button {cursor:pointer;}button[aria-pressed="true"] {background:var(--sl-color-accent-low);color:var(--sl-color-accent-high);}.scroll {overflow:auto;}table {font-size:.9rem;width:100%;min-width:32rem;}th {white-space:nowrap;}meter {width:5rem;max-width:100%;}output {display:block;font-weight:600;}
+  @media(max-width:34rem) {
+    .rl-explorer table {display:block;min-width:0;}.rl-explorer thead {position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);}.rl-explorer tbody {display:grid;gap:.7rem;}
+    .rl-explorer tr {display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--sl-color-gray-4);border-radius:.4rem;padding:.5rem;}.rl-explorer th {grid-column:1/-1;text-align:left;border:0;padding:.1rem;}
+    .rl-explorer td {display:block;border:0;padding:.2rem .1rem;font-size:.9rem;}.rl-explorer td::before {content:attr(data-label);display:block;color:var(--sl-color-gray-2);font-size:.75rem;}meter {display:block;width:3rem;margin-block:.2rem;}
+  }
+</style>

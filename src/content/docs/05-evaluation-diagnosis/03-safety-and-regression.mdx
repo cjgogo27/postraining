@@ -6,6 +6,8 @@ description: "模型在危险请求上更常拒答，但也开始拒绝普通化
 import SectionQA from '../../../components/SectionQA.astro';
 
 
+> **系统位置**：接收目标/旧能力/安全任务，分层评测，交出收益与回退证据。 [回到1.3总图](/postraining/01-system-overview/03-posttraining-system-architecture/)。
+
 ## 现场问题
 
 模型在危险请求上更常拒答，但也开始拒绝普通化学作业和无害代码问题。只报拒答率看不出差别。
@@ -38,6 +40,8 @@ import SectionQA from '../../../components/SectionQA.astro';
 本项目没有安全数据集和安全训练，不使用加法正确率证明安全，也不把小模型乱码视作安全评测。正文这一页是评测设计；只有运行并明确任务范围后，才能填入安全/误拒数字。
 
 > **一句话听懂**：该拒绝时是否拒绝、无害任务是否完成、旧能力是否保留，要分层验收。
+
+> **到这里，你应该已经能听懂：**“无害误拒和危险请求配合率分别统计。”
 
 <SectionQA id="5.3" mode="answer" />
 

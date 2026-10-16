@@ -1,0 +1,36 @@
+{
+  "status": "PASS",
+  "count": 5,
+  "torch": "2.11.0+cpu",
+  "checks": [
+    {
+      "name": "sft_logit_gradient_and_sgd",
+      "loss": 1.6094379124341003,
+      "new_target_probability": 0.22031334028378446
+    },
+    {
+      "name": "reward_model_bt_loss_and_gradient",
+      "probability": 0.7310585786300049,
+      "loss": 0.31326168751822286
+    },
+    {
+      "name": "policy_gradient_exact_expectation_and_baseline",
+      "gradient": 0.1875
+    },
+    {
+      "name": "visual_group_step_matches_autograd",
+      "probabilities": [
+        0.22508300134376105,
+        0.22508300134376105,
+        0.274916998656239,
+        0.274916998656239
+      ]
+    },
+    {
+      "name": "two_assistant_spans_tool_observation_excluded_shifted_mask",
+      "action_positions": 49
+    }
+  ],
+  "code_sha256": "6501d321061b4daaa7fa443650585e1eafe62c295188408135c0e8dcb6fffb51",
+  "scope": "CPU FP64 hand cases and byte tool-message fixture; no trained neural reward model or tool LLM RL"
+}

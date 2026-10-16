@@ -22,7 +22,7 @@ for (const file of files) {
   if (!/^---\r?\ntitle:/m.test(text)) errors.push(`${relative}: missing title`);
   if (/TODO|TBD|待补充|PLACEHOLDER/.test(text)) errors.push(`${relative}: unfinished placeholder`);
   for (const match of text.matchAll(/(?:\]\(|(?:href|link)=['"])(\/postraining\/[^)'"\s]*)/g)) {
-    const route = match[1].split('#')[0];
+    const route = match[1].split(/[?#]/)[0];
     if (!routes.has(route)) errors.push(`${relative}: unknown internal link ${route}`);
   }
   if (/^0[1-6]-/.test(relative)) {

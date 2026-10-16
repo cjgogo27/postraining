@@ -4,7 +4,10 @@ description: "同一份对话在训练时末尾有assistant标记，评测时却
 ---
 
 import SectionQA from '../../../components/SectionQA.astro';
+import TokenMaskExplorer from '../../../components/TokenMaskExplorer.astro';
 
+
+> **系统位置**：接收消息与基座模板，形成输入、右移目标和回答mask，交给损失计算。 [回到1.3总图](/postraining/01-system-overview/03-posttraining-system-architecture/)。
 
 ## 现场问题
 
@@ -28,6 +31,12 @@ loss_mask: [ 0, 0, 0, 0, 0, 0, 0, 1,  1]
 
 位置7的输入是冒号58，预测回答首字节53；位置8的输入是53，预测EOS256。**mask对应右移后的目标位置**，不是简单从原始回答下标开始盖章。8个prompt字节、1个回答字节加EOS，提供2个有效监督位置。
 
+<TokenMaskExplorer />
+
+这里确实采用UTF-8字节ID 0–255、EOS256：完整序列是8个prompt字节、回答字节53和EOS256，共10个；右移后得到9个输入/目标配对。它不是BPE分词结果。切换视图时先猜“冒号58预测谁”，再核对标签和mask。
+
+> 先理解“上下文仍可见、只有回答目标计loss”就够了。下面的padding约定是实现查阅；多轮环境文本的边界继续见[4.1](/postraining/04-online-rl-distillation/01-rollout-and-policy-versions/#从单轮回答扩展到工具轨迹)。
+
 ## 两种mask不能混淆
 
 因果注意力允许位置t看输入0…t，禁止看未来；loss_mask只选择哪些目标参与目标函数。上例位置7仍能看完整prompt。把prompt的loss置零不会阻断所有prompt参数梯度，因为回答通过条件上下文依赖它。
@@ -43,6 +52,8 @@ loss_mask: [ 0, 0, 0, 0, 0, 0, 0, 1,  1]
 `examples/verify.py`实际检查这三点。模板版本或截断策略改变时，应重算偏好缓存与评分输入身份；不能沿用旧logp而只改文本文件名。
 
 > **一句话听懂**：注意力决定能看什么，回答掩码决定在哪些目标上学习。
+
+> **到这里，你应该已经能听懂：**“tool返回要能看见，但别把它当assistant的监督目标。”
 
 <SectionQA id="2.2" mode="answer" />
 

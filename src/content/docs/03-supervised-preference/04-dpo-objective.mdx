@@ -6,6 +6,8 @@ description: "当前模型认为5比6更可能，DPO loss却仍不低；另一�
 import SectionQA from '../../../components/SectionQA.astro';
 import DPOCalculator from '../../../components/DPOCalculator.astro';
 
+> **系统位置**：接收同题偏好与冻结参考，用相对概率差更新策略，交给生成评测。 [回到1.3总图](/postraining/01-system-overview/03-posttraining-system-architecture/)。
+
 ## 现场问题
 
 当前模型认为5比6更可能，DPO loss却仍不低；另一轮loss下降，正确回答的绝对概率反而下降。
@@ -14,7 +16,27 @@ import DPOCalculator from '../../../components/DPOCalculator.astro';
 
 <SectionQA id="3.4" mode="ask" />
 
-## 不是只把chosen概率调高
+## 示范不够时，为什么转向比较
+
+工单助手的两份回答都准确，一份简洁直接，另一份带很多无关内容。标注员更容易指出哪份更适合，而未必愿意重写标准答案。比较标签给的是“同题下谁更好”，需要一个能消费相对信息的目标。
+
+2.3先用分差预测偏好：分差大，chosen被选中的概率就大。DPO进一步问：能否让**策略相对参考的变化**充当这个分数，直接拟合比较？参考原来就很偏爱某个答案时，仅看当前两答案谁更可能，还不能说明这次偏好训练改变了什么。
+
+<details>
+<summary>进阶：参考概率比怎样从奖励约束中出现</summary>
+
+在固定prompt上，先考虑最大化期望奖励、同时惩罚偏离参考的目标 `Eπ[r]−β KL(π||π_ref)`。假设β大于0，候选的参考概率为正，并能对回答分布求解，其最优策略满足 `π*(y|x) ∝ π_ref(y|x) exp(r(x,y)/β)`。
+
+反解可写成 `r(x,y)=β log(π*(y|x)/π_ref(y|x))+β log Z(x)`。同题的两回答作差时，归一化常数Z(x)抵消；再代入Bradley–Terry偏好概率，便得到下方四组logp和sigmoid目标。[1，§3 Eq3、§4 Eq4–7与附录A]
+
+实际DPO用可训练πθ参数化这个关系并拟合有限偏好数据。该推导依赖偏好模型与正则化假设，不保证有限模型、数据偏差或优化误差下找到真实用户效用的最优策略；也不意味着显式训练了一个独立奖励模型。
+
+</details>
+
+> 第一遍记住“相对参考，学习同题比较”即可。下方公式负责精确核对概率口径。
+
+
+## 把比较写成可计算的目标
 
 定义回答联合log概率 $\ell_\theta(y|x)=\sum_t\log\pi_\theta(y_t|x,y_{<t})$，本项目包含EOS、不含prompt目标。原始DPO的单pair目标可写成：[1，§4与附录B]
 
@@ -27,6 +49,8 @@ $$m=\beta[(\ell_\theta(y_w|x)-\ell_\theta(y_l|x))-(\ell_{ref}(y_w|x)-\ell_{ref}(
 取当前chosen/rejected logp为−3/−5，参考为−4/−4，β=0.1：当前差2，参考差0，m=0.2，loss≈0.598139。序列logp不是单token概率，必须用相同模板、EOS和截断口径。
 
 <DPOCalculator />
+
+先预测再选预设：“当前等于参考”是否一定代表两答案等概率？“两个候选概率都下降”时，margin能否仍上升？计算器展示的是人工设定的联合logp，不调用模型；未列出的回答仍占有剩余概率。
 
 β来自KL约束目标的推导关系，但在有限数据优化里还改变margin与梯度尺度。不能简单把它称作代码里另加的一项KL loss，也不应保证调大就必然让所有指标更接近参考。检查具体目标和更新轨迹。
 
@@ -41,6 +65,8 @@ $$m=\beta[(\ell_\theta(y_w|x)-\ell_\theta(y_l|x))-(\ell_{ref}(y_w|x)-\ell_{ref}(
 四组logp必须对应同prompt、同候选token。参考参数冻结且不进优化器；缓存依赖参考身份。用logsigmoid或softplus实现稳定计算，避免先exp长序列概率再相除。若改为长度平均，已经改了这里的原始目标，应重新命名/说明，不能只当数值优化。
 
 > **一句话听懂**：DPO学习相对参考的偏好差，不能用margin代替真实生成验收。
+
+> **到这里，你应该已经能听懂：**“相对参考的margin改善了，但仍需看实际生成。”
 
 <SectionQA id="3.4" mode="answer" />
 

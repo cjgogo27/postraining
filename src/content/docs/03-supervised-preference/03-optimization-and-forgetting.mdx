@@ -6,6 +6,8 @@ description: "训练loss持续下降，验证loss却先降后升。有人建议�
 import SectionQA from '../../../components/SectionQA.astro';
 
 
+> **系统位置**：接收目标、长度与采样计划，确定有效分母和更新节奏，交给验证与保存。 [回到1.3总图](/postraining/01-system-overview/03-posttraining-system-architecture/)。
+
 ## 现场问题
 
 训练loss持续下降，验证loss却先降后升。有人建议继续训练，直到训练loss足够低。
@@ -33,6 +35,8 @@ import SectionQA from '../../../components/SectionQA.astro';
 **遗忘**还要在原有任务上测，不能只凭新任务loss变好下结论。改变数据混合、学习率或训练长度时，采用相同基座和固定评测，记录目标收益与保留能力的取舍。KL或LoRA也不提供不会遗忘的普遍保证。
 
 > **一句话听懂**：样本、回答位置和更新数各自计量，验证回退不能被训练loss掩盖。
+
+> **到这里，你应该已经能听懂：**“这里按有效回答位置归一化，不是把局部均值直接平均。”
 
 <SectionQA id="3.3" mode="answer" />
 

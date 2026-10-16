@@ -1,0 +1,4 @@
+# Optional bridge only; default offline labs still require only torch.
+-r requirements.txt
+transformers==5.8.0
+huggingface-hub==1.14.0

@@ -19,12 +19,13 @@ const mapUrl = base + '01-system-overview/03-posttraining-system-architecture/';
 
 {items.length === 0 ? null : mode === 'ask' ? (
   <aside class="section-qa section-qa-ask">
-    <p class="qa-title">带着这几个问题读</p>
-    <ul>
+    <p class="qa-title">带着一个问题读</p>
+    <label>阅读视角 <select data-reader-select aria-label="选择提问角色"><option value="学生" selected>学生</option><option value="工程师">工程师</option><option value="产品/PR">产品/PR</option></select></label>
+    <div data-role-questions>
       {items.map((it) => (
-        <li><span class="qa-role">{it.role}</span>{it.q}</li>
+        <details data-reader-role={it.role} open={it.role==='学生'}><summary><span class="qa-role">{it.role}</span>{it.q}</summary><p>带着这个问题阅读正文，读完再到节末核对解释。</p></details>
       ))}
-    </ul>
+    </div>
     <p class="qa-hint">读完回到本节末尾，对照参考答案看看自己答得怎么样。</p>
   </aside>
 ) : (
@@ -39,6 +40,22 @@ const mapUrl = base + '01-system-overview/03-posttraining-system-architecture/';
     {showReviewHint && <p class="qa-hint">需要回看时，到 <a href={mapUrl}>1.3 节</a>总图定位本节的输入、输出和执行时机。可以使用不同表述，但关键定义、单位、假设和因果关系必须正确；用具体数值或产物检查自己的解释。</p>}
   </aside>
 )}
+
+<script>
+  const roleNames={student:'学生',engineer:'工程师',product:'产品/PR'};
+  const explicit=new URLSearchParams(location.search).get('reader');
+  let reader='学生';
+  try {reader=localStorage.getItem('posttraining-reader')||reader;} catch {}
+  if(explicit && explicit in roleNames) reader=roleNames[explicit as keyof typeof roleNames];
+  if(!Object.values(roleNames).includes(reader)) reader='学生';
+  function choose(role:string) {
+    document.querySelectorAll<HTMLSelectElement>('[data-reader-select]').forEach(select=>{select.value=role;});
+    document.querySelectorAll<HTMLDetailsElement>('[data-reader-role]').forEach(detail=>{detail.open=detail.dataset.readerRole===role;});
+    try {localStorage.setItem('posttraining-reader',role);} catch {}
+  }
+  document.querySelectorAll<HTMLSelectElement>('[data-reader-select]').forEach(select=>select.addEventListener('change',()=>choose(select.value)));
+  choose(reader);
+</script>
 
 <style>
   .section-qa {
@@ -81,6 +98,7 @@ const mapUrl = base + '01-system-overview/03-posttraining-system-architecture/';
   .section-qa summary {
     cursor: pointer;
   }
+  select {padding:.35rem;max-width:100%;background:var(--sl-color-bg);color:var(--sl-color-text);border:1px solid var(--sl-color-gray-4);border-radius:.3rem;}
   .section-qa details p {
     margin: 0.4rem 0 0.6rem;
     color: var(--sl-color-gray-2);

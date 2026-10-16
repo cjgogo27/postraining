@@ -1,0 +1,12 @@
+{
+  "status": "PASS",
+  "parameters": 134515008,
+  "torch": "2.11.0+cpu",
+  "checked": [
+    "training_source_identity",
+    "saved_parameter_count",
+    "all_9_fixed_outputs_and_stop_reasons",
+    "both_nll_within_1e-6"
+  ],
+  "scope": "Same CPU environment; local saved model reload, not training resume or cross-hardware equality"
+}

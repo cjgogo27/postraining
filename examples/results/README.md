@@ -13,3 +13,13 @@ source_identity按有序源码文件名与规范化UTF-8/LF内容计算SHA-256�
 SFT与DPO沿同一权重交接，但不是独立算法胜负试验；没有多种子和独立产品test。pair准确率与生成精确率分别计数，负结果保留。表格RL没有语言模型或未见题泛化，不能与小LM比较能力。
 
 两张图直接从这些JSON绘制，原始数值可核对；图片已独立预览检查，不等同网站桌面/移动截图。LoRA/OPD/安全/裁判/分布式等未运行范围详见VALIDATION.md。
+
+## 2026-10-16教学修订的新增证据
+
+- pretrained-reference.json：固定SmolLM2-135M revision，24步真实基座SFT、18训练/6目标/3保留探针、全部前后输出、源码/下载文件哈希与成本口径。脚本入口pretrained_sft.py；首次显式download，后续cache-only。
+- teaching-checks-reference.json、tool-trace-reference.json：5项实际CPU/FP64数值与接口检查，包括RM比较损失、基线抵消和两个assistant动作片段的右移mask；不是神经RM或工具LLM训练。
+- checks-revision-20261016.json：本轮重跑原16项CPU恢复/数值检查，训练核心源码身份与首版相同。
+
+新的基座报告与原随机模型负结果分别保留；完整权重仍在忽略的runs目录。基座脚本为新运行接口，没有严格resume承诺。
+
+pretrained-artifact-checks.json：实际重载保存后的基座SFT产物，全部9条生成与结束原因相同，两组NLL误差小于1e-6；不代表严格恢复。browser-checks-reference.json记录本地构建站的13组浏览器检查，不等同所有浏览器/全文的视觉验收。

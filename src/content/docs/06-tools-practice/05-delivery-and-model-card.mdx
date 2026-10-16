@@ -6,6 +6,8 @@ description: "接收方拿到adapter或权重，套上另一份模板，得到�
 import SectionQA from '../../../components/SectionQA.astro';
 
 
+> **系统位置**：接收训练产物与评测记录，整理模型卡/协议/局限，交给复核方。 [回到1.3总图](/postraining/01-system-overview/03-posttraining-system-architecture/)。
+
 ## 现场问题
 
 接收方拿到adapter或权重，套上另一份模板，得到不同输出；发布说明却只有“后训练完成”。
@@ -40,6 +42,8 @@ import SectionQA from '../../../components/SectionQA.astro';
 如果生产项目改用真实基座、LoRA、训练框架或采样引擎，应建立新的数据/配置/评测记录，重新验证掩码、参考策略和恢复。不能因为使用了相同算法名字就继承本教程的验证结论。部署引擎与服务SLO不是本书的实现范围，这里只定义后训练产物的交接接口。
 
 > **一句话听懂**：交付的不只是权重，还包括让接收方理解并复核它的条件与证据。
+
+> **到这里，你应该已经能听懂：**“把权重、模板、协议和原始输出一起交给接收方。”
 
 <SectionQA id="6.5" mode="answer" />
 

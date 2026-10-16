@@ -6,6 +6,8 @@ description: "评分代码用“输出包含5”判断2+3答对，结果50、15�
 import SectionQA from '../../../components/SectionQA.astro';
 
 
+> **系统位置**：接收完整输出与执行状态，交出奖励/筛选决定，供SFT数据构造或在线更新。 [回到1.3总图](/postraining/01-system-overview/03-posttraining-system-architecture/)。
+
 ## 现场问题
 
 评分代码用“输出包含5”判断2+3答对，结果50、15和解释段落都能得满分。
@@ -37,6 +39,8 @@ import SectionQA from '../../../components/SectionQA.astro';
 至少检查：正确、错误、格式变体、额外数字、空输出、截断输出、执行失败。代码的`verify_answer`及其反例已实际运行。代码任务还需隔离环境、资源上限和隐藏测试，防止候选仅适配可见用例。数学/程序有ground truth并不自动免疫奖励作弊；第4.4节再看训练分布变化后为何仍会失真。
 
 > **一句话听懂**：先写清验收协议与状态，再把评分用于筛选或强化学习。
+
+> **到这里，你应该已经能听懂：**“通过率的分母是候选，题覆盖的分母是问题。”
 
 <SectionQA id="2.4" mode="answer" />
 

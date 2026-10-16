@@ -6,6 +6,8 @@ description: "训练GPU等待rollout，rollout又被少数超长回答拖住；�
 import SectionQA from '../../../components/SectionQA.astro';
 
 
+> **系统位置**：连接trainer、rollout和评分器，以版本和队列协议交付可解释的数据。 [回到1.3总图](/postraining/01-system-overview/03-posttraining-system-architecture/)。
+
 ## 现场问题
 
 训练GPU等待rollout，rollout又被少数超长回答拖住；一次权重同步未完成，旧版本轨迹混进了新批次。
@@ -40,6 +42,8 @@ import SectionQA from '../../../components/SectionQA.astro';
 显存还可能含策略、参考/critic/奖励权重、优化器、训练激活和采样KV cache。LoRA只改变部分训练状态，不能消去所有这些项。先用目标硬件短跑采集分项证据，再选择并行、放置或offload；本站CPU例子不提供GPU MFU或吞吐门槛。
 
 > **一句话听懂**：版本、队列、长度与完成量是算法语义的一部分，编排不能只按设备数画图。
+
+> **到这里，你应该已经能听懂：**“采样worker确认版本后，轨迹仍要保存实际actor身份。”
 
 <SectionQA id="5.4" mode="answer" />
 

@@ -44,3 +44,7 @@ iterations80、group8、epochs2、seed42、lr0.05、out=runs/rlvr；stop-after�
 ## 检查点
 
 语言模型格式1保存当前/参考、AdamW、计数、数据哈希、编码、关键计划、环境与随机状态。规范化代码身份绑定postcore.py和train.py；RL绑定postcore.py和rlvr.py。只规范UTF-8 BOM与换行，不忽略注释；这不是签名，也不保证跨硬件一致。完整快照只加载可信文件。
+
+## 可选已有基座脚本
+
+`pretrained_sft.py`：out=runs/pretrained-sft、cache=runs/model-cache、steps24、threads4、lr0.00002；download默认false。固定SmolLM2-135M revision见6.2；CPU/FP32、seed42、全参数AdamW，batch2。18条训练、6条同模板新ID目标探针、3条基础续写探针；最多12个新token，EOS与长度上限分开。输入超过128不静默截断，prompt与response分别编码后拼接，loss只对response及EOS求平均。输出为新的模型目录与report.json，没有resume选项，也不借用小模型检查点格式。

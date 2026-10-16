@@ -1,5 +1,12 @@
 <div class="dpo-calculator" data-dpo-calculator>
   <p><strong>动手核对：只改变一组logp，观察margin和loss</strong></p>
+  <p>先预测结果，再选一个情境核对：</p>
+  <div class="presets" role="group" aria-label="DPO预设情境">
+    <button type="button" data-preset="hand">手算示例 / 复位</button>
+    <button type="button" data-preset="equal">当前等于参考</button>
+    <button type="button" data-preset="bothDown">两个概率都下降</button>
+  </div>
+  <p data-preset-hint>手算：当前差2，参考差0，m=0.2。</p>
   <div class="inputs">
     <label>当前 chosen logp<input type="number" value="-3" max="0" step="any" data-field="pc" /></label>
     <label>当前 rejected logp<input type="number" value="-5" max="0" step="any" data-field="pr" /></label>
@@ -11,7 +18,7 @@
   <p class="hint">输入是同prompt下完整回答（含EOS）的联合log概率，不是logits；本组件不会调用模型。</p>
 </div>
 <script>
-  import { dpoMetrics } from '../lib/objectives.mjs';
+  import { dpoMetrics, dpoPresets } from '../lib/objectives.mjs';
   for(const root of document.querySelectorAll('[data-dpo-calculator]')) {
     const fields=['pc','pr','rc','rr','beta'].map(name=>root.querySelector(`[data-field="${name}"]`) as HTMLInputElement);
     const output=root.querySelector('output')!;
@@ -23,10 +30,17 @@
       } catch(error) { output.textContent=error instanceof Error?error.message:'输入无效'; }
     }
     fields.forEach(field=>field.addEventListener('input',update));
+    root.querySelectorAll<HTMLButtonElement>('[data-preset]').forEach(button=>button.addEventListener('click',()=>{
+      const preset=dpoPresets[button.dataset.preset as keyof typeof dpoPresets];
+      fields.forEach((field,index)=>{ field.value=String(preset.values[index]); });
+      root.querySelector('[data-preset-hint]')!.textContent=preset.hint;
+      update();
+    }));
     update();
   }
 </script>
 <style>
   .dpo-calculator { padding: 1rem; border: 1px solid var(--sl-color-gray-4); border-radius: .6rem; margin-block: 1.5rem; }.inputs { display:grid;grid-template-columns:1fr 1fr;gap:.7rem; }label { display:flex;flex-direction:column;font-size:.9rem; }input { background:var(--sl-color-bg);color:var(--sl-color-text);border:1px solid var(--sl-color-gray-4);border-radius:.3rem;padding:.5rem;min-width:0; }output { display:block; margin-top:1rem;font-weight:bold; }.hint { font-size:.85rem; }
   @media(max-width:34rem) { .inputs { grid-template-columns:1fr; } }
+  .presets {display:flex;flex-wrap:wrap;gap:.5rem;}button {cursor:pointer;border:1px solid var(--sl-color-gray-4);border-radius:.4rem;padding:.55rem;background:var(--sl-color-bg);color:var(--sl-color-text);}
 </style>

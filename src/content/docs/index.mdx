@@ -26,17 +26,18 @@ import { Aside, CardGrid, LinkCard } from '@astrojs/starlight/components';
 
 <CardGrid>
   <LinkCard title="跨部门工程师" description="核对数据、概率、版本与系统交接，沿证据诊断。" href="/postraining/00-reading-guides/01-engineer/" />
-  <LinkCard title="在校学生" description="先手算两个回答位置，再跑CPU实验与恢复检查。" href="/postraining/00-reading-guides/02-student/" />
+  <LinkCard title="在校学生" description="从概率与梯度补起，再跑CPU实验与恢复检查。" href="/postraining/00-reading-guides/02-student/" />
   <LinkCard title="产品 / PR" description="区分训练得分、任务完成与可以对外表达的证据。" href="/postraining/00-reading-guides/03-product-pr/" />
-  <LinkCard title="直接做实验" description="无模型/API下载，实际SFT/DPO与有限动作RL。" href="/postraining/06-tools-practice/01-environment-and-artifacts/" />
+  <LinkCard title="直接做实验" description="默认离线SFT/DPO与有限动作RL；可选已有基座路线。" href="/postraining/06-tools-practice/01-environment-and-artifacts/" />
 </CardGrid>
 
 ## 每一节怎样读
 
-现场问题 → 三类读者问题 → 术语/对象/图表 → 手算或实验解释 → 一句话听懂 → 折叠参考答案 → 一手资料。1.3是全书接口地图；阶段导读说明同一权重进入新目标时怎样交接状态。
+现场问题 → 选择一个角色问题 → 解释为什么需要 → 图表/手算/可选推导 → 工作用语自检 → 折叠参考答案 → 一手资料。[必要基础](/postraining/00-reading-guides/05-essential-foundations/)连接概率、梯度与采样；1.3是接口地图，工单助手连接真实任务。
 
 <Aside type="note" title="保留真实结果，也保留边界">
   小语言模型从随机权重开始，只检验机制。SFT后生成仍很弱，DPO最终生成回退也原样保留。有限动作RL是48参数表格策略，不是语言模型GRPO。16项CPU数值/恢复检查不代表生产或通用能力验收。
+  可选SmolLM2基座SFT已实际运行，固定同模板状态题0/6→6/6；基础续写仍保留问题，不宣称客服泛化或全面能力保留。
 </Aside>
 
 ## 写作来源与许可

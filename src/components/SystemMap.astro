@@ -4,8 +4,9 @@
   <div class="paths">
     <section><h3>示范路径 · SFT</h3><ol><li>prompt + 示范回答</li><li>编码、右移、回答mask</li><li>有效回答位置平均NLL</li><li>反向、优化器更新</li></ol><small>通常按离线批次重复训练</small></section>
     <section><h3>偏好路径 · DPO</h3><ol><li>同prompt的chosen / rejected</li><li>当前策略 + 冻结参考logp</li><li>相对偏好margin</li><li>反向、优化器更新</li></ol><small>优化步骤内不必重新采样</small></section>
-    <section><h3>在线路径 · RL</h3><ol><li>策略快照 → 一组rollout</li><li>轨迹 / old logp / 结束原因</li><li>评分状态、reward、advantage</li><li>固定旧概率，更新当前策略</li></ol><small>新版本返回采样端；参考策略另管</small></section>
+    <section><h3>在线路径 · RL</h3><ol><li>策略快照 → 一组rollout</li><li>动作 / 环境观察 / old logp</li><li>程序或冻结奖励模型 → reward / advantage</li><li>固定旧概率，更新当前策略</li></ol><small>新版本返回采样端；参考策略另管</small></section>
   </div>
+  <p>偏好对还可先<a href="/postraining/02-data-supervision/03-preference-pairs/#从比较标签训练一个评分器">训练奖励模型</a>，供在线评分；这条路与直接DPO分别利用比较标签。多轮的<a href="/postraining/04-online-rl-distillation/01-rollout-and-policy-versions/#从单轮回答扩展到工具轨迹">动作与环境观察</a>也须分别记录。</p>
   <p class="shared">各路径的版本化检查点 → 独立评测 → 接受 / 回退，或设计下一轮数据与配置实验</p>
   <p>梯度更新是优化反馈；评测后调整方案是实验反馈。后者不会自动对当前权重反传。</p>
   <div class="support"><span>算力 / 存储 / 通信</span><span>日志 / 配置 / 随机状态</span><span>数据 / 模板 / 权重 / 评分器版本</span></div>

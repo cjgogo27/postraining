@@ -6,6 +6,8 @@ description: "数据团队交来一个正确答案、一对好坏回答和一个
 import SectionQA from '../../../components/SectionQA.astro';
 
 
+> **系统位置**：接收示范、比较或评分，区分policy/old/ref等职责，交给1.3选择训练路径。 [回到1.3总图](/postraining/01-system-overview/03-posttraining-system-architecture/)。
+
 ## 现场问题
 
 数据团队交来一个正确答案、一对好坏回答和一个“通过测试”的分数。训练同事问：这三种数据能放进同一个loss吗？
@@ -46,6 +48,8 @@ import SectionQA from '../../../components/SectionQA.astro';
 如果 chosen 与 rejected 使用不同prompt，比较可能测的是题目难度；如果奖励记录只留1/0而丢了超时状态，训练会把基础设施故障当成答错。先用十条样本逐项追踪ID、模板、输出、评分版本，再扩大规模，比先改优化器更能排除接口错误。
 
 > **一句话听懂**：示范给写法，偏好给比较，奖励给结果；信号来源与优化算法要分别说明。
+
+> **到这里，你应该已经能听懂：**“old绑定采样版本，reference绑定漂移基准，别共用一个会变的身份。”
 
 <SectionQA id="1.2" mode="answer" />
 

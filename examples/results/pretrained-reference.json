@@ -1,0 +1,843 @@
+{
+  "model": "HuggingFaceTB/SmolLM2-135M",
+  "revision": "93efa2f097d58c2a74874c7e644dbc9b0cee75a2",
+  "model_files_sha256": {
+    "config.json": "1d556eab73b69c7f11f64c557a2f9c6f440bd4c6b89bb2584a6b498c92603843",
+    "generation_config.json": "2056c988e990b0d13670f63f2f3b87b3b6d07edaf7a3416998ba27dab2d8a059",
+    "merges.txt": "0b54e8aa4e53d5383e2e4bc635a56b43f9647f7b13832d5d9ecd8f82dac4f510",
+    "model.safetensors": "80521b40281d6ce74e35c9282c22539e75aa0ac8578892b2a59955ef78d55da1",
+    "special_tokens_map.json": "e786b595b9a23148bf1630df78d9037a048ea671e48bfd3549a1e3c233742bb3",
+    "tokenizer.json": "9ca9acddb6525a194ec8ac7a87f24fbba7232a9a15ffa1af0c1224fcd888e47c",
+    "tokenizer_config.json": "4bb9af56a342753d39374f4016a16574cab299fe088e896f425ce3c433f61424",
+    "vocab.json": "82b84012e3add4d01d12ba14442026e49b8cbbaead1f79ecf3d919784f82dc79"
+  },
+  "parameters": 134515008,
+  "config": {
+    "out": "runs/pretrained-revision-20261016",
+    "cache": "runs/model-cache",
+    "download": true,
+    "steps": 24,
+    "threads": 4,
+    "lr": 2e-05
+  },
+  "seed": 42,
+  "environment": {
+    "os": "Windows-11-10.0.26200-SP0",
+    "python": "3.12.5",
+    "torch": "2.11.0+cpu",
+    "transformers": "5.8.0",
+    "huggingface_hub": "1.14.0",
+    "device": "cpu",
+    "precision": "FP32"
+  },
+  "template": "plain-order-status-v1; separately-encoded prompt/response; no chat template; EOS included",
+  "data": {
+    "train": [
+      {
+        "id": "order-100",
+        "prompt": "Return only the order status.\nRecord: order=100; status=shipped\nAnswer:",
+        "target": " shipped"
+      },
+      {
+        "id": "order-101",
+        "prompt": "Return only the order status.\nRecord: order=101; status=pending\nAnswer:",
+        "target": " pending"
+      },
+      {
+        "id": "order-102",
+        "prompt": "Return only the order status.\nRecord: order=102; status=cancelled\nAnswer:",
+        "target": " cancelled"
+      },
+      {
+        "id": "order-103",
+        "prompt": "Return only the order status.\nRecord: order=103; status=shipped\nAnswer:",
+        "target": " shipped"
+      },
+      {
+        "id": "order-104",
+        "prompt": "Return only the order status.\nRecord: order=104; status=pending\nAnswer:",
+        "target": " pending"
+      },
+      {
+        "id": "order-105",
+        "prompt": "Return only the order status.\nRecord: order=105; status=cancelled\nAnswer:",
+        "target": " cancelled"
+      },
+      {
+        "id": "order-106",
+        "prompt": "Return only the order status.\nRecord: order=106; status=shipped\nAnswer:",
+        "target": " shipped"
+      },
+      {
+        "id": "order-107",
+        "prompt": "Return only the order status.\nRecord: order=107; status=pending\nAnswer:",
+        "target": " pending"
+      },
+      {
+        "id": "order-108",
+        "prompt": "Return only the order status.\nRecord: order=108; status=cancelled\nAnswer:",
+        "target": " cancelled"
+      },
+      {
+        "id": "order-109",
+        "prompt": "Return only the order status.\nRecord: order=109; status=shipped\nAnswer:",
+        "target": " shipped"
+      },
+      {
+        "id": "order-110",
+        "prompt": "Return only the order status.\nRecord: order=110; status=pending\nAnswer:",
+        "target": " pending"
+      },
+      {
+        "id": "order-111",
+        "prompt": "Return only the order status.\nRecord: order=111; status=cancelled\nAnswer:",
+        "target": " cancelled"
+      },
+      {
+        "id": "order-112",
+        "prompt": "Return only the order status.\nRecord: order=112; status=shipped\nAnswer:",
+        "target": " shipped"
+      },
+      {
+        "id": "order-113",
+        "prompt": "Return only the order status.\nRecord: order=113; status=pending\nAnswer:",
+        "target": " pending"
+      },
+      {
+        "id": "order-114",
+        "prompt": "Return only the order status.\nRecord: order=114; status=cancelled\nAnswer:",
+        "target": " cancelled"
+      },
+      {
+        "id": "order-115",
+        "prompt": "Return only the order status.\nRecord: order=115; status=shipped\nAnswer:",
+        "target": " shipped"
+      },
+      {
+        "id": "order-116",
+        "prompt": "Return only the order status.\nRecord: order=116; status=pending\nAnswer:",
+        "target": " pending"
+      },
+      {
+        "id": "order-117",
+        "prompt": "Return only the order status.\nRecord: order=117; status=cancelled\nAnswer:",
+        "target": " cancelled"
+      }
+    ],
+    "target": [
+      {
+        "id": "order-300",
+        "prompt": "Return only the order status.\nRecord: order=300; status=shipped\nAnswer:",
+        "target": " shipped"
+      },
+      {
+        "id": "order-301",
+        "prompt": "Return only the order status.\nRecord: order=301; status=pending\nAnswer:",
+        "target": " pending"
+      },
+      {
+        "id": "order-302",
+        "prompt": "Return only the order status.\nRecord: order=302; status=cancelled\nAnswer:",
+        "target": " cancelled"
+      },
+      {
+        "id": "order-303",
+        "prompt": "Return only the order status.\nRecord: order=303; status=shipped\nAnswer:",
+        "target": " shipped"
+      },
+      {
+        "id": "order-304",
+        "prompt": "Return only the order status.\nRecord: order=304; status=pending\nAnswer:",
+        "target": " pending"
+      },
+      {
+        "id": "order-305",
+        "prompt": "Return only the order status.\nRecord: order=305; status=cancelled\nAnswer:",
+        "target": " cancelled"
+      }
+    ],
+    "retention": [
+      {
+        "id": "capital",
+        "prompt": "The capital of France is",
+        "target": " Paris."
+      },
+      {
+        "id": "freezing",
+        "prompt": "Water freezes at",
+        "target": " 0 degrees Celsius."
+      },
+      {
+        "id": "days",
+        "prompt": "There are seven days in a",
+        "target": " week."
+      }
+    ]
+  },
+  "before": {
+    "target": {
+      "response_nll": 6.086914698282878,
+      "response_positions": 12,
+      "samples": 6,
+      "content_exact": 0,
+      "strict_success": 0,
+      "outputs": [
+        {
+          "id": "order-300",
+          "prompt": "Return only the order status.\nRecord: order=300; status=shipped\nAnswer:",
+          "target": " shipped",
+          "generated": " 300\n\nThe order status is not shipped",
+          "generated_ids": [
+            216,
+            35,
+            32,
+            32,
+            198,
+            198,
+            504,
+            1686,
+            3559,
+            314,
+            441,
+            21975
+          ],
+          "end_reason": "max_new_tokens",
+          "format_ok": false,
+          "content_exact": false,
+          "strict_success": false,
+          "target_positions": 2,
+          "target_nll": 6.221161842346191
+        },
+        {
+          "id": "order-301",
+          "prompt": "Return only the order status.\nRecord: order=301; status=pending\nAnswer:",
+          "target": " pending",
+          "generated": " 301\n\nThe order status is not yet",
+          "generated_ids": [
+            216,
+            35,
+            32,
+            33,
+            198,
+            198,
+            504,
+            1686,
+            3559,
+            314,
+            441,
+            2408
+          ],
+          "end_reason": "max_new_tokens",
+          "format_ok": false,
+          "content_exact": false,
+          "strict_success": false,
+          "target_positions": 2,
+          "target_nll": 6.0328779220581055
+        },
+        {
+          "id": "order-302",
+          "prompt": "Return only the order status.\nRecord: order=302; status=cancelled\nAnswer:",
+          "target": " cancelled",
+          "generated": " 302\n\nThe order status is cancelled.",
+          "generated_ids": [
+            216,
+            35,
+            32,
+            34,
+            198,
+            198,
+            504,
+            1686,
+            3559,
+            314,
+            35295,
+            30
+          ],
+          "end_reason": "max_new_tokens",
+          "format_ok": false,
+          "content_exact": false,
+          "strict_success": false,
+          "target_positions": 2,
+          "target_nll": 5.978543281555176
+        },
+        {
+          "id": "order-303",
+          "prompt": "Return only the order status.\nRecord: order=303; status=shipped\nAnswer:",
+          "target": " shipped",
+          "generated": " 303\n\nThe order status is not shipped",
+          "generated_ids": [
+            216,
+            35,
+            32,
+            35,
+            198,
+            198,
+            504,
+            1686,
+            3559,
+            314,
+            441,
+            21975
+          ],
+          "end_reason": "max_new_tokens",
+          "format_ok": false,
+          "content_exact": false,
+          "strict_success": false,
+          "target_positions": 2,
+          "target_nll": 6.268637657165527
+        },
+        {
+          "id": "order-304",
+          "prompt": "Return only the order status.\nRecord: order=304; status=pending\nAnswer:",
+          "target": " pending",
+          "generated": " 304\n\nThe order status is not yet",
+          "generated_ids": [
+            216,
+            35,
+            32,
+            36,
+            198,
+            198,
+            504,
+            1686,
+            3559,
+            314,
+            441,
+            2408
+          ],
+          "end_reason": "max_new_tokens",
+          "format_ok": false,
+          "content_exact": false,
+          "strict_success": false,
+          "target_positions": 2,
+          "target_nll": 6.019939422607422
+        },
+        {
+          "id": "order-305",
+          "prompt": "Return only the order status.\nRecord: order=305; status=cancelled\nAnswer:",
+          "target": " cancelled",
+          "generated": " 305\n\nThe order status is cancelled.",
+          "generated_ids": [
+            216,
+            35,
+            32,
+            37,
+            198,
+            198,
+            504,
+            1686,
+            3559,
+            314,
+            35295,
+            30
+          ],
+          "end_reason": "max_new_tokens",
+          "format_ok": false,
+          "content_exact": false,
+          "strict_success": false,
+          "target_positions": 2,
+          "target_nll": 6.000328063964844
+        }
+      ]
+    },
+    "retention": {
+      "response_nll": 2.388725757598877,
+      "response_positions": 12,
+      "samples": 3,
+      "content_exact": 0,
+      "strict_success": 0,
+      "outputs": [
+        {
+          "id": "capital",
+          "prompt": "The capital of France is",
+          "target": " Paris.",
+          "generated": " the capital of the country.\n\nThe capital of France",
+          "generated_ids": [
+            260,
+            3575,
+            282,
+            260,
+            1798,
+            30,
+            198,
+            198,
+            504,
+            3575,
+            282,
+            4649
+          ],
+          "end_reason": "max_new_tokens",
+          "format_ok": false,
+          "content_exact": false,
+          "strict_success": false,
+          "target_positions": 3,
+          "target_nll": 3.222825050354004
+        },
+        {
+          "id": "freezing",
+          "prompt": "Water freezes at",
+          "target": " 0 degrees Celsius.",
+          "generated": " 32 degrees Fahrenheit, but the temperature of the water",
+          "generated_ids": [
+            216,
+            35,
+            34,
+            5027,
+            21391,
+            28,
+            564,
+            260,
+            2779,
+            282,
+            260,
+            913
+          ],
+          "end_reason": "max_new_tokens",
+          "format_ok": false,
+          "content_exact": false,
+          "strict_success": false,
+          "target_positions": 6,
+          "target_nll": 1.9184635480244954
+        },
+        {
+          "id": "days",
+          "prompt": "There are seven days in a",
+          "target": " week.",
+          "generated": " week, and seven days in a month.\n\nThe",
+          "generated_ids": [
+            2605,
+            28,
+            284,
+            4962,
+            2009,
+            281,
+            253,
+            3531,
+            30,
+            198,
+            198,
+            504
+          ],
+          "end_reason": "max_new_tokens",
+          "format_ok": false,
+          "content_exact": false,
+          "strict_success": false,
+          "target_positions": 3,
+          "target_nll": 2.495150883992513
+        }
+      ]
+    }
+  },
+  "after": {
+    "target": {
+      "response_nll": 0.00015670333838594766,
+      "response_positions": 12,
+      "samples": 6,
+      "content_exact": 6,
+      "strict_success": 6,
+      "outputs": [
+        {
+          "id": "order-300",
+          "prompt": "Return only the order status.\nRecord: order=300; status=shipped\nAnswer:",
+          "target": " shipped",
+          "generated": " shipped",
+          "generated_ids": [
+            21975
+          ],
+          "end_reason": "eos",
+          "format_ok": true,
+          "content_exact": true,
+          "strict_success": true,
+          "target_positions": 2,
+          "target_nll": 0.00013558223145082593
+        },
+        {
+          "id": "order-301",
+          "prompt": "Return only the order status.\nRecord: order=301; status=pending\nAnswer:",
+          "target": " pending",
+          "generated": " pending",
+          "generated_ids": [
+            24940
+          ],
+          "end_reason": "eos",
+          "format_ok": true,
+          "content_exact": true,
+          "strict_success": true,
+          "target_positions": 2,
+          "target_nll": 0.0001112099489546381
+        },
+        {
+          "id": "order-302",
+          "prompt": "Return only the order status.\nRecord: order=302; status=cancelled\nAnswer:",
+          "target": " cancelled",
+          "generated": " cancelled",
+          "generated_ids": [
+            35295
+          ],
+          "end_reason": "eos",
+          "format_ok": true,
+          "content_exact": true,
+          "strict_success": true,
+          "target_positions": 2,
+          "target_nll": 0.00023037850041873753
+        },
+        {
+          "id": "order-303",
+          "prompt": "Return only the order status.\nRecord: order=303; status=shipped\nAnswer:",
+          "target": " shipped",
+          "generated": " shipped",
+          "generated_ids": [
+            21975
+          ],
+          "end_reason": "eos",
+          "format_ok": true,
+          "content_exact": true,
+          "strict_success": true,
+          "target_positions": 2,
+          "target_nll": 0.0001372507103951648
+        },
+        {
+          "id": "order-304",
+          "prompt": "Return only the order status.\nRecord: order=304; status=pending\nAnswer:",
+          "target": " pending",
+          "generated": " pending",
+          "generated_ids": [
+            24940
+          ],
+          "end_reason": "eos",
+          "format_ok": true,
+          "content_exact": true,
+          "strict_success": true,
+          "target_positions": 2,
+          "target_nll": 0.00010399932216387242
+        },
+        {
+          "id": "order-305",
+          "prompt": "Return only the order status.\nRecord: order=305; status=cancelled\nAnswer:",
+          "target": " cancelled",
+          "generated": " cancelled",
+          "generated_ids": [
+            35295
+          ],
+          "end_reason": "eos",
+          "format_ok": true,
+          "content_exact": true,
+          "strict_success": true,
+          "target_positions": 2,
+          "target_nll": 0.00022179931693244725
+        }
+      ]
+    },
+    "retention": {
+      "response_nll": 1.9807296991348267,
+      "response_positions": 12,
+      "samples": 3,
+      "content_exact": 0,
+      "strict_success": 0,
+      "outputs": [
+        {
+          "id": "capital",
+          "prompt": "The capital of France is",
+          "target": " Paris.",
+          "generated": " the city of Paris. Paris is the largest city in France",
+          "generated_ids": [
+            260,
+            2240,
+            282,
+            7042,
+            30,
+            7042,
+            314,
+            260,
+            3995,
+            2240,
+            281,
+            4649
+          ],
+          "end_reason": "max_new_tokens",
+          "format_ok": false,
+          "content_exact": false,
+          "strict_success": false,
+          "target_positions": 3,
+          "target_nll": 2.6386462847391763
+        },
+        {
+          "id": "freezing",
+          "prompt": "Water freezes at",
+          "target": " 0 degrees Celsius.",
+          "generated": " 32 degrees Fahrenheit, but the temperature of the water",
+          "generated_ids": [
+            216,
+            35,
+            34,
+            5027,
+            21391,
+            28,
+            564,
+            260,
+            2779,
+            282,
+            260,
+            913
+          ],
+          "end_reason": "max_new_tokens",
+          "format_ok": false,
+          "content_exact": false,
+          "strict_success": false,
+          "target_positions": 6,
+          "target_nll": 1.6712303161621094
+        },
+        {
+          "id": "days",
+          "prompt": "There are seven days in a",
+          "target": " week.",
+          "generated": " week.\n\nThe seventh day is the Sabbath.\n",
+          "generated_ids": [
+            2605,
+            30,
+            198,
+            198,
+            504,
+            17561,
+            1194,
+            314,
+            260,
+            24702,
+            30,
+            198
+          ],
+          "end_reason": "max_new_tokens",
+          "format_ok": false,
+          "content_exact": false,
+          "strict_success": false,
+          "target_positions": 3,
+          "target_nll": 1.9418118794759114
+        }
+      ]
+    }
+  },
+  "updates": 24,
+  "examples_seen": 48,
+  "response_positions": 96,
+  "history": [
+    {
+      "step": 1,
+      "loss": 6.032955169677734,
+      "indices": [
+        4,
+        17
+      ],
+      "response_positions": 4
+    },
+    {
+      "step": 2,
+      "loss": 3.5764517784118652,
+      "indices": [
+        2,
+        2
+      ],
+      "response_positions": 8
+    },
+    {
+      "step": 3,
+      "loss": 2.2973026037216187,
+      "indices": [
+        14,
+        1
+      ],
+      "response_positions": 12
+    },
+    {
+      "step": 4,
+      "loss": 1.5271576642990112,
+      "indices": [
+        1,
+        4
+      ],
+      "response_positions": 16
+    },
+    {
+      "step": 5,
+      "loss": 1.3069387078285217,
+      "indices": [
+        3,
+        14
+      ],
+      "response_positions": 20
+    },
+    {
+      "step": 6,
+      "loss": 0.6226885318756104,
+      "indices": [
+        7,
+        5
+      ],
+      "response_positions": 24
+    },
+    {
+      "step": 7,
+      "loss": 0.5130117386579514,
+      "indices": [
+        10,
+        6
+      ],
+      "response_positions": 28
+    },
+    {
+      "step": 8,
+      "loss": 0.32450103759765625,
+      "indices": [
+        17,
+        5
+      ],
+      "response_positions": 32
+    },
+    {
+      "step": 9,
+      "loss": 0.2272138074040413,
+      "indices": [
+        0,
+        14
+      ],
+      "response_positions": 36
+    },
+    {
+      "step": 10,
+      "loss": 0.11230380460619926,
+      "indices": [
+        13,
+        8
+      ],
+      "response_positions": 40
+    },
+    {
+      "step": 11,
+      "loss": 0.07563147321343422,
+      "indices": [
+        9,
+        3
+      ],
+      "response_positions": 44
+    },
+    {
+      "step": 12,
+      "loss": 0.029452058486640453,
+      "indices": [
+        4,
+        2
+      ],
+      "response_positions": 48
+    },
+    {
+      "step": 13,
+      "loss": 0.015115665271878242,
+      "indices": [
+        5,
+        15
+      ],
+      "response_positions": 52
+    },
+    {
+      "step": 14,
+      "loss": 0.005924374796450138,
+      "indices": [
+        11,
+        14
+      ],
+      "response_positions": 56
+    },
+    {
+      "step": 15,
+      "loss": 0.0012353806523606181,
+      "indices": [
+        10,
+        4
+      ],
+      "response_positions": 60
+    },
+    {
+      "step": 16,
+      "loss": 0.0010713920928537846,
+      "indices": [
+        0,
+        12
+      ],
+      "response_positions": 64
+    },
+    {
+      "step": 17,
+      "loss": 0.0008288283424917608,
+      "indices": [
+        8,
+        11
+      ],
+      "response_positions": 68
+    },
+    {
+      "step": 18,
+      "loss": 0.0004947172856191173,
+      "indices": [
+        17,
+        0
+      ],
+      "response_positions": 72
+    },
+    {
+      "step": 19,
+      "loss": 0.0003057727590203285,
+      "indices": [
+        7,
+        16
+      ],
+      "response_positions": 76
+    },
+    {
+      "step": 20,
+      "loss": 0.00031707948801340535,
+      "indices": [
+        15,
+        5
+      ],
+      "response_positions": 80
+    },
+    {
+      "step": 21,
+      "loss": 0.0002665359352249652,
+      "indices": [
+        15,
+        8
+      ],
+      "response_positions": 84
+    },
+    {
+      "step": 22,
+      "loss": 0.00020184052118565887,
+      "indices": [
+        13,
+        13
+      ],
+      "response_positions": 88
+    },
+    {
+      "step": 23,
+      "loss": 0.0002065148510155268,
+      "indices": [
+        11,
+        16
+      ],
+      "response_positions": 92
+    },
+    {
+      "step": 24,
+      "loss": 0.00017562149878358468,
+      "indices": [
+        7,
+        11
+      ],
+      "response_positions": 96
+    }
+  ],
+  "elapsed_seconds": 273.15488919999916,
+  "code_sha256": "f369d28a05fe0ddf0f6bc72f791129f880540c7bb446678e12b341fd6d3e2a10",
+  "scope": "One seed; shared English template; 6 new order IDs; 3 retention probes, not a general capability or safety benchmark; no RL/tool training"
+}

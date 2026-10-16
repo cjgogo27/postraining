@@ -10,6 +10,8 @@ import SystemMap from '../../../components/SystemMap.astro';
 
 六章29节、87个角色问答。面向跨部门工程师、学生、产品/PR；先建立系统关系，再看公式和实现。默认不要求下载大模型或接入API。
 
+新增[必要基础：从token到一次更新](/postraining/00-reading-guides/05-essential-foundations/)，承接概率与梯度；“2+3”用于手算，工单助手贯穿任务迁移。仍保留六章29节，奖励模型、多轮轨迹和已有基座入口放进现有章节。
+
 ## 后训练系统总图
 
 <SystemMap />
@@ -74,4 +76,4 @@ import SystemMap from '../../../components/SystemMap.astro';
 
 ## 哪些是实测，哪些没有运行
 
-SFT/DPO使用68,608参数随机小语言模型，有限动作RL只有48个参数。它们不是成熟基座上的能力复现。正文保留DPO的生成回退，16项CPU检查与原始记录见[VALIDATION.md](https://github.com/cjgogo27/postraining/blob/main/VALIDATION.md)。LoRA、完整PPO/语言模型GRPO、OPD、裁判、安全和分布式编排只讲机制/方案，未填本站成绩。
+默认SFT/DPO与有限动作RL用于机制验证；新增的可选SmolLM2基座SFT用于观察同模板任务的行为变化。完整规模与边界见6.2–6.3。正文保留DPO的生成回退，16项CPU检查与原始记录见[VALIDATION.md](https://github.com/cjgogo27/postraining/blob/main/VALIDATION.md)。LoRA、完整PPO/语言模型GRPO、OPD、裁判、安全和分布式编排只讲机制/方案，未填本站成绩。

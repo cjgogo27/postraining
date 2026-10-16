@@ -6,6 +6,8 @@ description: "团队说“只训练1%的参数，所以显存也只用1%”。�
 import SectionQA from '../../../components/SectionQA.astro';
 
 
+> **系统位置**：接收基座结构与更新预算，确定可训练权重与交付形式，交给优化器。 [回到1.3总图](/postraining/01-system-overview/03-posttraining-system-architecture/)。
+
 ## 现场问题
 
 团队说“只训练1%的参数，所以显存也只用1%”。短跑却依然因为长回答激活而OOM。
@@ -41,6 +43,8 @@ TinyPolicy使用257字节词表、width64、1个Pre-LayerNorm因果Transformer b
 先核对基座权重哈希与模块名，再检查adapter参数形状。若同名模型换了revision，能够load并不保证语义相同。冻结参数清单、trainable计数及一次更新前后差分能帮助发现“计划只训adapter，实际把embedding也解冻”的问题。
 
 > **一句话听懂**：LoRA减少指定更新矩阵的自由度与状态，不等于同比减少整个训练系统开销。
+
+> **到这里，你应该已经能听懂：**“只训练adapter，基座前向和激活开销仍要算。”
 
 <SectionQA id="3.2" mode="answer" />
 

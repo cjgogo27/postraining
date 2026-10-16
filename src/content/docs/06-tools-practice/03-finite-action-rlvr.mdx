@@ -6,6 +6,8 @@ description: "完整语言模型RL需要许多采样和评分接口。先把回�
 import SectionQA from '../../../components/SectionQA.astro';
 
 
+> **系统位置**：接收固定候选任务，执行采样—组优势—更新，交出完整轮次记录。 [回到1.3总图](/postraining/01-system-overview/03-posttraining-system-architecture/)。
+
 ## 现场问题
 
 完整语言模型RL需要许多采样和评分接口。先把回答空间缩到四个候选，能否看清奖励怎样改变动作概率？
@@ -52,6 +54,8 @@ python examples/rlvr.py --out runs/rlvr
 这是带可验证奖励的有限动作contextual bandit，采用组优势与剪裁代理目标，只演示接口机制。每题独立参数会记住这12题，所以12/12不代表学会加法推理。语言模型还需要逐token old logp、可变长度mask、采样引擎、权重同步等；本轮没有把这些缺省机制算成已完成。
 
 > **一句话听懂**：用有限动作看清奖励与概率更新，再明确它没有证明语言生成或泛化。
+
+> **到这里，你应该已经能听懂：**“枚举四候选的概率不是自由生成准确率。”
 
 <SectionQA id="6.3" mode="answer" />
 

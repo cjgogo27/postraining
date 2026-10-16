@@ -1,0 +1,33 @@
+---
+import reference from '../../examples/results/offline-reference.json';
+const sft=reference.stages.sft.outputs;
+const dpo=reference.stages.dpo.outputs;
+---
+<section class="output-comparison" data-output-comparison>
+  <p><strong>本站实测：同一样本，SFT终点 → DPO终点</strong></p>
+  <label>验证题ID <select aria-label="选择固定验证题">{sft.map(row=><option value={row.id}>{row.id}，期望 {row.expected}</option>)}</select></label>
+  <p>训练日期2026-10-15；seed42，CPU/FP32，greedy最多4个新字节，完整环境/配置见本节。</p>
+  {sft.map((row,index)=>{
+    const other=dpo.find(x=>x.id===row.id)!;
+    return <div data-sample={row.id} hidden={index!==0}>
+      <p>同一原始prompt：<code>{`Q:${row.id.replace('add-','').replace('-','+')}\nA:`}</code>；期望 <code>{row.expected}</code></p>
+      <div class="pair">{[{name:'SFT300',output:row},{name:'DPO120',output:other}].map(({name,output})=><article>
+        <h4>{name}</h4><p>原始生成：<code>{JSON.stringify(output.generated)}</code></p>
+        <p>结束：{output.eos?'自然EOS':'达到长度/位置上限'}</p>
+        <p>格式：{/^(0|[1-9][0-9]*)$/.test(output.generated)?'规范十进制':'不合规范'}；内容：{output.generated===output.expected?'正确':'错误'}；严格成功：{output.correct?'是':'否'}</p>
+      </article>)}</div>
+    </div>;
+  })}
+  <p>这里的“前后”指SFT终点与新DPO终点。随机初始化仅有全体指标记录，没有保存的逐题生成，故不补写逐题起点。</p>
+  <noscript>关闭JavaScript时显示第一题；完整23题可查看仓库中的offline-reference.json。</noscript>
+</section>
+<script>
+  for(const root of document.querySelectorAll<HTMLElement>('[data-output-comparison]')) {
+    const select=root.querySelector('select')!;
+    function render(){root.querySelectorAll<HTMLElement>('[data-sample]').forEach(row=>{row.hidden=row.dataset.sample!==select.value;});}
+    select.addEventListener('change',render);render();
+  }
+</script>
+<style>
+  .output-comparison {border:1px solid var(--sl-color-gray-4);border-radius:.6rem;padding:1rem;margin-block:1.5rem;}.pair {display:grid;grid-template-columns:1fr 1fr;gap:.8rem;}.pair article {border:1px solid var(--sl-color-gray-4);border-radius:.4rem;padding:.8rem;min-width:0;margin:0;}h4 {margin-top:0;}code {overflow-wrap:anywhere;}select {padding:.5rem;max-width:100%;background:var(--sl-color-bg);color:var(--sl-color-text);}[hidden] {display:none!important;}@media(max-width:34rem){.pair {grid-template-columns:1fr;}}
+</style>

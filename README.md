@@ -25,7 +25,7 @@ python examples/verify.py --out runs/checks
 
 ## 文档站
 
-Node.js24，Astro7.3.1 / Starlight0.42.0 / KaTeX，支持侧栏、目录、搜索、角色问答和DPO手算器。
+Node.js24，Astro7.3.1 / Starlight0.42.0 / KaTeX，支持侧栏、目录、搜索、角色问答、token/mask对齐、RL分步演示、样本对照和DPO手算器。
 
 ```bash
 npm ci
@@ -36,3 +36,20 @@ npm run dev
 ```
 
 打开终端地址下/postraining/。GitHub Pages通过.github/workflows/pages.yml发布。该站借鉴指定机器人教程的教学组织与文档体验，后训练正文和图示重新编写；不套用机器人实时频率或纵向指令层级。
+
+## 教学修订：先理解，再迁移
+
+[必要基础](https://cjgogo27.github.io/postraining/00-reading-guides/05-essential-foundations/)接通token、概率、交叉熵、梯度、采样与期望。算法章节补动机推导，新增奖励模型训练链和多轮工具动作/观察接口；保留六章29节87问答。网页增加token/mask对齐、RL四步演示、固定23题前后对照、DPO情境预设与阅读视角。
+
+可选已有基座路线（与默认离线实验分开）：
+
+```bash
+python -m pip install -r examples/requirements-pretrained.txt
+python examples/pretrained_sft.py --download --out runs/pretrained-demo
+python examples/verify_teaching.py --out runs/teaching-checks
+npm test
+```
+
+固定SmolLM2-135M revision的CPU SFT实际24步；6个新订单ID的同模板状态题从0/6到6/6严格成功。另保留3个基础续写探针，不能据此推断客服泛化或原能力全面保留。奖励模型与工具轨迹本轮是算例/接口夹具，没有训练神经RM或工具型LLM RL。完整证据见VALIDATION.md与examples/results。
+
+浏览器QA入口为`scripts/check-browser.cjs`，需另行准备Playwright/Chromium并启动本地preview；可用PLAYWRIGHT_MODULE、BROWSER_EXECUTABLE指定已有运行时，不属于默认训练依赖。

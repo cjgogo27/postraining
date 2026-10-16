@@ -6,6 +6,8 @@ description: "新模型在一张榜单上提高了5分，但旧模型用的是�
 import SectionQA from '../../../components/SectionQA.astro';
 
 
+> **系统位置**：接收冻结权重与题集，固定模板/解码/评分，交出可配对的报告。 [回到1.3总图](/postraining/01-system-overview/03-posttraining-system-architecture/)。
+
 ## 现场问题
 
 新模型在一张榜单上提高了5分，但旧模型用的是短提示，新模型多了示例和更长输出预算。
@@ -41,6 +43,8 @@ import SectionQA from '../../../components/SectionQA.astro';
 在同一个val上试十种学习率、选最高分，再报告这一分，会引入选择偏差。保留全部运行与预定终点，或明确dev选型后另用test。本项目固定展示SFT300/DPO120终点，即使DPO80步曾有2/23正确，也不偷换为最终结果。多种子和更广任务是后续实验设计，本轮没有执行。
 
 > **一句话听懂**：先固定可比较条件，保存配对输出，再解释分数变化来自哪里。
+
+> **到这里，你应该已经能听懂：**“抽取器改了，先别把分数变化归给权重。”
 
 <SectionQA id="5.1" mode="answer" />
 

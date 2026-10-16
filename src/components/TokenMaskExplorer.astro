@@ -1,0 +1,46 @@
+---
+import { byteAlignment } from '../lib/objectives.mjs';
+const rows=byteAlignment();
+const token=(id:number)=>id===256?'EOS':id===10?'↵':String.fromCharCode(id);
+---
+<section class="token-explorer" data-token-explorer aria-label="token、右移标签与监督位置对齐">
+  <p><strong>动手定位：冒号预测5，5预测EOS</strong></p>
+  <p>原文：<code>Q:2+3↵A:</code> + 回答<code>5</code> + EOS</p>
+  <div class="controls" role="group" aria-label="对齐视图">
+    <button type="button" data-view="text" aria-pressed="true">① 原文与ID</button>
+    <button type="button" data-view="shift" aria-pressed="false">② 右移标签</button>
+    <button type="button" data-view="mask" aria-pressed="false">③ 监督与可见范围</button>
+  </div>
+  <p>窄屏可横向滑动表格，首列说明固定；点击位置按钮，观察它预测谁。</p>
+  <div class="scroll"><table aria-label="9个输入位置、右移标签与监督位置">
+    <thead><tr><th>位置</th>{rows.map(row=><th><button type="button" data-index={row.index} aria-pressed={row.index===7?'true':'false'}>{row.index}</button></th>)}</tr></thead>
+    <tbody>
+      <tr><th>input字符</th>{rows.map(row=><td data-cell={row.index}>{token(row.input)}</td>)}</tr>
+      <tr><th>input_ids</th>{rows.map(row=><td data-cell={row.index}>{row.input}</td>)}</tr>
+      <tr data-row="shift"><th>labels</th>{rows.map(row=><td data-cell={row.index}>{row.label} / {token(row.label)}</td>)}</tr>
+      <tr data-row="mask"><th>loss_mask</th>{rows.map(row=><td data-cell={row.index}>{row.supervised?1:0}</td>)}</tr>
+    </tbody>
+  </table></div>
+  <output aria-live="polite">选择位置7：输入冒号58，预测5（53），可看输入0…7；此目标计loss。</output>
+  <p>有色列表示所选输入位置；可见范围包含本位置。这里只显示真实位置，无padding。</p>
+</section>
+<script>
+  import { byteAlignment } from '../lib/objectives.mjs';
+  for(const root of document.querySelectorAll<HTMLElement>('[data-token-explorer]')) {
+    const rows=byteAlignment(); let index=7, view='text';
+    function render() {
+      root.querySelectorAll<HTMLElement>('[data-row]').forEach(row=>{row.hidden=view==='text'||(row.dataset.row==='mask'&&view==='shift');});
+      root.querySelectorAll<HTMLButtonElement>('[data-view]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.view===view)));
+      root.querySelectorAll<HTMLButtonElement>('[data-index]').forEach(button=>button.setAttribute('aria-pressed',String(Number(button.dataset.index)===index)));
+      root.querySelectorAll<HTMLElement>('[data-cell]').forEach(cell=>cell.classList.toggle('selected',Number(cell.dataset.cell)===index));
+      const row=rows[index];
+      root.querySelector('output')!.textContent=`位置${index}：input=${row.input}，目标label=${row.label}；因果注意力可看输入0…${index}，${index<8?`不可看${index+1}…8；`:'没有更后的真实输入；'}loss_mask=${Number(row.supervised)}。${row.supervised?'此目标参与学习。':'目标不计loss，但该输入仍可被后续回答看见。'}`;
+    }
+    root.querySelectorAll<HTMLButtonElement>('[data-view]').forEach(button=>button.addEventListener('click',()=>{view=button.dataset.view!;render();}));
+    root.querySelectorAll<HTMLButtonElement>('[data-index]').forEach(button=>button.addEventListener('click',()=>{index=Number(button.dataset.index);render();}));
+    render();
+  }
+</script>
+<style>
+  .token-explorer {border:1px solid var(--sl-color-gray-4);border-radius:.6rem;padding:1rem;margin-block:1.5rem;}.controls {display:flex;flex-wrap:wrap;gap:.5rem;}button {cursor:pointer;padding:.45rem .6rem;background:var(--sl-color-bg);color:var(--sl-color-text);border:1px solid var(--sl-color-gray-4);border-radius:.35rem;}button[aria-pressed="true"],.selected {background:var(--sl-color-accent-low);color:var(--sl-color-accent-high);}.scroll {overflow:auto;margin-block:.8rem;}table {font-size:.85rem;white-space:nowrap;width:100%;}tr>th:first-child {position:sticky;left:0;z-index:1;background:var(--sl-color-bg);box-shadow:1px 0 var(--sl-color-gray-4);}output {display:block;}[hidden] {display:none!important;}
+</style>

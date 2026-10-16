@@ -6,6 +6,8 @@ description: "你拿到一条训练命令，却不知道它用哪个Python、是
 import SectionQA from '../../../components/SectionQA.astro';
 
 
+> **系统位置**：接收仓库与环境，准备依赖和独立运行目录，交给6.2/6.3执行。 [回到1.3总图](/postraining/01-system-overview/03-posttraining-system-architecture/)。
+
 ## 现场问题
 
 你拿到一条训练命令，却不知道它用哪个Python、是否会下载权重，以及新运行会不会覆盖旧检查点。
@@ -45,6 +47,12 @@ python examples/train.py --data runs/data --out runs/sft
 
 每次新运行选独立 `--out`。若目录已有latest.pt或metrics，语言模型脚本拒绝混写。恢复用 `--resume`，开始新阶段用 `--init`，两者互斥。
 
+## 可选基座路线的额外准备
+
+先跑默认离线路线，再按6.2安装`examples/requirements-pretrained.txt`。这套可选依赖单独列出，不改变默认只依赖torch的实验。首次模型下载需要网络和额外磁盘；脚本默认cache-only，只有显式`--download`才取远程文件。不要把小模型的EOS256/字节ID复制给真实基座，使用固定revision的配套tokenizer。
+
+多轮任务当前先运行`python examples/verify_teaching.py --out runs/teaching-checks`核对教学夹具；完整工具型LLM训练仍是4.1的接口方案。
+
 ## 只在维护网站时准备Node
 
 ```bash
@@ -57,6 +65,8 @@ npm run check:built
 网站默认base是`/postraining/`。页面、折叠问答、图示和DPO手算器与实验记录使用同一仓库版本。静态构建通过不等于浏览器布局已截图验收；实际范围见仓库VALIDATION.md。
 
 > **一句话听懂**：先分清环境、输入、源码和输出目录，实验才能独立重跑。
+
+> **到这里，你应该已经能听懂：**“默认离线环境与可选基座依赖分开，运行用新目录。”
 
 <SectionQA id="6.1" mode="answer" />
 
