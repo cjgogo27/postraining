@@ -1,6 +1,8 @@
 node_modules/
 dist/
 .astro/
+.astro-midtraining/
+midtraining/.astro/
 .venv/
 __pycache__/
 *.pyc

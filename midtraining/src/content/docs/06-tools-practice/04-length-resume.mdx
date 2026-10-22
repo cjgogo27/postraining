@@ -1,0 +1,52 @@
+---
+title: "6.4 长度接口与严格恢复怎样验证"
+description: "把S翻倍、B减半以后，计数和下一步状态是否仍然可核对？"
+---
+import SectionQA from '../../../components/SectionQA.astro';
+
+> **系统位置**：验证[1.3训练与检查点接口](/postraining/midtraining/01-system-overview/03-midtraining-system-architecture/)，不把接口验证替代能力评测。
+
+## 相同起点，相同目标，不同长度
+
+从seed42回放终点出发，S32/B4与S64/B2各开新阶段，48更新，均6,144目标；通用1,536、领域4,608。两支各自新建AdamW与计数，没有把它们说成同一运行的resume。
+
+<SectionQA id="6.4" mode="ask" />
+
+| 新阶段 | 领域S32 NLL | 通用S32 NLL | 领域S64 NLL | 通用S64 NLL |
+| --- | --- | --- | --- | --- |
+| S32/B4 | 1.621334 | 1.526372 | 1.735259 | 1.644996 |
+| S64/B2 | 1.656673 | 1.518845 | 1.716911 | 1.597771 |
+
+这是一次长度/批量接口对照的实际终点，不是长距离能力排行榜。数据是短模板流，没有专门长依赖，模型也没有RoPE/YaRN。不同S的评测条件不同，应在表内同列比较。
+
+## 单独运行12项检查
+
+```bash
+python midtraining/examples/verify.py --out runs/my-midtraining-checks
+```
+
+本轮12项实际PASS，包括实体组与唯一文档、真实字节/右移/EOS、未来输入不影响历史logits、位置越界拒绝、有效目标加权、新阶段计数、固定验证窗口与长度源配额。
+
+最关键的恢复对照是8更新连续运行，与4更新保存、加载、再4更新比较：模型、AdamW、专用采样器、torch RNG、历史指标、源窗口账本、计数与起始身份精确相同。修改计划、实际数据、torch版本、world size或编码会被拒绝。
+
+## 真正改一次代码再试
+
+检查脚本在临时副本把`LR_MULTIPLIER = 1.0`改成1.01，再启动子进程读取原检查点，实际因训练代码身份不同而拒绝。它没有修改正式lab.py，也没有仅靠手工改报告中的一个哈希假装测试代码变化。
+
+成功条件为检查脚本退出0、count12/statusPASS；如果只看到checkpoint文件能加载，不等于恢复对照成功。报告绑定最终训练源码SHA，复现前核对这一身份。
+
+## 边界：这里没有测什么
+
+这是CPU单布局、普通优化器更新边界的恢复。未做写盘中断、网络故障、分片状态、弹性world size或GPU数值一致性。原子替换文件的设计不等于故障注入已验证。
+
+> **一句话听懂**：能力、长度接口和恢复状态是三组独立验收，分别给证据。
+
+> **到这里，你应该已经能听懂：**“4+4和连续8步状态相同，但这不是跨卡数弹性恢复。”
+
+<SectionQA id="6.4" mode="answer" />
+
+## 参考资料
+
+[1] [PyTorch保存与恢复优化器](https://docs.pytorch.org/tutorials/beginner/saving_loading_models.html)。
+
+[2] [PyTorch可复现性限制](https://docs.pytorch.org/docs/2.11/notes/randomness.html)。

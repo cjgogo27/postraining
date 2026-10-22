@@ -1,0 +1,64 @@
+---
+title: "6.1 准备环境，并让每次运行有独立身份"
+description: "先跑最短离线路线，再讨论大模型和生产训练平台。"
+---
+import SectionQA from '../../../components/SectionQA.astro';
+
+> **系统位置**：建立[1.3所有产物](/postraining/midtraining/01-system-overview/03-midtraining-system-architecture/)的运行环境、目录与来源身份。
+
+## 不要先安装一套千卡平台
+
+第一次只需要看清数据怎样改变小模型。先在CPU跑通，能核对目标数、曲线和恢复，再把同样的接口问题带到真实基座或多卡框架。
+
+<SectionQA id="6.1" mode="ask" />
+
+## 最短路线：从仓库根目录执行
+
+```bash
+python -m venv .venv
+```
+
+Windows PowerShell激活：`.venv\Scripts\Activate.ps1`；Linux/macOS为`source .venv/bin/activate`。已有合适环境也可直接使用。执行前检查`python --version`和当前解释器路径，避免把依赖装到另一个Python。
+
+```bash
+python -m pip install -r midtraining/examples/requirements.txt
+python midtraining/examples/lab.py --out runs/my-midtraining
+python midtraining/examples/verify.py --out runs/my-midtraining-checks
+```
+
+默认lab安装依赖后不下载模型、不访问外部语料或API。已验证环境为Windows11、Python3.12.5、torch2.11.0+cpu、FP32、CPU单线程；这些命令是重跑入口，不表示本轮重新创建过虚拟环境或安装所有依赖。
+
+## 每个命令应该交出什么
+
+| 命令 | 产物 | 成功条件 | 常见失败 |
+| --- | --- | --- | --- |
+| lab.py | corpus.json、report.json、各阶段.pt | 退出0，两个seed区组、源计数正确、loss有限 | out非空、依赖/内存问题 |
+| verify.py | report.json、恢复夹具.pt | 12项PASS，包含实际源码变化拒绝 | 环境不同、源码或计划不匹配 |
+| 可选adapt_pretrained.py | 报告、adapted模型目录 | 三支固定预算及重载对照通过 | 无缓存、下载失败或内存不足 |
+
+out目录非空时lab拒绝覆盖。权重和大日志留在被Git忽略的runs中；发布小JSON、原始语料、命令和身份。恢复夹具含Python序列化，仅加载可信文件。
+
+## 文档站单独构建
+
+```bash
+npm ci
+npm run check:docs
+npm test
+npm run build
+npm run check:built
+npm run preview
+```
+
+从预览地址的`/postraining/midtraining/`进入。`npm run dev:midtraining`只启动中训练站开发；完整build先构建原后训练站，再构建独立中训练子站，二者标题、侧栏与搜索分开。
+
+> **一句话听懂**：先让最小命令产出可追溯记录，再扩大模型和系统复杂度。
+
+> **到这里，你应该已经能听懂：**“这份报告绑定了环境和代码，权重留在独立运行目录。”
+
+<SectionQA id="6.1" mode="answer" />
+
+## 参考资料
+
+[1] [PyTorch可复现性与环境边界](https://docs.pytorch.org/docs/2.11/notes/randomness.html)。
+
+[2] [PyTorch模型保存/加载](https://docs.pytorch.org/tutorials/beginner/saving_loading_models.html)。实际记录见仓库midtraining/VALIDATION.md。

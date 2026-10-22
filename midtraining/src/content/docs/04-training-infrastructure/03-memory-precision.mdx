@@ -1,0 +1,47 @@
+---
+title: "4.3 显存、精度与重计算怎样改变可运行预算"
+description: "权重能放进去，训练却OOM；少算了哪些状态？"
+---
+import SectionQA from '../../../components/SectionQA.astro';
+
+> **系统位置**：为[1.3训练循环](/postraining/midtraining/01-system-overview/03-midtraining-system-architecture/)选择可执行的数值与存储方案。
+
+## 2GB权重为什么不等于2GB训练显存
+
+假设1B参数、BF16权重占2GB（十进制字节）。训练还可能需要梯度、FP32主副本、Adam一二阶状态、激活、通信缓冲和临时张量。只看权重文件大小，不能判断是否装得下。
+
+<SectionQA id="4.3" mode="ask" />
+
+| 静态对象（假设一种混合精度Adam实现） | 字节/参数 |
+| --- | --- |
+| BF16权重 | 2 |
+| BF16梯度 | 2 |
+| FP32主副本 | 4 |
+| FP32一阶/二阶状态 | 8 |
+| 合计 | 16 |
+
+这是有明确假设的静态16GB算例，不含激活与缓冲。某些实现梯度为FP32、没有独立主副本或状态被分片/offload，数字会变。GiB还要除以2³⁰，而不是10⁹。
+
+## 计算换存储，不是计算消失
+
+activation checkpointing保存更少中间激活，在反向时重算；减少峰值激活存储，却增加执行计算。offload把状态移到CPU/存储，引入传输与排队。更省显存不保证端到端更快，应记录同一任务下的更新时间和内存峰值。
+
+普通attention的S²代价也不能靠减半B全部抵消。先用目标硬件短跑校准实际峰值、吞吐和等待，再调整B/S/A，而不是从纸面字节推一个固定安全batch。
+
+## AMP更新边界要写完整
+
+典型顺序是清梯度、autocast前向、缩放loss并反向、累积和必要同步、unscale、裁剪、尝试optimizer step、更新scaler。调度和已提交目标/更新计数应与**实际成功更新**协调；溢出跳过时，不应在未说明的情况下仍消耗一个学习率步。[1]
+
+BF16范围和FP16不同，不代表BF16永不溢出；FP8还依赖缩放、算子和硬件实现。DDP完整副本的常规裁剪与分片参数的全局范数裁剪不同，应使用对应并行框架的正确语义。本书CPU FP32未运行AMP、重计算、offload或GPU显存测量。
+
+> **一句话听懂**：显存要算状态与激活，精度和重计算要同时写出数值、计算与计数代价。
+
+> **到这里，你应该已经能听懂：**“16字节只是假设静态状态，还没算长窗口激活。”
+
+<SectionQA id="4.3" mode="answer" />
+
+## 参考资料
+
+[1] [PyTorch AMP示例：累积、unscale、clip和step](https://docs.pytorch.org/docs/2.11/notes/amp_examples.html)。
+
+[2] [PyTorch checkpoint](https://docs.pytorch.org/docs/2.11/checkpoint.html)。

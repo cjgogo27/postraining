@@ -1,0 +1,17 @@
+<figure class="mid-map" aria-label="中训练：离线数据、反复更新、阶段验收与共用基础设施">
+  <figcaption><strong>从已有基座到可交付的新检查点</strong></figcaption>
+  <p class="input">基座/分词器身份 + 目标任务与保留能力 + 固定预算/验收协议</p>
+  <div class="lanes">
+    <section><h3>① 离线准备</h3><ol><li>来源、清洗、去重与划分</li><li>混合、编码、EOS与packing</li><li>数据manifest、目标计数与采样计划</li></ol><p>版本变化后重新审核，不是每次更新都重建语料。</p></section>
+    <section><h3>② 训练循环</h3><ol><li>微批次 → 前向 → 有效token loss</li><li>反向 → 累积/同步 → 参数更新</li><li>提交计数与完整检查点</li></ol><p>优化反馈：梯度改变权重；记录成功更新与已提交token。</p></section>
+    <section><h3>③ 阶段验收</h3><ol><li>领域收益、通用回退、长上下文</li><li>接受 / 回退 / 新方案</li><li>交付权重、协议与证据</li></ol><p>实验反馈：评测改变下一轮计划，不直接对权重反传。</p></section>
+  </div>
+  <p class="handoff">①交出数据与计划 → ②交出版本化检查点 → ③验收后交给SFT等后训练；也可能停止。</p>
+  <div class="support"><span>计算与显存</span><span>存储与数据加载</span><span>通信与调度</span><span>配置、版本与随机状态</span><span>日志与可重放证据</span></div>
+  <p class="note">职责与GPU、框架对象不是一一对应；无固定Hz或耗时假设。阶段名称以项目的具体约定为准。</p>
+</figure>
+<style>
+  .mid-map{border:1px solid var(--sl-color-gray-4);padding:1rem;border-radius:.7rem;margin-block:1.5rem}.input,.handoff{border:1px dashed var(--sl-color-gray-4);padding:.7rem;border-radius:.4rem}
+  .lanes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.65rem}.lanes>section{margin:0;padding:.7rem;background:var(--sl-color-accent-low);border-radius:.4rem}.lanes h3{font-size:1rem;margin:0}.lanes ol{padding-left:1.2rem}.lanes p,.note{font-size:.85rem}.support{display:flex;flex-wrap:wrap;gap:.4rem}.support>span{margin:0;border:1px dashed var(--sl-color-gray-4);border-radius:.3rem;padding:.4rem;font-size:.85rem}
+  @media(max-width:50rem){.lanes{grid-template-columns:1fr}}
+</style>

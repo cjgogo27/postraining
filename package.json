@@ -5,11 +5,13 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "astro dev --host 127.0.0.1",
-    "build": "astro build",
+    "build": "astro build && astro build --root ./midtraining",
+    "dev:midtraining": "astro dev --root ./midtraining --host 127.0.0.1",
+    "build:midtraining": "astro build --root ./midtraining",
     "preview": "astro preview --host 127.0.0.1",
-    "check:docs": "node scripts/check-docs.mjs",
+    "check:docs": "node scripts/check-docs.mjs && node scripts/check-midtraining.mjs",
     "check:built": "node scripts/check-built.mjs",
-    "test": "node --test scripts/test-teaching.mjs scripts/test-rl.mjs"
+    "test": "node --test scripts/test-teaching.mjs scripts/test-rl.mjs scripts/test-midtraining.mjs"
   },
   "overrides": {
     "rolldown": "1.2.13"

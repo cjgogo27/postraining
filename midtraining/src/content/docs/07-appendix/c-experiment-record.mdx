@@ -1,0 +1,24 @@
+---
+title: "附录C：实测记录与结论边界"
+---
+
+## 实际执行
+
+2026-10-23，Windows11 10.0.26200，Python3.12.5、PyTorch2.11.0+cpu、NumPy2.0.2。默认lab线程1，FP32；两个seed42/43。每个seed共享其base后分三个适配支路，运行次序由独立随机数固定；计划在运行前写入`EXPERIMENT_PLAN.md`。
+
+```bash
+python midtraining/examples/verify.py --out runs/my-midtraining-checks
+python midtraining/examples/lab.py --out runs/my-midtraining
+```
+
+本轮12项检查通过；默认完整实验记录墙钟12.873秒，含评测与保存，不是训练吞吐。语料160篇完全不同文档，train128/val32按实体ID隔离；每个源64训练实体、16验证实体。模板与标签空间共享，不能声称主题外或模板外泛化。
+
+seed42回放领域NLL2.033484、通用1.615751；纯领域1.938298/2.391756。seed43相应1.879007/1.418477与1.766318/2.186506。固定S32窗口；两个seed的四条严格生成全部0/4。完整曲线、原始输出、窗口起点及源消费量见`examples/results/lab-reference.json`与6.3。
+
+严格恢复检查为连续8更新与4+恢复4更新完全一致，并实际将临时源码的学习率乘子改为1.01后验证拒绝恢复。没有进行文件写入崩溃注入、CUDA、DDP或跨布局实测。
+
+## 可选真实基座
+
+SmolLM2-135M固定revision，134,515,008参数；首次cache-only因缓存缺失失败，随后显式下载成功。三支各1,024目标；完整流程172.215秒含下载，保存后本地重载的两组NLL容差1e-6、原始输出完全一致。细节见6.5与`pretrained-reference.json`。这是可行性短跑，未跑SFT、RL、长上下文任务或生产部署。
+
+代码SHA为`fc56924e3fc5f7c81778ad741979a9ee4e4244dd0644cd825c9f665b49362a53`；数据SHA为`5ee8b4bee983bdbe6052ddb0048cc331f9a36780eb63418c820359a2d6a85406`。报告绑定来源，而不是用运行时间或文件名代替身份。

@@ -1,0 +1,26 @@
+---
+title: "附录D：来源与阅读顺序"
+---
+
+## 教学组织来源
+
+本书借鉴[CionHuang机器人系统架构](https://cionhuang.github.io/A_Brief_Tutorial_of_Humanoid_Robot/01-system-overview/03-humanoid-robot-system-architecture/)与[写作原则](https://github.com/cionHuang/A_Brief_Tutorial_of_Humanoid_Robot/blob/main/docs/tutorial_writing_principles.md)：具体场景、问题、交接物、总图、异常、共用支撑和角色问答。参考本地源码版本`0cfa5fe09041a2da11c255145ae06c0fcdac2a4b`；原文网页本轮抓取失败，阅读的是该版本源文件。中训练案例、实验与系统关系重新编写；没有照搬机器人控制频率与实时指令层级。
+
+## 科学与工程依据
+
+| 阅读材料 | 支持的解释 | 不能从中推出 |
+| --- | --- | --- |
+| [SmolLM3官方报告，2025-07-08](https://huggingface.co/blog/smollm3) | mid-training的长上下文/推理适配与阶段设计 | 每个团队都须采用相同阶段名和配比 |
+| [OLMo 3，2512.13961v2，2026-04-14](https://arxiv.org/html/2512.13961v2) §3.3、3.5、3.6 | 数据实验、退火整合、长上下文扩展 | 单项目配方是通用最优 |
+| [Don't Stop Pretraining，2004.10964v3，2020](https://arxiv.org/html/2004.10964v3) §3–4 | DAPT/TAPT及领域对照 | 本书复现了RoBERTa的结果 |
+| [ProLong，2410.02660v1，2024](https://arxiv.org/html/2410.02660v1) §2、3 | 长文本数据、混合与综合评测 | 位置上限调大即学会长依赖 |
+| [HELMET，2410.02694v1，2024](https://arxiv.org/html/2410.02694v1) §2–3 | 多类别长上下文任务与协议 | 单一needle足以覆盖真实任务 |
+| [RoFormer，2104.09864v5，2023](https://arxiv.org/html/2104.09864v5#S3) §3 | RoPE旋转与相对位置信息 | 默认TinyBase已经使用RoPE |
+| [YaRN，2309.00071v3，2026](https://arxiv.org/html/2309.00071v3#S3) §3 | 一种上下文扩展方法及条件 | 所有模型都可无训练外推 |
+| [WSD，2410.05192v1，2024](https://arxiv.org/html/2410.05192v1) §1、3、5 | 稳定主干与衰减支路的动机 | 本轮余弦实验验证了WSD |
+| [Chinchilla，2203.15556，2022](https://arxiv.org/abs/2203.15556) | 计算受限训练的参数/数据权衡 | 6ND可直接当作中训练质量预测器 |
+| [PyTorch2.11官方文档](https://docs.pytorch.org/docs/2.11/) | CE、DDP、AMP、状态恢复等接口语义 | 已在GPU或多rank跑过本书实验 |
+
+实验设计流程参考[Kassis等，Scientific Agent Skills: A Library of Procedural Knowledge for Research Agents，2026](https://arxiv.org/abs/2609.00065)提供的实验设计技能，采用匹配预算、配对seed区组和预先固定指标。此项是方法流程归属，不是中训练效果证据。
+
+逐项论断核对见仓库`midtraining/SOURCE_AUDIT.md`。可访问性只说明链接能打开，关键依据还需阅读对应段落与实验条件。

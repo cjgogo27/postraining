@@ -1,0 +1,1442 @@
+[
+  {
+    "id": "general-0",
+    "group_id": "general-0",
+    "split": "train",
+    "source": "general",
+    "text": "Place GX00 has W0. W0 tag: blue.\n",
+    "prefix": "Place GX00 has W0. W0 tag: ",
+    "answer": "blue.\n"
+  },
+  {
+    "id": "general-1",
+    "group_id": "general-1",
+    "split": "train",
+    "source": "general",
+    "text": "Place GX01 has W1. W1 tag: calm.\n",
+    "prefix": "Place GX01 has W1. W1 tag: ",
+    "answer": "calm.\n"
+  },
+  {
+    "id": "general-2",
+    "group_id": "general-2",
+    "split": "train",
+    "source": "general",
+    "text": "Place GX02 has W2. W2 tag: warm.\n",
+    "prefix": "Place GX02 has W2. W2 tag: ",
+    "answer": "warm.\n"
+  },
+  {
+    "id": "general-3",
+    "group_id": "general-3",
+    "split": "train",
+    "source": "general",
+    "text": "Place GX03 has W3. W3 tag: mild.\n",
+    "prefix": "Place GX03 has W3. W3 tag: ",
+    "answer": "mild.\n"
+  },
+  {
+    "id": "general-4",
+    "group_id": "general-4",
+    "split": "train",
+    "source": "general",
+    "text": "Place GX04 has W0. W0 tag: blue.\n",
+    "prefix": "Place GX04 has W0. W0 tag: ",
+    "answer": "blue.\n"
+  },
+  {
+    "id": "general-5",
+    "group_id": "general-5",
+    "split": "train",
+    "source": "general",
+    "text": "Place GX05 has W1. W1 tag: calm.\n",
+    "prefix": "Place GX05 has W1. W1 tag: ",
+    "answer": "calm.\n"
+  },
+  {
+    "id": "general-6",
+    "group_id": "general-6",
+    "split": "train",
+    "source": "general",
+    "text": "Place GX06 has W2. W2 tag: warm.\n",
+    "prefix": "Place GX06 has W2. W2 tag: ",
+    "answer": "warm.\n"
+  },
+  {
+    "id": "general-7",
+    "group_id": "general-7",
+    "split": "train",
+    "source": "general",
+    "text": "Place GX07 has W3. W3 tag: mild.\n",
+    "prefix": "Place GX07 has W3. W3 tag: ",
+    "answer": "mild.\n"
+  },
+  {
+    "id": "general-8",
+    "group_id": "general-8",
+    "split": "train",
+    "source": "general",
+    "text": "Place GX08 has W0. W0 tag: blue.\n",
+    "prefix": "Place GX08 has W0. W0 tag: ",
+    "answer": "blue.\n"
+  },
+  {
+    "id": "general-9",
+    "group_id": "general-9",
+    "split": "train",
+    "source": "general",
+    "text": "Place GX09 has W1. W1 tag: calm.\n",
+    "prefix": "Place GX09 has W1. W1 tag: ",
+    "answer": "calm.\n"
+  },
+  {
+    "id": "general-10",
+    "group_id": "general-10",
+    "split": "train",
+    "source": "general",
+    "text": "Place GX10 has W2. W2 tag: warm.\n",
+    "prefix": "Place GX10 has W2. W2 tag: ",
+    "answer": "warm.\n"
+  },
+  {
+    "id": "general-11",
+    "group_id": "general-11",
+    "split": "train",
+    "source": "general",
+    "text": "Place GX11 has W3. W3 tag: mild.\n",
+    "prefix": "Place GX11 has W3. W3 tag: ",
+    "answer": "mild.\n"
+  },
+  {
+    "id": "general-12",
+    "group_id": "general-12",
+    "split": "train",
+    "source": "general",
+    "text": "Place GX12 has W0. W0 tag: blue.\n",
+    "prefix": "Place GX12 has W0. W0 tag: ",
+    "answer": "blue.\n"
+  },
+  {
+    "id": "general-13",
+    "group_id": "general-13",
+    "split": "train",
+    "source": "general",
+    "text": "Place GX13 has W1. W1 tag: calm.\n",
+    "prefix": "Place GX13 has W1. W1 tag: ",
+    "answer": "calm.\n"
+  },
+  {
+    "id": "general-14",
+    "group_id": "general-14",
+    "split": "train",
+    "source": "general",
+    "text": "Place GX14 has W2. W2 tag: warm.\n",
+    "prefix": "Place GX14 has W2. W2 tag: ",
+    "answer": "warm.\n"
+  },
+  {
+    "id": "general-15",
+    "group_id": "general-15",
+    "split": "train",
+    "source": "general",
+    "text": "Place GX15 has W3. W3 tag: mild.\n",
+    "prefix": "Place GX15 has W3. W3 tag: ",
+    "answer": "mild.\n"
+  },
+  {
+    "id": "general-16",
+    "group_id": "general-16",
+    "split": "train",
+    "source": "general",
+    "text": "Place GX16 has W0. W0 tag: blue.\n",
+    "prefix": "Place GX16 has W0. W0 tag: ",
+    "answer": "blue.\n"
+  },
+  {
+    "id": "general-17",
+    "group_id": "general-17",
+    "split": "train",
+    "source": "general",
+    "text": "Place GX17 has W1. W1 tag: calm.\n",
+    "prefix": "Place GX17 has W1. W1 tag: ",
+    "answer": "calm.\n"
+  },
+  {
+    "id": "general-18",
+    "group_id": "general-18",
+    "split": "train",
+    "source": "general",
+    "text": "Place GX18 has W2. W2 tag: warm.\n",
+    "prefix": "Place GX18 has W2. W2 tag: ",
+    "answer": "warm.\n"
+  },
+  {
+    "id": "general-19",
+    "group_id": "general-19",
+    "split": "train",
+    "source": "general",
+    "text": "Place GX19 has W3. W3 tag: mild.\n",
+    "prefix": "Place GX19 has W3. W3 tag: ",
+    "answer": "mild.\n"
+  },
+  {
+    "id": "general-20",
+    "group_id": "general-20",
+    "split": "train",
+    "source": "general",
+    "text": "Place GX20 has W0. W0 tag: blue.\n",
+    "prefix": "Place GX20 has W0. W0 tag: ",
+    "answer": "blue.\n"
+  },
+  {
+    "id": "general-21",
+    "group_id": "general-21",
+    "split": "train",
+    "source": "general",
+    "text": "Place GX21 has W1. W1 tag: calm.\n",
+    "prefix": "Place GX21 has W1. W1 tag: ",
+    "answer": "calm.\n"
+  },
+  {
+    "id": "general-22",
+    "group_id": "general-22",
+    "split": "train",
+    "source": "general",
+    "text": "Place GX22 has W2. W2 tag: warm.\n",
+    "prefix": "Place GX22 has W2. W2 tag: ",
+    "answer": "warm.\n"
+  },
+  {
+    "id": "general-23",
+    "group_id": "general-23",
+    "split": "train",
+    "source": "general",
+    "text": "Place GX23 has W3. W3 tag: mild.\n",
+    "prefix": "Place GX23 has W3. W3 tag: ",
+    "answer": "mild.\n"
+  },
+  {
+    "id": "general-24",
+    "group_id": "general-24",
+    "split": "train",
+    "source": "general",
+    "text": "Place GX24 has W0. W0 tag: blue.\n",
+    "prefix": "Place GX24 has W0. W0 tag: ",
+    "answer": "blue.\n"
+  },
+  {
+    "id": "general-25",
+    "group_id": "general-25",
+    "split": "train",
+    "source": "general",
+    "text": "Place GX25 has W1. W1 tag: calm.\n",
+    "prefix": "Place GX25 has W1. W1 tag: ",
+    "answer": "calm.\n"
+  },
+  {
+    "id": "general-26",
+    "group_id": "general-26",
+    "split": "train",
+    "source": "general",
+    "text": "Place GX26 has W2. W2 tag: warm.\n",
+    "prefix": "Place GX26 has W2. W2 tag: ",
+    "answer": "warm.\n"
+  },
+  {
+    "id": "general-27",
+    "group_id": "general-27",
+    "split": "train",
+    "source": "general",
+    "text": "Place GX27 has W3. W3 tag: mild.\n",
+    "prefix": "Place GX27 has W3. W3 tag: ",
+    "answer": "mild.\n"
+  },
+  {
+    "id": "general-28",
+    "group_id": "general-28",
+    "split": "train",
+    "source": "general",
+    "text": "Place GX28 has W0. W0 tag: blue.\n",
+    "prefix": "Place GX28 has W0. W0 tag: ",
+    "answer": "blue.\n"
+  },
+  {
+    "id": "general-29",
+    "group_id": "general-29",
+    "split": "train",
+    "source": "general",
+    "text": "Place GX29 has W1. W1 tag: calm.\n",
+    "prefix": "Place GX29 has W1. W1 tag: ",
+    "answer": "calm.\n"
+  },
+  {
+    "id": "general-30",
+    "group_id": "general-30",
+    "split": "train",
+    "source": "general",
+    "text": "Place GX30 has W2. W2 tag: warm.\n",
+    "prefix": "Place GX30 has W2. W2 tag: ",
+    "answer": "warm.\n"
+  },
+  {
+    "id": "general-31",
+    "group_id": "general-31",
+    "split": "train",
+    "source": "general",
+    "text": "Place GX31 has W3. W3 tag: mild.\n",
+    "prefix": "Place GX31 has W3. W3 tag: ",
+    "answer": "mild.\n"
+  },
+  {
+    "id": "general-32",
+    "group_id": "general-32",
+    "split": "train",
+    "source": "general",
+    "text": "Place GX32 has W0. W0 tag: blue.\n",
+    "prefix": "Place GX32 has W0. W0 tag: ",
+    "answer": "blue.\n"
+  },
+  {
+    "id": "general-33",
+    "group_id": "general-33",
+    "split": "train",
+    "source": "general",
+    "text": "Place GX33 has W1. W1 tag: calm.\n",
+    "prefix": "Place GX33 has W1. W1 tag: ",
+    "answer": "calm.\n"
+  },
+  {
+    "id": "general-34",
+    "group_id": "general-34",
+    "split": "train",
+    "source": "general",
+    "text": "Place GX34 has W2. W2 tag: warm.\n",
+    "prefix": "Place GX34 has W2. W2 tag: ",
+    "answer": "warm.\n"
+  },
+  {
+    "id": "general-35",
+    "group_id": "general-35",
+    "split": "train",
+    "source": "general",
+    "text": "Place GX35 has W3. W3 tag: mild.\n",
+    "prefix": "Place GX35 has W3. W3 tag: ",
+    "answer": "mild.\n"
+  },
+  {
+    "id": "general-36",
+    "group_id": "general-36",
+    "split": "train",
+    "source": "general",
+    "text": "Place GX36 has W0. W0 tag: blue.\n",
+    "prefix": "Place GX36 has W0. W0 tag: ",
+    "answer": "blue.\n"
+  },
+  {
+    "id": "general-37",
+    "group_id": "general-37",
+    "split": "train",
+    "source": "general",
+    "text": "Place GX37 has W1. W1 tag: calm.\n",
+    "prefix": "Place GX37 has W1. W1 tag: ",
+    "answer": "calm.\n"
+  },
+  {
+    "id": "general-38",
+    "group_id": "general-38",
+    "split": "train",
+    "source": "general",
+    "text": "Place GX38 has W2. W2 tag: warm.\n",
+    "prefix": "Place GX38 has W2. W2 tag: ",
+    "answer": "warm.\n"
+  },
+  {
+    "id": "general-39",
+    "group_id": "general-39",
+    "split": "train",
+    "source": "general",
+    "text": "Place GX39 has W3. W3 tag: mild.\n",
+    "prefix": "Place GX39 has W3. W3 tag: ",
+    "answer": "mild.\n"
+  },
+  {
+    "id": "general-40",
+    "group_id": "general-40",
+    "split": "train",
+    "source": "general",
+    "text": "Place GX40 has W0. W0 tag: blue.\n",
+    "prefix": "Place GX40 has W0. W0 tag: ",
+    "answer": "blue.\n"
+  },
+  {
+    "id": "general-41",
+    "group_id": "general-41",
+    "split": "train",
+    "source": "general",
+    "text": "Place GX41 has W1. W1 tag: calm.\n",
+    "prefix": "Place GX41 has W1. W1 tag: ",
+    "answer": "calm.\n"
+  },
+  {
+    "id": "general-42",
+    "group_id": "general-42",
+    "split": "train",
+    "source": "general",
+    "text": "Place GX42 has W2. W2 tag: warm.\n",
+    "prefix": "Place GX42 has W2. W2 tag: ",
+    "answer": "warm.\n"
+  },
+  {
+    "id": "general-43",
+    "group_id": "general-43",
+    "split": "train",
+    "source": "general",
+    "text": "Place GX43 has W3. W3 tag: mild.\n",
+    "prefix": "Place GX43 has W3. W3 tag: ",
+    "answer": "mild.\n"
+  },
+  {
+    "id": "general-44",
+    "group_id": "general-44",
+    "split": "train",
+    "source": "general",
+    "text": "Place GX44 has W0. W0 tag: blue.\n",
+    "prefix": "Place GX44 has W0. W0 tag: ",
+    "answer": "blue.\n"
+  },
+  {
+    "id": "general-45",
+    "group_id": "general-45",
+    "split": "train",
+    "source": "general",
+    "text": "Place GX45 has W1. W1 tag: calm.\n",
+    "prefix": "Place GX45 has W1. W1 tag: ",
+    "answer": "calm.\n"
+  },
+  {
+    "id": "general-46",
+    "group_id": "general-46",
+    "split": "train",
+    "source": "general",
+    "text": "Place GX46 has W2. W2 tag: warm.\n",
+    "prefix": "Place GX46 has W2. W2 tag: ",
+    "answer": "warm.\n"
+  },
+  {
+    "id": "general-47",
+    "group_id": "general-47",
+    "split": "train",
+    "source": "general",
+    "text": "Place GX47 has W3. W3 tag: mild.\n",
+    "prefix": "Place GX47 has W3. W3 tag: ",
+    "answer": "mild.\n"
+  },
+  {
+    "id": "general-48",
+    "group_id": "general-48",
+    "split": "train",
+    "source": "general",
+    "text": "Place GX48 has W0. W0 tag: blue.\n",
+    "prefix": "Place GX48 has W0. W0 tag: ",
+    "answer": "blue.\n"
+  },
+  {
+    "id": "general-49",
+    "group_id": "general-49",
+    "split": "train",
+    "source": "general",
+    "text": "Place GX49 has W1. W1 tag: calm.\n",
+    "prefix": "Place GX49 has W1. W1 tag: ",
+    "answer": "calm.\n"
+  },
+  {
+    "id": "general-50",
+    "group_id": "general-50",
+    "split": "train",
+    "source": "general",
+    "text": "Place GX50 has W2. W2 tag: warm.\n",
+    "prefix": "Place GX50 has W2. W2 tag: ",
+    "answer": "warm.\n"
+  },
+  {
+    "id": "general-51",
+    "group_id": "general-51",
+    "split": "train",
+    "source": "general",
+    "text": "Place GX51 has W3. W3 tag: mild.\n",
+    "prefix": "Place GX51 has W3. W3 tag: ",
+    "answer": "mild.\n"
+  },
+  {
+    "id": "general-52",
+    "group_id": "general-52",
+    "split": "train",
+    "source": "general",
+    "text": "Place GX52 has W0. W0 tag: blue.\n",
+    "prefix": "Place GX52 has W0. W0 tag: ",
+    "answer": "blue.\n"
+  },
+  {
+    "id": "general-53",
+    "group_id": "general-53",
+    "split": "train",
+    "source": "general",
+    "text": "Place GX53 has W1. W1 tag: calm.\n",
+    "prefix": "Place GX53 has W1. W1 tag: ",
+    "answer": "calm.\n"
+  },
+  {
+    "id": "general-54",
+    "group_id": "general-54",
+    "split": "train",
+    "source": "general",
+    "text": "Place GX54 has W2. W2 tag: warm.\n",
+    "prefix": "Place GX54 has W2. W2 tag: ",
+    "answer": "warm.\n"
+  },
+  {
+    "id": "general-55",
+    "group_id": "general-55",
+    "split": "train",
+    "source": "general",
+    "text": "Place GX55 has W3. W3 tag: mild.\n",
+    "prefix": "Place GX55 has W3. W3 tag: ",
+    "answer": "mild.\n"
+  },
+  {
+    "id": "general-56",
+    "group_id": "general-56",
+    "split": "train",
+    "source": "general",
+    "text": "Place GX56 has W0. W0 tag: blue.\n",
+    "prefix": "Place GX56 has W0. W0 tag: ",
+    "answer": "blue.\n"
+  },
+  {
+    "id": "general-57",
+    "group_id": "general-57",
+    "split": "train",
+    "source": "general",
+    "text": "Place GX57 has W1. W1 tag: calm.\n",
+    "prefix": "Place GX57 has W1. W1 tag: ",
+    "answer": "calm.\n"
+  },
+  {
+    "id": "general-58",
+    "group_id": "general-58",
+    "split": "train",
+    "source": "general",
+    "text": "Place GX58 has W2. W2 tag: warm.\n",
+    "prefix": "Place GX58 has W2. W2 tag: ",
+    "answer": "warm.\n"
+  },
+  {
+    "id": "general-59",
+    "group_id": "general-59",
+    "split": "train",
+    "source": "general",
+    "text": "Place GX59 has W3. W3 tag: mild.\n",
+    "prefix": "Place GX59 has W3. W3 tag: ",
+    "answer": "mild.\n"
+  },
+  {
+    "id": "general-60",
+    "group_id": "general-60",
+    "split": "train",
+    "source": "general",
+    "text": "Place GX60 has W0. W0 tag: blue.\n",
+    "prefix": "Place GX60 has W0. W0 tag: ",
+    "answer": "blue.\n"
+  },
+  {
+    "id": "general-61",
+    "group_id": "general-61",
+    "split": "train",
+    "source": "general",
+    "text": "Place GX61 has W1. W1 tag: calm.\n",
+    "prefix": "Place GX61 has W1. W1 tag: ",
+    "answer": "calm.\n"
+  },
+  {
+    "id": "general-62",
+    "group_id": "general-62",
+    "split": "train",
+    "source": "general",
+    "text": "Place GX62 has W2. W2 tag: warm.\n",
+    "prefix": "Place GX62 has W2. W2 tag: ",
+    "answer": "warm.\n"
+  },
+  {
+    "id": "general-63",
+    "group_id": "general-63",
+    "split": "train",
+    "source": "general",
+    "text": "Place GX63 has W3. W3 tag: mild.\n",
+    "prefix": "Place GX63 has W3. W3 tag: ",
+    "answer": "mild.\n"
+  },
+  {
+    "id": "general-64",
+    "group_id": "general-64",
+    "split": "val",
+    "source": "general",
+    "text": "Place GX64 has W0. W0 tag: blue.\n",
+    "prefix": "Place GX64 has W0. W0 tag: ",
+    "answer": "blue.\n"
+  },
+  {
+    "id": "general-65",
+    "group_id": "general-65",
+    "split": "val",
+    "source": "general",
+    "text": "Place GX65 has W1. W1 tag: calm.\n",
+    "prefix": "Place GX65 has W1. W1 tag: ",
+    "answer": "calm.\n"
+  },
+  {
+    "id": "general-66",
+    "group_id": "general-66",
+    "split": "val",
+    "source": "general",
+    "text": "Place GX66 has W2. W2 tag: warm.\n",
+    "prefix": "Place GX66 has W2. W2 tag: ",
+    "answer": "warm.\n"
+  },
+  {
+    "id": "general-67",
+    "group_id": "general-67",
+    "split": "val",
+    "source": "general",
+    "text": "Place GX67 has W3. W3 tag: mild.\n",
+    "prefix": "Place GX67 has W3. W3 tag: ",
+    "answer": "mild.\n"
+  },
+  {
+    "id": "general-68",
+    "group_id": "general-68",
+    "split": "val",
+    "source": "general",
+    "text": "Place GX68 has W0. W0 tag: blue.\n",
+    "prefix": "Place GX68 has W0. W0 tag: ",
+    "answer": "blue.\n"
+  },
+  {
+    "id": "general-69",
+    "group_id": "general-69",
+    "split": "val",
+    "source": "general",
+    "text": "Place GX69 has W1. W1 tag: calm.\n",
+    "prefix": "Place GX69 has W1. W1 tag: ",
+    "answer": "calm.\n"
+  },
+  {
+    "id": "general-70",
+    "group_id": "general-70",
+    "split": "val",
+    "source": "general",
+    "text": "Place GX70 has W2. W2 tag: warm.\n",
+    "prefix": "Place GX70 has W2. W2 tag: ",
+    "answer": "warm.\n"
+  },
+  {
+    "id": "general-71",
+    "group_id": "general-71",
+    "split": "val",
+    "source": "general",
+    "text": "Place GX71 has W3. W3 tag: mild.\n",
+    "prefix": "Place GX71 has W3. W3 tag: ",
+    "answer": "mild.\n"
+  },
+  {
+    "id": "general-72",
+    "group_id": "general-72",
+    "split": "val",
+    "source": "general",
+    "text": "Place GX72 has W0. W0 tag: blue.\n",
+    "prefix": "Place GX72 has W0. W0 tag: ",
+    "answer": "blue.\n"
+  },
+  {
+    "id": "general-73",
+    "group_id": "general-73",
+    "split": "val",
+    "source": "general",
+    "text": "Place GX73 has W1. W1 tag: calm.\n",
+    "prefix": "Place GX73 has W1. W1 tag: ",
+    "answer": "calm.\n"
+  },
+  {
+    "id": "general-74",
+    "group_id": "general-74",
+    "split": "val",
+    "source": "general",
+    "text": "Place GX74 has W2. W2 tag: warm.\n",
+    "prefix": "Place GX74 has W2. W2 tag: ",
+    "answer": "warm.\n"
+  },
+  {
+    "id": "general-75",
+    "group_id": "general-75",
+    "split": "val",
+    "source": "general",
+    "text": "Place GX75 has W3. W3 tag: mild.\n",
+    "prefix": "Place GX75 has W3. W3 tag: ",
+    "answer": "mild.\n"
+  },
+  {
+    "id": "general-76",
+    "group_id": "general-76",
+    "split": "val",
+    "source": "general",
+    "text": "Place GX76 has W0. W0 tag: blue.\n",
+    "prefix": "Place GX76 has W0. W0 tag: ",
+    "answer": "blue.\n"
+  },
+  {
+    "id": "general-77",
+    "group_id": "general-77",
+    "split": "val",
+    "source": "general",
+    "text": "Place GX77 has W1. W1 tag: calm.\n",
+    "prefix": "Place GX77 has W1. W1 tag: ",
+    "answer": "calm.\n"
+  },
+  {
+    "id": "general-78",
+    "group_id": "general-78",
+    "split": "val",
+    "source": "general",
+    "text": "Place GX78 has W2. W2 tag: warm.\n",
+    "prefix": "Place GX78 has W2. W2 tag: ",
+    "answer": "warm.\n"
+  },
+  {
+    "id": "general-79",
+    "group_id": "general-79",
+    "split": "val",
+    "source": "general",
+    "text": "Place GX79 has W3. W3 tag: mild.\n",
+    "prefix": "Place GX79 has W3. W3 tag: ",
+    "answer": "mild.\n"
+  },
+  {
+    "id": "domain-0",
+    "group_id": "domain-0",
+    "split": "train",
+    "source": "domain",
+    "text": "Unit NX00 uses Z0. Z0 tag: luma.\n",
+    "prefix": "Unit NX00 uses Z0. Z0 tag: ",
+    "answer": "luma.\n"
+  },
+  {
+    "id": "domain-1",
+    "group_id": "domain-1",
+    "split": "train",
+    "source": "domain",
+    "text": "Unit NX01 uses Z1. Z1 tag: nexo.\n",
+    "prefix": "Unit NX01 uses Z1. Z1 tag: ",
+    "answer": "nexo.\n"
+  },
+  {
+    "id": "domain-2",
+    "group_id": "domain-2",
+    "split": "train",
+    "source": "domain",
+    "text": "Unit NX02 uses Z2. Z2 tag: pavo.\n",
+    "prefix": "Unit NX02 uses Z2. Z2 tag: ",
+    "answer": "pavo.\n"
+  },
+  {
+    "id": "domain-3",
+    "group_id": "domain-3",
+    "split": "train",
+    "source": "domain",
+    "text": "Unit NX03 uses Z3. Z3 tag: sora.\n",
+    "prefix": "Unit NX03 uses Z3. Z3 tag: ",
+    "answer": "sora.\n"
+  },
+  {
+    "id": "domain-4",
+    "group_id": "domain-4",
+    "split": "train",
+    "source": "domain",
+    "text": "Unit NX04 uses Z0. Z0 tag: luma.\n",
+    "prefix": "Unit NX04 uses Z0. Z0 tag: ",
+    "answer": "luma.\n"
+  },
+  {
+    "id": "domain-5",
+    "group_id": "domain-5",
+    "split": "train",
+    "source": "domain",
+    "text": "Unit NX05 uses Z1. Z1 tag: nexo.\n",
+    "prefix": "Unit NX05 uses Z1. Z1 tag: ",
+    "answer": "nexo.\n"
+  },
+  {
+    "id": "domain-6",
+    "group_id": "domain-6",
+    "split": "train",
+    "source": "domain",
+    "text": "Unit NX06 uses Z2. Z2 tag: pavo.\n",
+    "prefix": "Unit NX06 uses Z2. Z2 tag: ",
+    "answer": "pavo.\n"
+  },
+  {
+    "id": "domain-7",
+    "group_id": "domain-7",
+    "split": "train",
+    "source": "domain",
+    "text": "Unit NX07 uses Z3. Z3 tag: sora.\n",
+    "prefix": "Unit NX07 uses Z3. Z3 tag: ",
+    "answer": "sora.\n"
+  },
+  {
+    "id": "domain-8",
+    "group_id": "domain-8",
+    "split": "train",
+    "source": "domain",
+    "text": "Unit NX08 uses Z0. Z0 tag: luma.\n",
+    "prefix": "Unit NX08 uses Z0. Z0 tag: ",
+    "answer": "luma.\n"
+  },
+  {
+    "id": "domain-9",
+    "group_id": "domain-9",
+    "split": "train",
+    "source": "domain",
+    "text": "Unit NX09 uses Z1. Z1 tag: nexo.\n",
+    "prefix": "Unit NX09 uses Z1. Z1 tag: ",
+    "answer": "nexo.\n"
+  },
+  {
+    "id": "domain-10",
+    "group_id": "domain-10",
+    "split": "train",
+    "source": "domain",
+    "text": "Unit NX10 uses Z2. Z2 tag: pavo.\n",
+    "prefix": "Unit NX10 uses Z2. Z2 tag: ",
+    "answer": "pavo.\n"
+  },
+  {
+    "id": "domain-11",
+    "group_id": "domain-11",
+    "split": "train",
+    "source": "domain",
+    "text": "Unit NX11 uses Z3. Z3 tag: sora.\n",
+    "prefix": "Unit NX11 uses Z3. Z3 tag: ",
+    "answer": "sora.\n"
+  },
+  {
+    "id": "domain-12",
+    "group_id": "domain-12",
+    "split": "train",
+    "source": "domain",
+    "text": "Unit NX12 uses Z0. Z0 tag: luma.\n",
+    "prefix": "Unit NX12 uses Z0. Z0 tag: ",
+    "answer": "luma.\n"
+  },
+  {
+    "id": "domain-13",
+    "group_id": "domain-13",
+    "split": "train",
+    "source": "domain",
+    "text": "Unit NX13 uses Z1. Z1 tag: nexo.\n",
+    "prefix": "Unit NX13 uses Z1. Z1 tag: ",
+    "answer": "nexo.\n"
+  },
+  {
+    "id": "domain-14",
+    "group_id": "domain-14",
+    "split": "train",
+    "source": "domain",
+    "text": "Unit NX14 uses Z2. Z2 tag: pavo.\n",
+    "prefix": "Unit NX14 uses Z2. Z2 tag: ",
+    "answer": "pavo.\n"
+  },
+  {
+    "id": "domain-15",
+    "group_id": "domain-15",
+    "split": "train",
+    "source": "domain",
+    "text": "Unit NX15 uses Z3. Z3 tag: sora.\n",
+    "prefix": "Unit NX15 uses Z3. Z3 tag: ",
+    "answer": "sora.\n"
+  },
+  {
+    "id": "domain-16",
+    "group_id": "domain-16",
+    "split": "train",
+    "source": "domain",
+    "text": "Unit NX16 uses Z0. Z0 tag: luma.\n",
+    "prefix": "Unit NX16 uses Z0. Z0 tag: ",
+    "answer": "luma.\n"
+  },
+  {
+    "id": "domain-17",
+    "group_id": "domain-17",
+    "split": "train",
+    "source": "domain",
+    "text": "Unit NX17 uses Z1. Z1 tag: nexo.\n",
+    "prefix": "Unit NX17 uses Z1. Z1 tag: ",
+    "answer": "nexo.\n"
+  },
+  {
+    "id": "domain-18",
+    "group_id": "domain-18",
+    "split": "train",
+    "source": "domain",
+    "text": "Unit NX18 uses Z2. Z2 tag: pavo.\n",
+    "prefix": "Unit NX18 uses Z2. Z2 tag: ",
+    "answer": "pavo.\n"
+  },
+  {
+    "id": "domain-19",
+    "group_id": "domain-19",
+    "split": "train",
+    "source": "domain",
+    "text": "Unit NX19 uses Z3. Z3 tag: sora.\n",
+    "prefix": "Unit NX19 uses Z3. Z3 tag: ",
+    "answer": "sora.\n"
+  },
+  {
+    "id": "domain-20",
+    "group_id": "domain-20",
+    "split": "train",
+    "source": "domain",
+    "text": "Unit NX20 uses Z0. Z0 tag: luma.\n",
+    "prefix": "Unit NX20 uses Z0. Z0 tag: ",
+    "answer": "luma.\n"
+  },
+  {
+    "id": "domain-21",
+    "group_id": "domain-21",
+    "split": "train",
+    "source": "domain",
+    "text": "Unit NX21 uses Z1. Z1 tag: nexo.\n",
+    "prefix": "Unit NX21 uses Z1. Z1 tag: ",
+    "answer": "nexo.\n"
+  },
+  {
+    "id": "domain-22",
+    "group_id": "domain-22",
+    "split": "train",
+    "source": "domain",
+    "text": "Unit NX22 uses Z2. Z2 tag: pavo.\n",
+    "prefix": "Unit NX22 uses Z2. Z2 tag: ",
+    "answer": "pavo.\n"
+  },
+  {
+    "id": "domain-23",
+    "group_id": "domain-23",
+    "split": "train",
+    "source": "domain",
+    "text": "Unit NX23 uses Z3. Z3 tag: sora.\n",
+    "prefix": "Unit NX23 uses Z3. Z3 tag: ",
+    "answer": "sora.\n"
+  },
+  {
+    "id": "domain-24",
+    "group_id": "domain-24",
+    "split": "train",
+    "source": "domain",
+    "text": "Unit NX24 uses Z0. Z0 tag: luma.\n",
+    "prefix": "Unit NX24 uses Z0. Z0 tag: ",
+    "answer": "luma.\n"
+  },
+  {
+    "id": "domain-25",
+    "group_id": "domain-25",
+    "split": "train",
+    "source": "domain",
+    "text": "Unit NX25 uses Z1. Z1 tag: nexo.\n",
+    "prefix": "Unit NX25 uses Z1. Z1 tag: ",
+    "answer": "nexo.\n"
+  },
+  {
+    "id": "domain-26",
+    "group_id": "domain-26",
+    "split": "train",
+    "source": "domain",
+    "text": "Unit NX26 uses Z2. Z2 tag: pavo.\n",
+    "prefix": "Unit NX26 uses Z2. Z2 tag: ",
+    "answer": "pavo.\n"
+  },
+  {
+    "id": "domain-27",
+    "group_id": "domain-27",
+    "split": "train",
+    "source": "domain",
+    "text": "Unit NX27 uses Z3. Z3 tag: sora.\n",
+    "prefix": "Unit NX27 uses Z3. Z3 tag: ",
+    "answer": "sora.\n"
+  },
+  {
+    "id": "domain-28",
+    "group_id": "domain-28",
+    "split": "train",
+    "source": "domain",
+    "text": "Unit NX28 uses Z0. Z0 tag: luma.\n",
+    "prefix": "Unit NX28 uses Z0. Z0 tag: ",
+    "answer": "luma.\n"
+  },
+  {
+    "id": "domain-29",
+    "group_id": "domain-29",
+    "split": "train",
+    "source": "domain",
+    "text": "Unit NX29 uses Z1. Z1 tag: nexo.\n",
+    "prefix": "Unit NX29 uses Z1. Z1 tag: ",
+    "answer": "nexo.\n"
+  },
+  {
+    "id": "domain-30",
+    "group_id": "domain-30",
+    "split": "train",
+    "source": "domain",
+    "text": "Unit NX30 uses Z2. Z2 tag: pavo.\n",
+    "prefix": "Unit NX30 uses Z2. Z2 tag: ",
+    "answer": "pavo.\n"
+  },
+  {
+    "id": "domain-31",
+    "group_id": "domain-31",
+    "split": "train",
+    "source": "domain",
+    "text": "Unit NX31 uses Z3. Z3 tag: sora.\n",
+    "prefix": "Unit NX31 uses Z3. Z3 tag: ",
+    "answer": "sora.\n"
+  },
+  {
+    "id": "domain-32",
+    "group_id": "domain-32",
+    "split": "train",
+    "source": "domain",
+    "text": "Unit NX32 uses Z0. Z0 tag: luma.\n",
+    "prefix": "Unit NX32 uses Z0. Z0 tag: ",
+    "answer": "luma.\n"
+  },
+  {
+    "id": "domain-33",
+    "group_id": "domain-33",
+    "split": "train",
+    "source": "domain",
+    "text": "Unit NX33 uses Z1. Z1 tag: nexo.\n",
+    "prefix": "Unit NX33 uses Z1. Z1 tag: ",
+    "answer": "nexo.\n"
+  },
+  {
+    "id": "domain-34",
+    "group_id": "domain-34",
+    "split": "train",
+    "source": "domain",
+    "text": "Unit NX34 uses Z2. Z2 tag: pavo.\n",
+    "prefix": "Unit NX34 uses Z2. Z2 tag: ",
+    "answer": "pavo.\n"
+  },
+  {
+    "id": "domain-35",
+    "group_id": "domain-35",
+    "split": "train",
+    "source": "domain",
+    "text": "Unit NX35 uses Z3. Z3 tag: sora.\n",
+    "prefix": "Unit NX35 uses Z3. Z3 tag: ",
+    "answer": "sora.\n"
+  },
+  {
+    "id": "domain-36",
+    "group_id": "domain-36",
+    "split": "train",
+    "source": "domain",
+    "text": "Unit NX36 uses Z0. Z0 tag: luma.\n",
+    "prefix": "Unit NX36 uses Z0. Z0 tag: ",
+    "answer": "luma.\n"
+  },
+  {
+    "id": "domain-37",
+    "group_id": "domain-37",
+    "split": "train",
+    "source": "domain",
+    "text": "Unit NX37 uses Z1. Z1 tag: nexo.\n",
+    "prefix": "Unit NX37 uses Z1. Z1 tag: ",
+    "answer": "nexo.\n"
+  },
+  {
+    "id": "domain-38",
+    "group_id": "domain-38",
+    "split": "train",
+    "source": "domain",
+    "text": "Unit NX38 uses Z2. Z2 tag: pavo.\n",
+    "prefix": "Unit NX38 uses Z2. Z2 tag: ",
+    "answer": "pavo.\n"
+  },
+  {
+    "id": "domain-39",
+    "group_id": "domain-39",
+    "split": "train",
+    "source": "domain",
+    "text": "Unit NX39 uses Z3. Z3 tag: sora.\n",
+    "prefix": "Unit NX39 uses Z3. Z3 tag: ",
+    "answer": "sora.\n"
+  },
+  {
+    "id": "domain-40",
+    "group_id": "domain-40",
+    "split": "train",
+    "source": "domain",
+    "text": "Unit NX40 uses Z0. Z0 tag: luma.\n",
+    "prefix": "Unit NX40 uses Z0. Z0 tag: ",
+    "answer": "luma.\n"
+  },
+  {
+    "id": "domain-41",
+    "group_id": "domain-41",
+    "split": "train",
+    "source": "domain",
+    "text": "Unit NX41 uses Z1. Z1 tag: nexo.\n",
+    "prefix": "Unit NX41 uses Z1. Z1 tag: ",
+    "answer": "nexo.\n"
+  },
+  {
+    "id": "domain-42",
+    "group_id": "domain-42",
+    "split": "train",
+    "source": "domain",
+    "text": "Unit NX42 uses Z2. Z2 tag: pavo.\n",
+    "prefix": "Unit NX42 uses Z2. Z2 tag: ",
+    "answer": "pavo.\n"
+  },
+  {
+    "id": "domain-43",
+    "group_id": "domain-43",
+    "split": "train",
+    "source": "domain",
+    "text": "Unit NX43 uses Z3. Z3 tag: sora.\n",
+    "prefix": "Unit NX43 uses Z3. Z3 tag: ",
+    "answer": "sora.\n"
+  },
+  {
+    "id": "domain-44",
+    "group_id": "domain-44",
+    "split": "train",
+    "source": "domain",
+    "text": "Unit NX44 uses Z0. Z0 tag: luma.\n",
+    "prefix": "Unit NX44 uses Z0. Z0 tag: ",
+    "answer": "luma.\n"
+  },
+  {
+    "id": "domain-45",
+    "group_id": "domain-45",
+    "split": "train",
+    "source": "domain",
+    "text": "Unit NX45 uses Z1. Z1 tag: nexo.\n",
+    "prefix": "Unit NX45 uses Z1. Z1 tag: ",
+    "answer": "nexo.\n"
+  },
+  {
+    "id": "domain-46",
+    "group_id": "domain-46",
+    "split": "train",
+    "source": "domain",
+    "text": "Unit NX46 uses Z2. Z2 tag: pavo.\n",
+    "prefix": "Unit NX46 uses Z2. Z2 tag: ",
+    "answer": "pavo.\n"
+  },
+  {
+    "id": "domain-47",
+    "group_id": "domain-47",
+    "split": "train",
+    "source": "domain",
+    "text": "Unit NX47 uses Z3. Z3 tag: sora.\n",
+    "prefix": "Unit NX47 uses Z3. Z3 tag: ",
+    "answer": "sora.\n"
+  },
+  {
+    "id": "domain-48",
+    "group_id": "domain-48",
+    "split": "train",
+    "source": "domain",
+    "text": "Unit NX48 uses Z0. Z0 tag: luma.\n",
+    "prefix": "Unit NX48 uses Z0. Z0 tag: ",
+    "answer": "luma.\n"
+  },
+  {
+    "id": "domain-49",
+    "group_id": "domain-49",
+    "split": "train",
+    "source": "domain",
+    "text": "Unit NX49 uses Z1. Z1 tag: nexo.\n",
+    "prefix": "Unit NX49 uses Z1. Z1 tag: ",
+    "answer": "nexo.\n"
+  },
+  {
+    "id": "domain-50",
+    "group_id": "domain-50",
+    "split": "train",
+    "source": "domain",
+    "text": "Unit NX50 uses Z2. Z2 tag: pavo.\n",
+    "prefix": "Unit NX50 uses Z2. Z2 tag: ",
+    "answer": "pavo.\n"
+  },
+  {
+    "id": "domain-51",
+    "group_id": "domain-51",
+    "split": "train",
+    "source": "domain",
+    "text": "Unit NX51 uses Z3. Z3 tag: sora.\n",
+    "prefix": "Unit NX51 uses Z3. Z3 tag: ",
+    "answer": "sora.\n"
+  },
+  {
+    "id": "domain-52",
+    "group_id": "domain-52",
+    "split": "train",
+    "source": "domain",
+    "text": "Unit NX52 uses Z0. Z0 tag: luma.\n",
+    "prefix": "Unit NX52 uses Z0. Z0 tag: ",
+    "answer": "luma.\n"
+  },
+  {
+    "id": "domain-53",
+    "group_id": "domain-53",
+    "split": "train",
+    "source": "domain",
+    "text": "Unit NX53 uses Z1. Z1 tag: nexo.\n",
+    "prefix": "Unit NX53 uses Z1. Z1 tag: ",
+    "answer": "nexo.\n"
+  },
+  {
+    "id": "domain-54",
+    "group_id": "domain-54",
+    "split": "train",
+    "source": "domain",
+    "text": "Unit NX54 uses Z2. Z2 tag: pavo.\n",
+    "prefix": "Unit NX54 uses Z2. Z2 tag: ",
+    "answer": "pavo.\n"
+  },
+  {
+    "id": "domain-55",
+    "group_id": "domain-55",
+    "split": "train",
+    "source": "domain",
+    "text": "Unit NX55 uses Z3. Z3 tag: sora.\n",
+    "prefix": "Unit NX55 uses Z3. Z3 tag: ",
+    "answer": "sora.\n"
+  },
+  {
+    "id": "domain-56",
+    "group_id": "domain-56",
+    "split": "train",
+    "source": "domain",
+    "text": "Unit NX56 uses Z0. Z0 tag: luma.\n",
+    "prefix": "Unit NX56 uses Z0. Z0 tag: ",
+    "answer": "luma.\n"
+  },
+  {
+    "id": "domain-57",
+    "group_id": "domain-57",
+    "split": "train",
+    "source": "domain",
+    "text": "Unit NX57 uses Z1. Z1 tag: nexo.\n",
+    "prefix": "Unit NX57 uses Z1. Z1 tag: ",
+    "answer": "nexo.\n"
+  },
+  {
+    "id": "domain-58",
+    "group_id": "domain-58",
+    "split": "train",
+    "source": "domain",
+    "text": "Unit NX58 uses Z2. Z2 tag: pavo.\n",
+    "prefix": "Unit NX58 uses Z2. Z2 tag: ",
+    "answer": "pavo.\n"
+  },
+  {
+    "id": "domain-59",
+    "group_id": "domain-59",
+    "split": "train",
+    "source": "domain",
+    "text": "Unit NX59 uses Z3. Z3 tag: sora.\n",
+    "prefix": "Unit NX59 uses Z3. Z3 tag: ",
+    "answer": "sora.\n"
+  },
+  {
+    "id": "domain-60",
+    "group_id": "domain-60",
+    "split": "train",
+    "source": "domain",
+    "text": "Unit NX60 uses Z0. Z0 tag: luma.\n",
+    "prefix": "Unit NX60 uses Z0. Z0 tag: ",
+    "answer": "luma.\n"
+  },
+  {
+    "id": "domain-61",
+    "group_id": "domain-61",
+    "split": "train",
+    "source": "domain",
+    "text": "Unit NX61 uses Z1. Z1 tag: nexo.\n",
+    "prefix": "Unit NX61 uses Z1. Z1 tag: ",
+    "answer": "nexo.\n"
+  },
+  {
+    "id": "domain-62",
+    "group_id": "domain-62",
+    "split": "train",
+    "source": "domain",
+    "text": "Unit NX62 uses Z2. Z2 tag: pavo.\n",
+    "prefix": "Unit NX62 uses Z2. Z2 tag: ",
+    "answer": "pavo.\n"
+  },
+  {
+    "id": "domain-63",
+    "group_id": "domain-63",
+    "split": "train",
+    "source": "domain",
+    "text": "Unit NX63 uses Z3. Z3 tag: sora.\n",
+    "prefix": "Unit NX63 uses Z3. Z3 tag: ",
+    "answer": "sora.\n"
+  },
+  {
+    "id": "domain-64",
+    "group_id": "domain-64",
+    "split": "val",
+    "source": "domain",
+    "text": "Unit NX64 uses Z0. Z0 tag: luma.\n",
+    "prefix": "Unit NX64 uses Z0. Z0 tag: ",
+    "answer": "luma.\n"
+  },
+  {
+    "id": "domain-65",
+    "group_id": "domain-65",
+    "split": "val",
+    "source": "domain",
+    "text": "Unit NX65 uses Z1. Z1 tag: nexo.\n",
+    "prefix": "Unit NX65 uses Z1. Z1 tag: ",
+    "answer": "nexo.\n"
+  },
+  {
+    "id": "domain-66",
+    "group_id": "domain-66",
+    "split": "val",
+    "source": "domain",
+    "text": "Unit NX66 uses Z2. Z2 tag: pavo.\n",
+    "prefix": "Unit NX66 uses Z2. Z2 tag: ",
+    "answer": "pavo.\n"
+  },
+  {
+    "id": "domain-67",
+    "group_id": "domain-67",
+    "split": "val",
+    "source": "domain",
+    "text": "Unit NX67 uses Z3. Z3 tag: sora.\n",
+    "prefix": "Unit NX67 uses Z3. Z3 tag: ",
+    "answer": "sora.\n"
+  },
+  {
+    "id": "domain-68",
+    "group_id": "domain-68",
+    "split": "val",
+    "source": "domain",
+    "text": "Unit NX68 uses Z0. Z0 tag: luma.\n",
+    "prefix": "Unit NX68 uses Z0. Z0 tag: ",
+    "answer": "luma.\n"
+  },
+  {
+    "id": "domain-69",
+    "group_id": "domain-69",
+    "split": "val",
+    "source": "domain",
+    "text": "Unit NX69 uses Z1. Z1 tag: nexo.\n",
+    "prefix": "Unit NX69 uses Z1. Z1 tag: ",
+    "answer": "nexo.\n"
+  },
+  {
+    "id": "domain-70",
+    "group_id": "domain-70",
+    "split": "val",
+    "source": "domain",
+    "text": "Unit NX70 uses Z2. Z2 tag: pavo.\n",
+    "prefix": "Unit NX70 uses Z2. Z2 tag: ",
+    "answer": "pavo.\n"
+  },
+  {
+    "id": "domain-71",
+    "group_id": "domain-71",
+    "split": "val",
+    "source": "domain",
+    "text": "Unit NX71 uses Z3. Z3 tag: sora.\n",
+    "prefix": "Unit NX71 uses Z3. Z3 tag: ",
+    "answer": "sora.\n"
+  },
+  {
+    "id": "domain-72",
+    "group_id": "domain-72",
+    "split": "val",
+    "source": "domain",
+    "text": "Unit NX72 uses Z0. Z0 tag: luma.\n",
+    "prefix": "Unit NX72 uses Z0. Z0 tag: ",
+    "answer": "luma.\n"
+  },
+  {
+    "id": "domain-73",
+    "group_id": "domain-73",
+    "split": "val",
+    "source": "domain",
+    "text": "Unit NX73 uses Z1. Z1 tag: nexo.\n",
+    "prefix": "Unit NX73 uses Z1. Z1 tag: ",
+    "answer": "nexo.\n"
+  },
+  {
+    "id": "domain-74",
+    "group_id": "domain-74",
+    "split": "val",
+    "source": "domain",
+    "text": "Unit NX74 uses Z2. Z2 tag: pavo.\n",
+    "prefix": "Unit NX74 uses Z2. Z2 tag: ",
+    "answer": "pavo.\n"
+  },
+  {
+    "id": "domain-75",
+    "group_id": "domain-75",
+    "split": "val",
+    "source": "domain",
+    "text": "Unit NX75 uses Z3. Z3 tag: sora.\n",
+    "prefix": "Unit NX75 uses Z3. Z3 tag: ",
+    "answer": "sora.\n"
+  },
+  {
+    "id": "domain-76",
+    "group_id": "domain-76",
+    "split": "val",
+    "source": "domain",
+    "text": "Unit NX76 uses Z0. Z0 tag: luma.\n",
+    "prefix": "Unit NX76 uses Z0. Z0 tag: ",
+    "answer": "luma.\n"
+  },
+  {
+    "id": "domain-77",
+    "group_id": "domain-77",
+    "split": "val",
+    "source": "domain",
+    "text": "Unit NX77 uses Z1. Z1 tag: nexo.\n",
+    "prefix": "Unit NX77 uses Z1. Z1 tag: ",
+    "answer": "nexo.\n"
+  },
+  {
+    "id": "domain-78",
+    "group_id": "domain-78",
+    "split": "val",
+    "source": "domain",
+    "text": "Unit NX78 uses Z2. Z2 tag: pavo.\n",
+    "prefix": "Unit NX78 uses Z2. Z2 tag: ",
+    "answer": "pavo.\n"
+  },
+  {
+    "id": "domain-79",
+    "group_id": "domain-79",
+    "split": "val",
+    "source": "domain",
+    "text": "Unit NX79 uses Z3. Z3 tag: sora.\n",
+    "prefix": "Unit NX79 uses Z3. Z3 tag: ",
+    "answer": "sora.\n"
+  }
+]

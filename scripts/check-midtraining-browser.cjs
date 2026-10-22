@@ -1,0 +1,70 @@
+// Optional real-browser checks. Run after dual build and local preview.
+const assert=require('node:assert/strict');
+const fs=require('node:fs/promises');
+const path=require('node:path');
+const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright');
+const base=process.env.BROWSER_CHECK_BASE||'http://127.0.0.1:4328/postraining/';
+const out=path.resolve(process.env.BROWSER_CHECK_OUT||'runs/midtraining-browser');
+const checks=[],errors=[];
+(async()=>{
+ await fs.mkdir(out,{recursive:true});
+ const browser=await chromium.launch({headless:true,...(process.env.BROWSER_EXECUTABLE?{executablePath:process.env.BROWSER_EXECUTABLE}:{})});
+ try {
+  const chapters=JSON.parse(await fs.readFile('midtraining/src/data/chapters.json','utf8'));
+  for(const viewport of [{width:1280,height:900},{width:390,height:844}]){
+   const ctx=await browser.newContext({viewport,reducedMotion:'reduce'}),p=await ctx.newPage();
+   p.on('pageerror',e=>errors.push(e.message));
+   const go=async(route)=>{const response=await p.goto(base+route,{waitUntil:'networkidle'});assert.equal(response.status(),200);assert(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'overflow '+route);};
+   for(const c of chapters)await go('midtraining/'+c.path+'/');
+   checks.push({width:viewport.width,name:'all_29_sections_load_without_document_overflow'});
+   await go('midtraining/');assert.match(await p.title(),/听懂大模型中训练/);
+   assert.equal(await p.locator('.mid-map .lanes>section').count(),3);
+   await p.locator('.mid-map').screenshot({path:path.join(out,`map-${viewport.width}.png`)});
+   checks.push({width:viewport.width,name:'independent_title_and_responsive_three_lane_map'});
+   await go('midtraining/02-data-tasks/04-mixtures-and-budgets/?reader=engineer');
+   assert.equal(await p.locator('[data-reader-select]').inputValue(),'工程师');
+   await p.locator('[data-reader-select]').selectOption('产品/PR');
+   await go('midtraining/02-data-tasks/04-mixtures-and-budgets/');
+   assert.equal(await p.locator('[data-reader-select]').inputValue(),'产品/PR');
+   const answer=p.locator('.section-qa-answer details').first();
+   await answer.locator('summary').click();assert.equal(await answer.getAttribute('open'),'');
+   await answer.locator('summary').click();assert.equal(await answer.getAttribute('open'),null);
+   checks.push({width:viewport.width,name:'reader_query_storage_and_collapsible_answers'});
+   const calc=p.locator('[data-mid-budget]'),output=calc.locator('output');
+   assert.match(await output.innerText(),/12,288/);
+   await calc.locator('[data-preset="long"]').click();assert.equal(await calc.locator('[data-field="length"]').inputValue(),'64');assert.match(await output.innerText(),/12,288/);
+   await calc.locator('[data-field="dp"]').fill('2');assert.match(await output.innerText(),/24,576/);
+   await calc.locator('[data-field="batch"]').fill('0');assert.doesNotMatch(await output.innerText(),/累计/);
+   await calc.locator('[data-preset="reset"]').focus();await p.keyboard.press('Enter');assert.match(await output.innerText(),/通用3,072/);
+   await calc.screenshot({path:path.join(out,`budget-${viewport.width}.png`)});
+   checks.push({width:viewport.width,name:'budget_presets_dp_invalid_reset_keyboard'});
+   await go('midtraining/06-tools-practice/03-mixture-replay/');
+   const results=p.locator('[data-mid-results]');
+   assert.equal(await results.locator('[data-seed-block]:visible').count(),1);
+   await results.locator('select').selectOption('43');
+   assert.equal(await results.locator('[data-seed-block]:visible').getAttribute('data-seed-block'),'43');
+   const panel=results.locator('[data-seed-block="43"]');assert.match(await panel.innerText(),/1.879007/);
+   await panel.locator('summary').click();assert.match(await panel.innerText(),/useseseses t/);
+   await results.screenshot({path:path.join(out,`results-${viewport.width}.png`)});
+   checks.push({width:viewport.width,name:'recorded_seed_switch_and_failed_raw_generation'});
+   await p.emulateMedia({colorScheme:'dark'});await go('midtraining/01-system-overview/03-midtraining-system-architecture/');
+   await p.evaluate(()=>document.documentElement.setAttribute('data-theme','dark'));
+   await p.locator('.mid-map').screenshot({path:path.join(out,`map-dark-${viewport.width}.png`)});
+   await p.evaluate(()=>document.documentElement.setAttribute('data-theme','light'));
+   checks.push({width:viewport.width,name:'light_dark_and_reduced_motion_render'});
+   await go('');assert.match(await p.title(),/听懂大模型后训练/);
+   assert.notEqual(await p.evaluate(()=>localStorage.getItem('posttraining-reader')),'产品/PR');
+   checks.push({width:viewport.width,name:'original_site_title_and_reader_storage_isolation'});
+   await ctx.close();
+  }
+  const nojs=await browser.newContext({javaScriptEnabled:false,viewport:{width:390,height:844}}),p=await nojs.newPage();
+  await p.goto(base+'midtraining/02-data-tasks/04-mixtures-and-budgets/');
+  assert.match(await p.locator('[data-mid-budget]').innerText(),/12,288/);
+  await p.goto(base+'midtraining/06-tools-practice/03-mixture-replay/');
+  assert.equal(await p.locator('[data-seed-block]:visible').getAttribute('data-seed-block'),'42');
+  checks.push({name:'no_js_static_budget_and_seed42_fallback'});await nojs.close();
+  assert.deepEqual(errors,[]);
+  await fs.writeFile(path.join(out,'report.json'),JSON.stringify({status:'PASS',browser:await browser.version(),checks,console_page_errors:errors},null,2));
+  console.log(JSON.stringify({status:'PASS',checks:checks.length,browser:await browser.version(),out}));
+ }finally{await browser.close();}
+})().catch(e=>{console.error(e);process.exitCode=1;});

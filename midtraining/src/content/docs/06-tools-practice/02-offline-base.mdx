@@ -1,0 +1,53 @@
+---
+title: "6.2 先造一个可追踪的小基座"
+description: "这个base从哪里来，训练见过哪些数据，哪些能力不能假定已经存在？"
+---
+import SectionQA from '../../../components/SectionQA.astro';
+
+> **系统位置**：给[1.3输入端](/postraining/midtraining/01-system-overview/03-midtraining-system-architecture/)准备明确来源的起点，交给领域对照。
+
+## “已有权重”不能省略来源
+
+从一个不知训练数据和格式的.pt开始，后面的差异很难解释。默认实验先用原创通用文本训练base，再让所有适配支路继承同一份权重。
+
+<SectionQA id="6.2" mode="ask" />
+
+## 本轮实际模型与数据
+
+运行入口仍是6.1的lab.py，无额外命令。TinyBase有**23,040个独立参数**：257字节词表、width32、1层4头、FFN128、LayerNorm/GELU、dropout0、共享词表头、64行可学习位置表。base只在S32上训练，不能因此假定位置32–63已学会长依赖。
+
+GX与NX各64训练/16验证文档，以实体ID分组。各源训练流2,176个字节/EOS token，验证流544个；所有文档34个token，精确文本唯一。模板与四种标签共用，既无真实维修知识，也无跨主题泛化数据。
+
+```text
+GX通用例：Place GX00 has W0. W0 tag: blue.
+NX领域例：Unit NX00 uses Z0. Z0 tag: luma.
+```
+
+## base的实际终点
+
+两个seed各独立训练120更新、B4/S32，每个base消费15,360个通用目标。AdamW、峰值lr0.003、4更新warmup后cosine到10%、weight_decay0.01、clip1。训练前后的逐点记录在lab-reference.json，不只保存最后一个均值。
+
+| seed | 通用S32 NLL | 领域S32 NLL | 领域严格生成 |
+| --- | --- | --- | --- |
+| 42 | 1.574704 | 4.115233 | 0/4 |
+| 43 | 1.304932 | 3.721395 | 0/4 |
+
+seed42首个记录的训练NLL约5.584555，终点记录约1.396060；二者来自不同采样batch，不能当作同一固定验证窗口的因果差。表里的NLL才对应固定512累计验证目标。
+
+## 如何判断这一步成功
+
+base-42.pt/base-43.pt、原始语料和报告存在；参数量、消耗、源身份正确；曲线有限且协议测试通过。这是实现与记录的成功条件，不要求模型已经会聊天或正确续写标签。
+
+base是本地从随机权重练出的小语言模型，不是预训练大基座缩放复现。不要用它的吞吐、遗忘程度或0/4推断真实大模型的性能。可选真实SmolLM2适配在6.5单独列出。
+
+> **一句话听懂**：先知道起点学过什么，再解释适配后发生了什么。
+
+> **到这里，你应该已经能听懂：**“三条支路从同seed的base开始，优化器按新阶段重建。”
+
+<SectionQA id="6.2" mode="answer" />
+
+## 参考资料
+
+[1] [PyTorch TransformerEncoderLayer](https://docs.pytorch.org/docs/2.11/generated/torch.nn.TransformerEncoderLayer.html)。
+
+[2] [Don't Stop Pretraining：适配起点与对照](https://arxiv.org/html/2004.10964v3)。本节参数和结果完全来自本站原创实验，不来自论文。

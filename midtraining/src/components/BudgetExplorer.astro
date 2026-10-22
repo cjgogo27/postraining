@@ -1,0 +1,31 @@
+<section class="budget" data-mid-budget aria-label="中训练token预算手算器">
+  <p><strong>固定预算时，回放比例和序列长度改变了什么？</strong></p>
+  <div class="fields">
+    <label>每rank微批次B<input data-field="batch" aria-label="每rank微批次B" type="number" min="1" max="128" value="4" /></label>
+    <label>序列长度S<select data-field="length" aria-label="序列长度S"><option>32</option><option>64</option><option>1024</option><option>4096</option></select></label>
+    <label>累积A<input data-field="accumulation" aria-label="累积A" type="number" min="1" max="1024" value="1" /></label>
+    <label>数据并行DP<input data-field="dp" aria-label="数据并行DP" type="number" min="1" max="1024" value="1" /></label>
+    <label>更新次数<input data-field="updates" aria-label="更新次数" type="number" min="1" max="100000" value="96" /></label>
+    <label>通用回放%<input data-field="general" aria-label="通用回放比例" type="range" min="0" max="100" step="5" value="25" /></label>
+  </div>
+  <div class="buttons"><button type="button" data-preset="short">S32 / B4</button><button type="button" data-preset="long">S64 / B2</button><button type="button" data-preset="reset">复位</button></div>
+  <output aria-live="polite">每更新128目标；累计12,288目标；通用3,072，领域9,216。</output>
+  <p>假设所有位置有效且没有padding。比例是目标/期望消费；实际执行须检查采样账本和整数配额。此工具不预测质量、显存、耗时或最佳配比，TP/PP/CP不额外乘进源token计数。</p>
+  <noscript>关闭JS仍可核对：4×32×1×1×96=12,288；25%为3,072。S64配B2保持每更新128。</noscript>
+</section>
+<script>
+  import {budget} from '../lib/budget.mjs';
+  for(const root of document.querySelectorAll<HTMLElement>('[data-mid-budget]')){
+    const field=(key:string)=>root.querySelector<HTMLInputElement|HTMLSelectElement>(`[data-field="${key}"]`)!;
+    function render(){try{const x=budget(...(['batch','length','accumulation','dp','updates','general'].map(key=>Number(field(key).value)) as [number,number,number,number,number,number]));root.querySelector('output')!.textContent=`每更新${x.perUpdate.toLocaleString('en-US')}目标；累计${x.total.toLocaleString('en-US')}目标；通用${x.general.toLocaleString('en-US')}，领域${x.domain.toLocaleString('en-US')}。`;}catch(e){root.querySelector('output')!.textContent=(e as Error).message;}}
+    root.querySelectorAll('input,select').forEach(input=>input.addEventListener('input',render));
+    root.querySelectorAll<HTMLButtonElement>('[data-preset]').forEach(button=>button.addEventListener('click',()=>{
+      const long=button.dataset.preset==='long';field('batch').value=long?'2':'4';field('length').value=long?'64':'32';
+      if(button.dataset.preset==='reset')for(const [key,value]of [['accumulation','1'],['dp','1'],['updates','96'],['general','25']])field(key).value=value;
+      render();
+    }));render();
+  }
+</script>
+<style>
+  .budget{padding:1rem;border:1px solid var(--sl-color-gray-4);border-radius:.6rem;margin-block:1.5rem}.fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.7rem}.fields>label{margin:0;display:grid;gap:.3rem;min-width:0}input,select,button{max-width:100%;min-width:0;padding:.45rem;color:var(--sl-color-text);background:var(--sl-color-bg);border:1px solid var(--sl-color-gray-4);border-radius:.3rem}input[type=range]{width:100%;align-self:center}.buttons{display:flex;gap:.5rem;flex-wrap:wrap;margin-block:1rem}.buttons>button{margin:0;cursor:pointer;min-height:2.75rem}output{font-weight:600;display:block;overflow-wrap:anywhere}.budget p:last-child{font-size:.9rem}@media(max-width:26rem){.fields{grid-template-columns:1fr}}
+</style>

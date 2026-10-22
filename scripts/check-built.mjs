@@ -28,7 +28,8 @@ for (const [file, html] of documents) {
     } catch { errors.push(`${label}: missing local target ${link}`); }
   }
 }
-const chapters=JSON.parse(await readFile('src/data/chapters.json','utf8'));
+const chapters=[...JSON.parse(await readFile('src/data/chapters.json','utf8')),
+  ...JSON.parse(await readFile('midtraining/src/data/chapters.json','utf8')).map(item=>({...item,path:'midtraining/'+item.path}))];
 for(const chapter of chapters) {
   const html=documents.get(path.join(root,chapter.path,'index.html'))||'';
   const answer=html.split('section-qa-answer')[1]?.split('</aside>')[0]||'';

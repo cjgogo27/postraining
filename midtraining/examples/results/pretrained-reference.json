@@ -1,0 +1,470 @@
+{
+  "model": "HuggingFaceTB/SmolLM2-135M",
+  "revision": "93efa2f097d58c2a74874c7e644dbc9b0cee75a2",
+  "seed": 42,
+  "steps_per_arm": 8,
+  "batch": 2,
+  "length": 64,
+  "lr": 2e-05,
+  "objective": "all shifted causal-LM targets, including EOS; no prompt/answer mask",
+  "code_sha256": "034b85bb4d371bd28ac66db77092fc033ef7b428f91ab6300f758b70f71bbeef",
+  "corpus_code_sha256": "fc56924e3fc5f7c81778ad741979a9ee4e4244dd0644cd825c9f665b49362a53",
+  "data_sha256": "5ee8b4bee983bdbe6052ddb0048cc331f9a36780eb63418c820359a2d6a85406",
+  "environment": {
+    "python": "3.12.5",
+    "torch": "2.11.0+cpu",
+    "transformers": "5.8.0",
+    "huggingface_hub": "1.14.0",
+    "device": "cpu",
+    "dtype": "float32",
+    "threads": 4
+  },
+  "parameters": 134515008,
+  "run_order": [
+    "domain",
+    "general",
+    "replay25"
+  ],
+  "before": {
+    "general": {
+      "nll": 3.0344338417053223,
+      "targets": 256,
+      "starts": [
+        0,
+        69,
+        138,
+        207
+      ],
+      "stream_sha256": "57222b471888134926a4098d7c19255dd8bf387db74d60d626f319247acac2f2"
+    },
+    "domain": {
+      "nll": 3.2963573932647705,
+      "targets": 256,
+      "starts": [
+        0,
+        74,
+        148,
+        223
+      ],
+      "stream_sha256": "ae49b01f3e2a1a5af50ac3365f8a25589f493ab44d0bad2995170874a173fafd"
+    },
+    "generation": [
+      {
+        "id": "domain-64",
+        "prefix": "Unit NX64 uses Z0. Z0 tag: ",
+        "expected": "luma.\n",
+        "output_ids": [
+          33,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32
+        ],
+        "output": "100000000000",
+        "ended_eos": false,
+        "exact": false
+      },
+      {
+        "id": "domain-65",
+        "prefix": "Unit NX65 uses Z1. Z1 tag: ",
+        "expected": "nexo.\n",
+        "output_ids": [
+          33,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32,
+          32
+        ],
+        "output": "100000000000",
+        "ended_eos": false,
+        "exact": false
+      }
+    ]
+  },
+  "arms": {
+    "domain": {
+      "consumed": {
+        "general": 0,
+        "domain": 1024
+      },
+      "targets": 1024,
+      "history": [
+        {
+          "update": 1,
+          "targets": 128,
+          "train_nll": 3.31027889251709
+        },
+        {
+          "update": 2,
+          "targets": 256,
+          "train_nll": 3.0301454067230225
+        },
+        {
+          "update": 3,
+          "targets": 384,
+          "train_nll": 2.6200973987579346
+        },
+        {
+          "update": 4,
+          "targets": 512,
+          "train_nll": 2.4954118728637695
+        },
+        {
+          "update": 5,
+          "targets": 640,
+          "train_nll": 2.495098114013672
+        },
+        {
+          "update": 6,
+          "targets": 768,
+          "train_nll": 2.173341751098633
+        },
+        {
+          "update": 7,
+          "targets": 896,
+          "train_nll": 2.041856527328491
+        },
+        {
+          "update": 8,
+          "targets": 1024,
+          "train_nll": 1.8518445491790771
+        }
+      ],
+      "final": {
+        "general": {
+          "nll": 2.3011107444763184,
+          "targets": 256,
+          "starts": [
+            0,
+            69,
+            138,
+            207
+          ],
+          "stream_sha256": "57222b471888134926a4098d7c19255dd8bf387db74d60d626f319247acac2f2"
+        },
+        "domain": {
+          "nll": 1.8086658716201782,
+          "targets": 256,
+          "starts": [
+            0,
+            74,
+            148,
+            223
+          ],
+          "stream_sha256": "ae49b01f3e2a1a5af50ac3365f8a25589f493ab44d0bad2995170874a173fafd"
+        },
+        "generation": [
+          {
+            "id": "domain-64",
+            "prefix": "Unit NX64 uses Z0. Z0 tag: ",
+            "expected": "luma.\n",
+            "output_ids": [
+              32,
+              30,
+              1777,
+              32,
+              7771,
+              42,
+              216,
+              33,
+              30,
+              1777,
+              32,
+              7771
+            ],
+            "output": "0. Z0 tag: 1. Z0 tag",
+            "ended_eos": false,
+            "exact": false
+          },
+          {
+            "id": "domain-65",
+            "prefix": "Unit NX65 uses Z1. Z1 tag: ",
+            "expected": "nexo.\n",
+            "output_ids": [
+              33,
+              30,
+              1777,
+              33,
+              7771,
+              42,
+              216,
+              34,
+              30,
+              1777,
+              33,
+              7771
+            ],
+            "output": "1. Z1 tag: 2. Z1 tag",
+            "ended_eos": false,
+            "exact": false
+          }
+        ]
+      }
+    },
+    "general": {
+      "consumed": {
+        "general": 1024,
+        "domain": 0
+      },
+      "targets": 1024,
+      "history": [
+        {
+          "update": 1,
+          "targets": 128,
+          "train_nll": 2.982846736907959
+        },
+        {
+          "update": 2,
+          "targets": 256,
+          "train_nll": 2.8324742317199707
+        },
+        {
+          "update": 3,
+          "targets": 384,
+          "train_nll": 2.682187080383301
+        },
+        {
+          "update": 4,
+          "targets": 512,
+          "train_nll": 2.370774030685425
+        },
+        {
+          "update": 5,
+          "targets": 640,
+          "train_nll": 2.2736663818359375
+        },
+        {
+          "update": 6,
+          "targets": 768,
+          "train_nll": 2.1151654720306396
+        },
+        {
+          "update": 7,
+          "targets": 896,
+          "train_nll": 2.0632050037384033
+        },
+        {
+          "update": 8,
+          "targets": 1024,
+          "train_nll": 1.8708744049072266
+        }
+      ],
+      "final": {
+        "general": {
+          "nll": 1.800169825553894,
+          "targets": 256,
+          "starts": [
+            0,
+            69,
+            138,
+            207
+          ],
+          "stream_sha256": "57222b471888134926a4098d7c19255dd8bf387db74d60d626f319247acac2f2"
+        },
+        "domain": {
+          "nll": 2.646012544631958,
+          "targets": 256,
+          "starts": [
+            0,
+            74,
+            148,
+            223
+          ],
+          "stream_sha256": "ae49b01f3e2a1a5af50ac3365f8a25589f493ab44d0bad2995170874a173fafd"
+        },
+        "generation": [
+          {
+            "id": "domain-64",
+            "prefix": "Unit NX64 uses Z0. Z0 tag: ",
+            "expected": "luma.\n",
+            "output_ids": [
+              32,
+              30,
+              1777,
+              32,
+              7771,
+              42,
+              216,
+              33,
+              30,
+              1777,
+              32,
+              7771
+            ],
+            "output": "0. Z0 tag: 1. Z0 tag",
+            "ended_eos": false,
+            "exact": false
+          },
+          {
+            "id": "domain-65",
+            "prefix": "Unit NX65 uses Z1. Z1 tag: ",
+            "expected": "nexo.\n",
+            "output_ids": [
+              33,
+              30,
+              1777,
+              33,
+              7771,
+              42,
+              216,
+              34,
+              30,
+              1777,
+              33,
+              7771
+            ],
+            "output": "1. Z1 tag: 2. Z1 tag",
+            "ended_eos": false,
+            "exact": false
+          }
+        ]
+      }
+    },
+    "replay25": {
+      "consumed": {
+        "general": 256,
+        "domain": 768
+      },
+      "targets": 1024,
+      "history": [
+        {
+          "update": 1,
+          "targets": 128,
+          "train_nll": 3.31027889251709
+        },
+        {
+          "update": 2,
+          "targets": 256,
+          "train_nll": 3.0907740592956543
+        },
+        {
+          "update": 3,
+          "targets": 384,
+          "train_nll": 2.639108180999756
+        },
+        {
+          "update": 4,
+          "targets": 512,
+          "train_nll": 2.6317999362945557
+        },
+        {
+          "update": 5,
+          "targets": 640,
+          "train_nll": 2.5258126258850098
+        },
+        {
+          "update": 6,
+          "targets": 768,
+          "train_nll": 2.31229829788208
+        },
+        {
+          "update": 7,
+          "targets": 896,
+          "train_nll": 2.086030960083008
+        },
+        {
+          "update": 8,
+          "targets": 1024,
+          "train_nll": 2.091705322265625
+        }
+      ],
+      "final": {
+        "general": {
+          "nll": 2.1192736625671387,
+          "targets": 256,
+          "starts": [
+            0,
+            69,
+            138,
+            207
+          ],
+          "stream_sha256": "57222b471888134926a4098d7c19255dd8bf387db74d60d626f319247acac2f2"
+        },
+        "domain": {
+          "nll": 1.8756941556930542,
+          "targets": 256,
+          "starts": [
+            0,
+            74,
+            148,
+            223
+          ],
+          "stream_sha256": "ae49b01f3e2a1a5af50ac3365f8a25589f493ab44d0bad2995170874a173fafd"
+        },
+        "generation": [
+          {
+            "id": "domain-64",
+            "prefix": "Unit NX64 uses Z0. Z0 tag: ",
+            "expected": "luma.\n",
+            "output_ids": [
+              32,
+              30,
+              1777,
+              32,
+              7771,
+              42,
+              216,
+              33,
+              30,
+              1777,
+              32,
+              7771
+            ],
+            "output": "0. Z0 tag: 1. Z0 tag",
+            "ended_eos": false,
+            "exact": false
+          },
+          {
+            "id": "domain-65",
+            "prefix": "Unit NX65 uses Z1. Z1 tag: ",
+            "expected": "nexo.\n",
+            "output_ids": [
+              33,
+              30,
+              1777,
+              34,
+              7771,
+              42,
+              216,
+              34,
+              30,
+              1777,
+              35,
+              7771
+            ],
+            "output": "1. Z2 tag: 2. Z3 tag",
+            "ended_eos": false,
+            "exact": false
+          }
+        ]
+      }
+    }
+  },
+  "files": {
+    "config.json": "1d556eab73b69c7f11f64c557a2f9c6f440bd4c6b89bb2584a6b498c92603843",
+    "tokenizer.json": "9ca9acddb6525a194ec8ac7a87f24fbba7232a9a15ffa1af0c1224fcd888e47c",
+    "tokenizer_config.json": "4bb9af56a342753d39374f4016a16574cab299fe088e896f425ce3c433f61424",
+    "model.safetensors": "80521b40281d6ce74e35c9282c22539e75aa0ac8578892b2a59955ef78d55da1"
+  },
+  "reload": {
+    "status": "PASS",
+    "generation_identical": true,
+    "nll_atol": 1e-06
+  },
+  "wall_seconds_including_load_evaluate_train_save_reload": 172.21517830000084,
+  "scope": "One seed, 8 updates per arm, held-out entity IDs sharing templates; no real domain/long-context/SFT/RL capability claim; no optimizer resume"
+}

@@ -1,0 +1,26 @@
+---
+import report from '../../examples/results/lab-reference.json';
+---
+<section class="results" data-mid-results aria-label="两seed中训练实测结果">
+  <label>查看实际区组 <select aria-label="查看实际seed" data-mid-seed><option value="42">seed42</option><option value="43">seed43</option></select></label>
+  <p>CPU FP32，23,040参数，三支都从该seed的同一个base出发；每支新增12,288目标。以下数值直接读取已发布JSON，没有调用模型。</p>
+  {report.blocks.map(block=><div data-seed-block={block.seed} hidden={block.seed!==42}>
+    <div class="scroll"><table><caption>seed{block.seed}，固定S32窗口，各集合512累计目标</caption><thead><tr><th>阶段/方案</th><th>领域NLL</th><th>通用NLL</th><th>领域生成</th></tr></thead><tbody>
+    {[['base',block.base],...Object.entries(block.arms)].map(([name,arm])=><tr><th>{name}</th><td>{arm.final.domain_32.nll.toFixed(6)}</td><td>{arm.final.general_32.nll.toFixed(6)}</td><td>{arm.final.generation.filter(x=>x.exact).length}/4</td></tr>)}
+    </tbody></table></div>
+    <details><summary>查看该区组回放支路的原始标签输出</summary>
+      {block.arms.replay25.final.generation.map(item=><article><p><strong>{item.id}</strong>；自然EOS：{String(item.ended_eos)}；严格通过：{String(item.exact)}</p><p>前缀：<code>{item.prefix}</code></p><p>期望：<code>{JSON.stringify(item.expected)}</code></p><p>输出：<code>{JSON.stringify(item.output)}</code></p></article>)}
+    </details>
+  </div>)}
+  <p>这些是同模板新实体探针，不是维修能力基准。0/4的失败仍保留，NLL下降没有被改写为任务成功。</p>
+  <noscript>关闭JS时显示seed42；seed43完整数值亦见正文表与仓库JSON。</noscript>
+</section>
+<script>
+  for(const root of document.querySelectorAll<HTMLElement>('[data-mid-results]')){
+    const select=root.querySelector<HTMLSelectElement>('[data-mid-seed]')!;
+    select.addEventListener('change',()=>root.querySelectorAll<HTMLElement>('[data-seed-block]').forEach(panel=>panel.hidden=panel.dataset.seedBlock!==select.value));
+  }
+</script>
+<style>
+  .results{padding:1rem;border:1px solid var(--sl-color-gray-4);border-radius:.6rem;margin-block:1.5rem}.scroll{overflow-x:auto}.results table{width:100%;font-size:.9rem}.results article{border-top:1px dashed var(--sl-color-gray-4);padding-block:.4rem}.results article p{margin:.3rem 0}.results code{overflow-wrap:anywhere;white-space:pre-wrap}select{padding:.5rem;background:var(--sl-color-bg);color:var(--sl-color-text);max-width:100%}[hidden]{display:none!important}
+</style>

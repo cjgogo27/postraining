@@ -1,0 +1,60 @@
+---
+title: "6.5 从真实小基座适配到后训练交付"
+description: "交出权重之前，把tokenizer、来源、验收与未测范围一起交出。"
+---
+import SectionQA from '../../../components/SectionQA.astro';
+
+> **系统位置**：将[1.3验收后的产物](/postraining/midtraining/01-system-overview/03-midtraining-system-architecture/)交给SFT或其他后续阶段。
+
+## 小夹具之外，还需要知道怎样承接公开基座
+
+默认TinyBase证明接口可以追踪；真实基座有自己的词表、位置结构和已有分布。不能把字节词表256号EOS、默认长度64或小模型的状态直接复制过去。
+
+<SectionQA id="6.5" mode="ask" />
+
+## 可选：本轮实际跑过的SmolLM2适配
+
+```bash
+python -m pip install -r examples/requirements-pretrained.txt
+python midtraining/examples/adapt_pretrained.py --download --out runs/my-midtraining-pretrained
+```
+
+首次显式download；缓存具备后省略该参数。固定`HuggingFaceTB/SmolLM2-135M` revision `93efa2f097d58c2a74874c7e644dbc9b0cee75a2`，134,515,008独立参数，使用其原tokenizer/EOS；无聊天模板，完整右移因果目标，不是回答mask SFT。
+
+同一公开权重分别开通用、纯领域、25%回放三支，各8更新、B2/S64，共1,024目标/支。AdamW lr2e-5、decay0.01、clip1、CPU FP32/4线程、seed42；每支重载原始权重并重建优化器。回放实际领域768、通用256目标。评测各源固定4×64=256累计目标。
+
+| 实际状态 | 领域NLL | 通用NLL | 两条严格生成 |
+| --- | --- | --- | --- |
+| 原公开基座 | 3.29635739 | 3.03443384 | 0/2 |
+| 纯领域终点 | 1.80866587 | 2.30111074 | 0/2 |
+| 通用继续终点 | 2.64601254 | 1.80016983 | 0/2 |
+| 25%回放终点 | 1.87569416 | 2.11927366 | 0/2 |
+
+这里各支通用NLL都比原点低，不能套用小模型“纯领域必回退”的叙述。原始输出仍有重复，例如回放首条为`0. Z0 tag: 1. Z0 tag`，12 token上限内未自然EOS。它说明短适配已改变文本概率，不说明可靠掌握标签。
+
+本轮从缓存未命中开始，实际下载固定revision，然后保存回放产物并cache-only重载；两组NLL误差小于1e-6、两条生成完全相同。墙钟约172.2秒，包含加载/首次下载、评测、训练、保存与重载，不是纯训练吞吐；无峰值内存、GPU性能或费用测量。
+
+## 交付清单比单个权重文件更有用
+
+| 交接物 | 后续阶段需要核对什么 |
+| --- | --- |
+| 权重/架构/tokenizer | 配套版本、特殊token、词表和许可 |
+| 数据与目标约定 | 来源、划分、packing、mask与消费预算 |
+| 运行来源 | base身份、代码、计划、环境、阶段边界 |
+| 评测与模型卡 | 目标收益、保留项、原始输出、失败与未测范围 |
+
+后续SFT通常以新运行处理模板和回答mask，重建适合该目标的状态；不是把中训练的optimizer计数原样接到另一种loss而不说明。也可以在独立验收后不继续训练。
+
+本站没有继续对本轮中训练终点做SFT或RL，不能把另一篇后训练教材的旧成绩接在这里。本例只有一个真实基座seed、短模板与少量更新；没有真实维修、长上下文、对话、安全或生产能力结论。
+
+> **一句话听懂**：交付的是权重、配套协议和证据，不是一条无法解释来源的模型路径。
+
+> **到这里，你应该已经能听懂：**“这个中训练终点可以作为SFT起点，但后续收益还没测。”
+
+<SectionQA id="6.5" mode="answer" />
+
+## 参考资料
+
+[1] [SmolLM2固定revision模型卡与许可](https://huggingface.co/HuggingFaceTB/SmolLM2-135M/blob/93efa2f097d58c2a74874c7e644dbc9b0cee75a2/README.md)。
+
+[2] [Olmo 3：§2模型流与§3.5后续验收](https://arxiv.org/html/2512.13961v2#S2)。本站实验未复现这些大模型项目。

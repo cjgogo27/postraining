@@ -9,6 +9,11 @@ async function walk(dir) {
 const files = (await walk(root)).filter(file => /\.mdx?$/.test(file));
 const routes = new Set(files.map(file => '/postraining/' + path.relative(root, file).replaceAll('\\', '/').replace(/\.mdx?$/, '').replace(/^index$/, '') + '/'));
 routes.add('/postraining/');
+const midRoot=path.resolve('midtraining/src/content/docs');
+for(const file of (await walk(midRoot)).filter(file=>/\.mdx?$/.test(file))) {
+  routes.add('/postraining/midtraining/'+path.relative(midRoot,file).replaceAll('\\','/').replace(/\.mdx?$/,'').replace(/^index$/,'')+'/');
+}
+routes.add('/postraining/midtraining/');
 const publicRoot = path.resolve('public');
 for (const file of await walk(publicRoot)) routes.add('/postraining/' + path.relative(publicRoot, file).replaceAll('\\', '/'));
 const qa = JSON.parse(await readFile('src/data/section-qa.json', 'utf8'));

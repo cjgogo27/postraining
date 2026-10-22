@@ -1,0 +1,50 @@
+---
+title: "4.1 一次更新中，张量和梯度怎样流转"
+description: "同样叫交叉熵，标签右移和有效分母不同，就可能不是同一个目标。"
+---
+import SectionQA from '../../../components/SectionQA.astro';
+
+> **系统位置**：将编码后的窗口转为梯度与新权重，位于[1.3的训练循环](/postraining/midtraining/01-system-overview/03-midtraining-system-architecture/)。
+
+## 为什么不是把整段文本交给一个loss就结束
+
+一批文本有输入、预测目标与有效位置。若把输入本身当同位置标签，模型可能学成复制；若padding也计分，优化会追着人造空白走。先画形状，再检查数值。
+
+<SectionQA id="4.1" mode="ask" />
+
+```text
+input_ids [B,S] → embedding [B,S,32]
+  → Pre-LN → 因果注意力 → 残差
+  → Pre-LN → FFN(32→128→32) → 残差
+  → final norm → 共享输出头 → logits [B,S,257]
+labels [B,S] + loss_mask [B,S] → 逐目标CE → 有效目标平均
+  → backward → 梯度 → AdamW状态/权重更新
+```
+
+默认B4/S32。注意力权重按前缀形成上下文表示；FFN对每个位置做非线性变换；残差把块的输入与变换输出相加。共享embedding/输出头减少一份独立词表矩阵存储，输出投影到257分数的计算仍在。
+
+## 交叉熵到底平均什么
+
+令目标为y、位置mask为m，常见全目标语言建模约定是：
+
+$$L=-\frac{\sum_{b,t}m_{b,t}\log p_\theta(y_{b,t}\mid x_{b,\le t})}{\sum_{b,t}m_{b,t}}.$$
+
+默认所有右移目标m=1；SFT可能只保留回答位置。这里的概率条件已使用因果可见范围，不能把未来标签提前混入输入。mask分母为0的批次应拒绝或按明确协议跳过，不能除零后继续更新。
+
+反向求的是参数梯度，不是把token编号当连续变量改动。优化器用梯度及历史状态更新参数；固定lr下不同有效分母也会改变梯度尺度。评测中计算loss不应更新Adam或采样状态。
+
+## 这个小块与真实基座的差别
+
+TinyBase有1层、4头MHA、LayerNorm、GELU与可学习位置表。采用RoPE/RMSNorm/SwiGLU/GQA的基座在位置、归一化、FFN和KV结构上都不同。本地模型用于检查因果性、计数和状态，不是把所有现代架构压缩成相同实现。
+
+> **一句话听懂**：输入决定看什么，标签决定预测谁，mask与分母决定在哪学习、多大权重。
+
+> **到这里，你应该已经能听懂：**“先核对[B,S,V]和目标mask，再检查梯度异常。”
+
+<SectionQA id="4.1" mode="answer" />
+
+## 参考资料
+
+[1] [PyTorch CrossEntropyLoss：输入/目标形状与归约](https://docs.pytorch.org/docs/2.11/generated/torch.nn.CrossEntropyLoss.html)。
+
+[2] [Olmo 3：§3.2架构与训练约定](https://arxiv.org/html/2512.13961v2#S3.SS2)。上图是本站TinyBase，不是其架构复现。

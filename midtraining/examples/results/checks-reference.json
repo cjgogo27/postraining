@@ -1,0 +1,69 @@
+{
+  "status": "PASS",
+  "count": 12,
+  "checks": [
+    {
+      "name": "entity_group_split_and_exact_unique_documents",
+      "train_groups": 128,
+      "val_groups": 32
+    },
+    {
+      "name": "actual_byte_ids_shift_and_eos",
+      "input_ids": [
+        90,
+        48
+      ],
+      "labels": [
+        48,
+        256
+      ]
+    },
+    {
+      "name": "future_inputs_do_not_change_earlier_logits"
+    },
+    {
+      "name": "position_limit_is_enforced_not_silently_truncated"
+    },
+    {
+      "name": "effective_target_weighting",
+      "global_mean": 3.8,
+      "wrong_mean_of_means": 3.0
+    },
+    {
+      "name": "eight_updates_vs_four_save_reload_four_exact",
+      "targets": 1024,
+      "fields": "model,AdamW,generator,torch RNG,history,source cursor ledger,counters"
+    },
+    {
+      "name": "code_torch_world_encoding_changes_rejected"
+    },
+    {
+      "name": "training_plan_and_actual_data_changes_rejected"
+    },
+    {
+      "name": "actual_lr_source_times_1_01_refused_by_strict_resume"
+    },
+    {
+      "name": "weights_only_new_stage_resets_optimizer_and_stage_counts"
+    },
+    {
+      "name": "short_long_interface_equal_budget_and_source_counts",
+      "counts": [
+        {
+          "general": 1536,
+          "domain": 4608
+        },
+        {
+          "general": 1536,
+          "domain": 4608
+        }
+      ]
+    },
+    {
+      "name": "fixed_evaluation_window_indices_and_target_counts"
+    }
+  ],
+  "torch": "2.11.0+cpu",
+  "code_sha256": "fc56924e3fc5f7c81778ad741979a9ee4e4244dd0644cd825c9f665b49362a53",
+  "scope": "CPU single layout; ordinary optimizer-update boundaries; no file-write crash, CUDA/DDP or long-context ability benchmark"
+}

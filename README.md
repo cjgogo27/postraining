@@ -1,5 +1,7 @@
 # 《听懂大模型后训练》
 
+新增独立教程：[《听懂大模型中训练》](https://cjgogo27.github.io/postraining/midtraining/00-reading-guides/00-outline/)（六章29节、CPU实验与真实小基座短跑）。原后训练书入口与正文保留。仓库完整build现在同时构建两个独立导航/搜索的站点；中训练说明见[midtraining/README.md](midtraining/README.md)。
+
 从监督信号到策略更新，讲清SFT、偏好优化、PPO/GRPO、RLVR、蒸馏、评测与系统接口。面向跨部门工程师、学生、产品/PR；六章29节87个角色问答。
 
 贯穿路线：[RL任务/回报/价值基础](https://cjgogo27.github.io/postraining/00-reading-guides/07-rl-foundations/) → [共同生命周期总图](https://cjgogo27.github.io/postraining/01-system-overview/03-posttraining-system-architecture/) → 各阶段数据/目标 → [执行系统](https://cjgogo27.github.io/postraining/05-evaluation-diagnosis/04-training-rollout-orchestration/) → [阶段交接与综合验证](https://cjgogo27.github.io/postraining/06-tools-practice/04-stage-handoff-and-resume/)。教材/近期综述的对照位置见SOURCE_AUDIT.md，阶段不是固定必经顺序。

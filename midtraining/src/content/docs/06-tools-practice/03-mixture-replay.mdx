@@ -1,0 +1,56 @@
+---
+title: "6.3 实跑领域适配与回放，并保留负结果"
+description: "相同新增token预算，三种数据方案怎样同时影响两个固定集合。"
+---
+import SectionQA from '../../../components/SectionQA.astro';
+import ExperimentResults from '../../../components/ExperimentResults.astro';
+
+> **系统位置**：执行[1.3数据—训练—验收](/postraining/midtraining/01-system-overview/03-midtraining-system-architecture/)的受控小对照。
+
+## 领域分数变好，代价是什么
+
+从同一base出发，继续看GX，全部改看NX，或保留25% GX回放。每支新增目标相同，才有机会把差异与源分布联系起来。
+
+<SectionQA id="6.3" mode="ask" />
+
+## 运行与固定项
+
+```bash
+python midtraining/examples/lab.py --out runs/my-midtraining
+```
+
+同一命令完成base、三支适配和长度接口实验。每个适配支路96更新，B4/S32、12,288目标、峰值lr0.001，AdamW重建；源配比为0/25/100%通用。每个seed的支路执行顺序在运行前由独立确定性seed打乱，记录在report中。
+
+<ExperimentResults />
+
+## 两个seed怎样读
+
+seed42纯领域NLL4.115233→1.938298，通用1.574704→2.391756；回放的领域终点2.033484、通用1.615751。seed43纯领域终点领域1.766318/通用2.186506，回放为领域1.879007/通用1.418477。两组都呈现本例中的收益/回退取舍，不据此宣称25%是普遍最优。
+
+继续通用训练的终点也必须保留：seed42领域5.060922/通用1.120583，seed43领域4.082616/通用0.933862。这条等预算控制说明，新领域证据与额外训练不是同一件事。
+
+<div style="overflow-x:auto"><img src="/postraining/midtraining/figures/mixture-curves.svg" alt="两个seed中三支适配的固定领域与通用验证NLL曲线，数值来自lab-reference.json" style="min-width:40rem;width:100%" /></div>
+
+## 输出失败是结果的一部分
+
+每条支路的4个领域续写探针均为0/4，未自然EOS，达到12个新字节上限。seed42回放对首条输入输出`tag: tag: ta`，seed43出现`useseseses t`等重复。全部原始token与文本随JSON发布，没有手工修成标签。
+
+所以本例支持“领域文本拟合改善”和“回放改变了双集合取舍”，不支持“学会维修”“学会推理”或可靠输出标签。NLL是平均目标预测，重复生成仍可能失败。
+
+## 成功条件、故障与下一步
+
+产物含各seed终点.pt、源消费、逐点lr/NLL、固定窗口索引、生成与起始权重身份。检查纯领域12,288领域目标、回放9,216领域+3,072通用、通用支路12,288通用。
+
+如果没有生成报告，先看非空out目录或依赖错误；若指标非有限，保留报错与状态，不修改报告。想进一步解释失败，可设计标签位置NLL、新模板和更多seed；这些未执行方案不填成绩。
+
+> **一句话听懂**：同预算比较两类分布，并让原始生成决定能否谈任务成功。
+
+> **到这里，你应该已经能听懂：**“回放减少了本例通用回退，但严格标签生成仍没通过。”
+
+<SectionQA id="6.3" mode="answer" />
+
+## 参考资料
+
+[1] [Olmo 3：§3.5.4数据取舍](https://arxiv.org/html/2512.13961v2#S3.SS5)。
+
+[2] [Don't Stop Pretraining：领域对照设计](https://arxiv.org/html/2004.10964v3)。本节全部数值来自本站，不是上述项目复现。

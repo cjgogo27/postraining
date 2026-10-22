@@ -1,0 +1,49 @@
+---
+title: "4.4 多卡拆的是副本、张量、层还是上下文"
+description: "16张卡不等于16份数据副本，扩大窗口后通信也可能换了瓶颈。"
+---
+import SectionQA from '../../../components/SectionQA.astro';
+
+> **系统位置**：组织模型、数据和通信职责，为[1.3更新循环](/postraining/midtraining/01-system-overview/03-midtraining-system-architecture/)提供执行布局。
+
+## 同样16卡，源token计数为什么不同
+
+方案A是16个完整模型副本；方案B先把模型按TP2、PP2、CP2拆开，剩下DP2。两者设备数相同，数据副本数却不同，不能同用DP16的预算公式。
+
+<SectionQA id="4.4" mode="ask" />
+
+| 维度 | 拆分对象 | 常见交接 |
+| --- | --- | --- |
+| DP | 不同数据上的副本或状态分片 | 梯度归约、参数/状态分片通信 |
+| TP | 层内矩阵与头/通道等张量 | 激活或部分结果聚合 |
+| PP | 不同层的流水线阶段 | 微批次激活与反向梯度 |
+| CP | 长序列的上下文计算 | 对应attention的跨块信息 |
+| EP（MoE） | 专家与token路由 | dispatch/combine与All-to-All |
+
+假设把DP/TP/PP/CP作为独立维度，`2×2×2×2=16`。每个数据副本需8卡协作；B1/S4096/A4时源目标/更新为 `2×1×4096×4=32768`，不是乘16得到262144。
+
+```text
+数据副本0： [PP0: TP2×CP2] → [PP1: TP2×CP2]  共8卡
+数据副本1： [PP0: TP2×CP2] → [PP1: TP2×CP2]  共8卡
+两副本之间：按对应参数/分片协议同步，而非任意两卡交换全部张量
+```
+
+## 通信与拓扑要按张量看
+
+TP常需要频繁层内通信，PP涉及激活交接与流水线空泡，DP常在反向期间归约。实际大小由张量形状、精度、bucket和重叠决定。高速链路和多机网络的放置会影响选择，不能仅按“卡越多越快”估算。
+
+SP这个缩写在不同框架可能指激活序列维的不同切分方式，不应未经核对等同CP。MoE的EP也可能与attention侧的DP/CP重组复用同一批设备；所谓五维并行不必是五个独立设备乘数。
+
+本书只给上述独立逻辑布局与计数，无16卡或MoE训练。需要进一步阅读时，可对照已发布的[预训练并行案例](https://cjgogo27.github.io/Pretrain/04-training-distributed/05-tensor-pipeline-context-parallel/)，其逻辑模拟与CPU实测边界须分别保留。
+
+> **一句话听懂**：设备总数、数据副本数和通信组是三个需要分别核对的量。
+
+> **到这里，你应该已经能听懂：**“这里DP只有2，长上下文计算已经分到CP组。”
+
+<SectionQA id="4.4" mode="answer" />
+
+## 参考资料
+
+[1] [PyTorch Distributed设计与DDP](https://docs.pytorch.org/docs/2.11/notes/ddp.html)。
+
+[2] [Megatron Bridge：并行维度与DP计算](https://github.com/NVIDIA-NeMo/Megatron-Bridge/blob/main/docs/parallelisms.md)。动态官方实现须绑定实际版本，本书布局不等于其默认配置。

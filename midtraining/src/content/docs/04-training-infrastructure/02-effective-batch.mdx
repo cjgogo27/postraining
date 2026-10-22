@@ -1,0 +1,41 @@
+---
+title: "4.2 微批次、累积和有效token怎样计数"
+description: "把两个batch的平均loss再平均，会把小batch放大。"
+---
+import SectionQA from '../../../components/SectionQA.astro';
+
+> **系统位置**：确定loss权重、更新边界和预算计数，连接[1.3训练循环](/postraining/midtraining/01-system-overview/03-midtraining-system-architecture/)。
+
+## 平均数的分母为什么是一项工程接口
+
+A批100个有效目标、平均loss2；B批900个、平均loss4。直接把两个均值平均得3，整体有效目标平均却是 `(100×2+900×4)/1000=3.8`。
+
+<SectionQA id="4.2" mode="ask" />
+
+错误平均给两个batch各50%权重，正确权重是10%/90%。其梯度也分别是50%/50%或10%/90%的加权组合，不只是日志显示差异。微批次、rank或长短样本都可能重现这个问题。
+
+## 没有padding时的简式
+
+每rank微批次B、长度S、累积A、数据并行副本D，全部位置有效时：`目标/更新=B×S×A×D`。本书4×32×1×1=128。若有padding、丢弃边界或回答mask，应改用实际有效目标总和。
+
+TP、PP、CP拆的是同一计算或序列，不能在这个源目标公式里再乘一遍。EP路由到多个专家的assignment数也不是新的原始token。动态批量则应按每个成功更新记录实际数量。
+
+## 两rank的缩放语义
+
+假设默认DDP最终平均两个rank的梯度，rank0有100、rank1有900个有效目标。若全局分母为1000，令每rank的局部loss为 `2×局部loss总和/1000`，DDP平均后得到全局总和/1000对应梯度。若DDP或框架采用其他归约，因子要跟着改，不能机械乘world size。[1]
+
+累积时可先知道该更新全部微批次的全局有效数，再按同一分母累加总损失；不要每个微批次单独mean后默认等权。no_sync等机制还需保证最终确有同步，且同步组对应DP维度。
+
+本书默认lab为单进程、全目标，无padding；数值检查实际核对3.8反例，没有新增DDP训练。另一本后训练教程的两rank夹具是独立证据，不能转写成本书中训练多卡成绩。
+
+> **一句话听懂**：把所有有效目标放到正确全局分母下，再累计和同步梯度。
+
+> **到这里，你应该已经能听懂：**“这次更新有1000个有效目标，不能等权平均两个rank的均值。”
+
+<SectionQA id="4.2" mode="answer" />
+
+## 参考资料
+
+[1] [PyTorch DDP设计：梯度同步](https://docs.pytorch.org/docs/2.11/notes/ddp.html)。
+
+[2] [CrossEntropyLoss：sum/mean与有效项](https://docs.pytorch.org/docs/2.11/generated/torch.nn.CrossEntropyLoss.html)。
