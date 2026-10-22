@@ -24,3 +24,33 @@ title: "附录D：来源与阅读顺序"
 实验设计流程参考[Kassis等，Scientific Agent Skills: A Library of Procedural Knowledge for Research Agents，2026](https://arxiv.org/abs/2609.00065)提供的实验设计技能，采用匹配预算、配对seed区组和预先固定指标。此项是方法流程归属，不是中训练效果证据。
 
 逐项论断核对见仓库`midtraining/SOURCE_AUDIT.md`。可访问性只说明链接能打开，关键依据还需阅读对应段落与实验条件。
+
+## 第二轮联网深读：遇到一个问题，去读哪一部分
+
+以下是2026-10-23本轮实际联网查询并阅读的材料，既有新研究，也保留解释基础机制的原始论文；没有把“新”直接等同于“结论更适合本项目”。
+
+| 阅读材料与版本 | 先带着什么问题读 | 回到本书哪里 |
+| --- | --- | --- |
+| [Midtraining Bridges Pretraining and Posttraining Distributions，2510.14865v2，2026-02-02](https://arxiv.org/html/2510.14865v2) §2、5、6 | 作者怎样定义中训练；加入时机与权重如何交互；后续训练怎么控制 | 1.1、3.5、阶段连接 |
+| [DoReMi，2305.10429v3](https://arxiv.org/html/2305.10429v3#S2) §2、4 | 为什么不用原始最高loss直接决定配比；代理权重如何迁移 | 2.4 |
+| [Large-scale Near-deduplication Behind BigCode，2023-05-16](https://huggingface.co/blog/dedup) MinHash Walkthrough、Quality Matters | shingle到候选对再到重复组，分别解决什么 | 2.3 |
+| [Emergent Abilities … under Continued Pretraining for Language Adaptation，2506.00288v1](https://arxiv.org/html/2506.00288v1#S4) §4 | 为什么文本PPL与下游能力可能不同步 | 3.4、5.2 |
+| [SmolLM3官方报告，2025-07-08](https://huggingface.co/blog/smollm3#mid-training) | 长上下文、推理适配和后续阶段各改了什么 | 1.1、3.2、阶段连接 |
+| [OLMo 3，2512.13961v2](https://arxiv.org/html/2512.13961v2#S3.SS5) §3.4–3.6 | 数据处理、局部试验与整合验收怎样连接 | 第2–3章 |
+| [ProLong，2410.02660v1](https://arxiv.org/html/2410.02660v1#S2) §2–3、6.1 | 为什么长文数据、短任务保留和多类评测要一起看 | 3.3、5.3 |
+| [HELMET，2410.02694v1](https://arxiv.org/html/2410.02694v1#S2) §2–3 | 简单检索不能覆盖哪些应用 | 1.2、5.2–5.3 |
+| [RoFormer，2104.09864v5](https://arxiv.org/html/2104.09864v5#S3) §3；[YaRN，2309.00071v3](https://arxiv.org/html/2309.00071v3#S3) §3 | 相对旋转、频段和尺度变化怎样关联长度 | 3.3 |
+| [FlashAttention，2205.14135v2](https://arxiv.org/abs/2205.14135v2) | 减少存储读写，为什么不等于稠密计算变成线性 | 3.3、4.3 |
+| [WSD，2410.05192v1](https://arxiv.org/html/2410.05192v1#S5) §1、3、5 | 稳定主支与衰减分支解决什么预算问题 | 3.5 |
+| [Hugging Face固定窗口PPL文档](https://huggingface.co/docs/transformers/perplexity) | 滑窗与独立分块的条件信息和计分覆盖差在哪 | 5.1 |
+| [Megatron Bridge并行指南](https://github.com/NVIDIA-NeMo/Megatron-Bridge/blob/main/docs/parallelisms.md) TP、PP、Activation Partitioning | 每种切分改变哪些张量和通信 | 4.4 |
+| [PyTorch2.11 Profiler](https://docs.pytorch.org/docs/2.11/profiler.html)、[DDP](https://docs.pytorch.org/docs/2.11/notes/ddp.html)、[AMP](https://docs.pytorch.org/docs/2.11/notes/amp_examples.html) | 时间区间、梯度归约和数值缩放的接口语义 | 4.2–4.5、6.1 |
+| [PyTorch2.11 Elastic](https://docs.pytorch.org/docs/2.11/elastic/run.html)、[DCP](https://docs.pytorch.org/docs/2.11/distributed.checkpoint.html) | 哪些状态由框架处理，哪些仍由应用定义 | 4.5–4.6 |
+
+## 怎么区分“读到了”与“本项目验证了”
+
+论文结果要连着其基座、数据、预算、选择过程和任务一起理解。正文中的二维梯度、矩阵切分、流水线与2×2消融均是本站自编解释，不能写成论文实测；默认lab、公开基座短跑和新增诊断则有各自代码/JSON身份。
+
+动态官方文档会更新。这里PyTorch API尽量固定2.11，以对应本地实际torch2.11.0；保存加载教程当前显示2.14，HF PPL与Megatron指南也是动态页面，本书只引用已核对的概念，不承诺动态示例与本地版本完全一致。无法打开指定版本的页面时改读官方当前页，并在审计记录说明，不能假称打开过原链接。
+
+阅读顺序可以是：1.1的阶段身份→3.1/3.4的概率与保留→2.3/2.4的数据方法→3.3的长度机制→4章接口→5章证据。先回答自己的问题，再打开推导与实现资料，比按论文年份逐篇堆叠更容易建立关系。

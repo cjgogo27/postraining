@@ -32,6 +32,27 @@ loss_mask决定哪些目标计loss，不决定能看谁。attention mask决定�
 
 这让目标计数容易核对，却不是每个长上下文项目应采用的配置。公开基座分词器保留原词表和EOS约定；本地字节模型的256不能带过去。增加特殊token还涉及embedding、输出头与保存身份，不应只改字符串。
 
+## 看一张真正的可见矩阵
+
+上例前三个有效输入为A、EOS、B。普通因果attention的允许矩阵为：
+
+```text
+          key A  EOS  B
+query A       1   0   0
+query EOS     1   1   0
+query B       1   1   1
+```
+
+这里1表示允许，与某些API里“布尔True表示屏蔽”的约定相反；实现时必须按接口转换，不能直接把教学矩阵传入函数。TinyBase构造的是上三角布尔屏蔽矩阵，未来位置True，历史位置False。
+
+若要求B只看B，把最后一行改为0、0、1，同时需决定从A的EOS预测B这一跨文档目标是否还参与loss、B的位置是否重置，以及文档首token由什么前缀预测。四个选择共同定义目标，不能只画block diagonal就结束。
+
+## tokenizer变化为何牵动整个接口
+
+假设词表原有V项，新增一个领域token：embedding和未共享输出头都可能需要扩为V+1；共享头则应保持同一权重关系。新行从哪里初始化、是否训练、tokenizer是否随权重保存，都影响下一次加载。即使所有旧ID保持不变，新切词规则也可能改变旧文本的目标数和频率。
+
+所以先量化原分词器对领域术语、代码和多语的编码长度，再决定是否值得改词表。默认和真实基座实验均保留各自原分词器，没有做词表扩展。[PyTorch CE文档](https://docs.pytorch.org/docs/2.11/generated/torch.nn.CrossEntropyLoss.html)定义的是类别索引与归约，不会替调用方完成词表一致性或文档边界设计。
+
 > **一句话听懂**：EOS、attention mask、loss mask与position约定是四件需要对齐的事。
 
 > **到这里，你应该已经能听懂：**“这版packing允许跨文档attention，EOS不是屏障。”

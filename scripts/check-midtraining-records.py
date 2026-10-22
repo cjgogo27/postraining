@@ -1,6 +1,7 @@
 """Check published experiment provenance/counts without retraining or torch imports."""
 import hashlib
 import json
+import math
 from pathlib import Path
 
 root=Path(__file__).resolve().parents[1]/'midtraining'
@@ -26,4 +27,25 @@ for arm in lab['length_interface']:
  assert arm['targets']==6144 and arm['consumed']==dict(general=1536,domain=4608)
  assert arm['initial_identity']==lab['blocks'][0]['arms']['replay25']['final_identity']
 assert pre['parameters']==134515008
+diagnostics=read('diagnostics-reference.json');profiler=read('profiler-reference.json')
+assert diagnostics['code_sha256']==identity(root/'examples/diagnose.py')
+assert profiler['code_sha256']==identity(root/'examples/profile_cpu.py')
+assert diagnostics['lab_sha256']==profiler['lab_sha256']==lab['code_sha256']
+assert diagnostics['data_sha256']==lab['data_sha256']
+for block,old in zip(diagnostics['blocks'],lab['blocks'],strict=True):
+ assert block['seed']==old['seed']
+ assert len(block['models'])==4
+ for name,model in block['models'].items():
+  origin=old['base'] if name=='base' else old['arms'][name]
+  assert model['identity']==origin['final_identity']
+  assert model['original_greedy_correct']==0
+  for region in model['regions'].values():
+   assert region['prefix_targets']==104 and region['answer_targets']==28
+   assert len(region['probes'])==4
+   assert sum(row['candidate_correct'] for row in region['probes'])==region['candidate_correct']
+assert profiler['recorded_updates']==4 and profiler['recorded_targets']==512
+assert len(profiler['events'])==4 and all(row['calls']==4 and row['cpu_total_us']>=row['self_cpu_us']>=0 for row in profiler['events'])
+oracle=read('diagnostic-checks-reference.json')
+assert oracle['status']=='PASS' and len(oracle['checks'])==5
+assert abs(oracle['expected_nll']-math.log(257))<1e-12
 print(json.dumps(dict(status='PASS',scope='published source/data identities, matched starts/budgets, stage inheritance and preserved failures; no retraining')))

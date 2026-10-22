@@ -36,6 +36,35 @@ SP这个缩写在不同框架可能指激活序列维的不同切分方式，不
 
 本书只给上述独立逻辑布局与计数，无16卡或MoE训练。需要进一步阅读时，可对照已发布的[预训练并行案例](https://cjgogo27.github.io/Pretrain/04-training-distributed/05-tensor-pipeline-context-parallel/)，其逻辑模拟与CPU实测边界须分别保留。
 
+## TP：把一层矩阵实际切开
+
+自编FFN例：输入X为`[B,S,H=8]`，第一权重W1为`[8,32]`，TP2沿输出通道切成两份`[8,16]`。两卡各得`[B,S,16]`，逐点激活后，第二权重W2沿输入切为各`[16,8]`。每卡计算一份`[B,S,8]`部分和，再相加得到原输出。
+
+```text
+同一X ─┬→ W1左[8,16] → 激活 → W2上[16,8] ─┐
+       └→ W1右[8,16] → 激活 → W2下[16,8] ─┴→ 求和 → [B,S,8]
+```
+
+这里按数学记法XW给出矩阵形状；PyTorch的Linear.weight通常存为`[out_features,in_features]`，实现中相应转置，不能把两种布局混用。此图忽略bias以说明线性分解；如果第二层bias在每卡相加前都加一份，最终会重复。框架还要处理反向通信与激活布局。TP减少本卡部分参数与激活，不会让源数据变成两倍。
+
+## PP：流水线为什么会空泡
+
+假设两stage、三个微批次，仅画forward：
+
+```text
+时间槽    1     2     3     4
+stage0   F1    F2    F3     -
+stage1    -    F1    F2    F3
+```
+
+忽略通信且stage同耗时，forward-only占用率为3/(3+2−1)=75%；这不是完整训练1F1B的性能公式。反向还要把激活梯度传回，调度要权衡空泡、在途激活内存和阶段负载。不能仅凭stage数量估计加速比。
+
+## CP、SP与EP具体区别在哪里
+
+在[Megatron Bridge并行指南的Activation Partitioning部分](https://github.com/NVIDIA-NeMo/Megatron-Bridge/blob/main/docs/parallelisms.md)中，SP主要切部分层的序列激活，并依赖TP；CP对各层上下文作切分，attention仍需交换所需信息。MoE的EP根据token路由分派专家，可能出现All-to-All与专家负载不均。路由到两个专家意味着两次assignment，不意味着两次原始训练token。
+
+选布局时先写参数/激活能否容纳，再写每组通信张量、拓扑和流水线负载，最后目标硬件短跑验证。上述矩阵、时序与16卡布局均为手算，没有宣称在本书运行TP/PP/CP/EP。
+
 > **一句话听懂**：设备总数、数据副本数和通信组是三个需要分别核对的量。
 
 > **到这里，你应该已经能听懂：**“这里DP只有2，长上下文计算已经分到CP组。”

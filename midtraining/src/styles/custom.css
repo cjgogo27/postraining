@@ -3,6 +3,7 @@
 .sl-markdown-content { font-size: 1.125rem; line-height: 1.85; }
 .sl-markdown-content table { font-size: 1rem; display: block; overflow-x: auto; }
 .sl-markdown-content th { text-align: center; }
+@media (max-width: 34rem) { .sl-markdown-content th { white-space: nowrap; } }
 .sl-markdown-content pre { font-size: .9375rem; }
 .sidebar-content :is(a, summary, .group-label) { font-size: 1rem; }
 .right-sidebar-panel :is(a, .toc-title) { font-size: .9375rem; }

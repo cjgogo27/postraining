@@ -21,3 +21,20 @@ title: "附录B：配置、默认值与身份契约"
 严格恢复核对代码SHA、数据身份、完整配置、PyTorch版本、world size与编码契约，并恢复模型、AdamW、随机状态、窗口账本和计数。此实现仅在普通更新边界保存，world size固定1；并不支持弹性重分片恢复。
 
 公开SmolLM2分支使用原分词器/位置机制，B2/S64、8更新、lr2e-5、CPU4线程。它没有严格优化器续训功能。不得把默认字节ID、位置64和状态文件套到公开模型。
+
+## 新增脚本怎样复用旧产物
+
+| 脚本 | 输入/输出 | 是否更新权重 |
+| --- | --- | --- |
+| diagnose.py | 原lab目录→两个区组八状态的区域NLL/四候选分数 | 否，只读可信checkpoint |
+| profile_cpu.py | 新随机模型→两次预热与四次记录更新的CPU trace | 是，独立标注示范；不改旧实验 |
+| verify_diagnostics.py | 恒定零logits夹具→手算ln257与计数检查 | 否，不是训练 |
+| check-midtraining-records.py | 已发布JSON/源文件→身份与计数核对 | 否，无需导入torch |
+
+新增诊断不改旧lab.py与adapt_pretrained.py，原报告的代码身份仍有效。区域诊断与四选一是在看到旧生成失败之后提出，因此标为事后分析。CPU profiler固定lr0.001，不采用lab的warmup-cosine，也不输出原实验的能力成绩。
+
+## 报告里的几个键怎样连接
+
+`code_sha256`连接实际脚本；`data_sha256`连接原创语料；`initial_identity`连接父检查点；`final_identity`连接本状态的权重；`targets/consumed`连接成功更新后的源预算；评测`starts/stream_sha256`连接固定窗口。
+
+只要其中某个身份不同，就要说明正在比较什么。两个报告都来自“seed42”并不构成相同起点的证据；同一模型名也不构成相同revision的证据。

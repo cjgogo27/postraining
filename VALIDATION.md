@@ -2,6 +2,8 @@
 
 ## 2026-10-23：新增独立《听懂大模型中训练》
 
+同日第二轮按用户要求联网补充29节解释，新增只读答案区域/候选诊断与CPU profiler，原训练代码与报告保持。新增检查、19组浏览器验证、来源位置及限制见[midtraining/VALIDATION.md第二轮记录](midtraining/VALIDATION.md)。
+
 原后训练正文保留，新增`midtraining/`子站，构建/链接检查现在覆盖两书。实际默认两seed配比与恢复实验、可选公开SmolLM2适配、Node14项及双站构建、浏览器新站15组/原站13组检查与限制，集中记录于[midtraining/VALIDATION.md](midtraining/VALIDATION.md)。下方原后训练历史结果仍按其原时间/版本理解。
 
 ## 2026-10-22后续：把RL基础、各阶段目标与执行系统接成一条链

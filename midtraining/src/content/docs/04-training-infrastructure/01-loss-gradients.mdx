@@ -37,6 +37,27 @@ $$L=-\frac{\sum_{b,t}m_{b,t}\log p_\theta(y_{b,t}\mid x_{b,\le t})}{\sum_{b,t}m_
 
 TinyBase有1层、4头MHA、LayerNorm、GELU与可学习位置表。采用RoPE/RMSNorm/SwiGLU/GQA的基座在位置、归一化、FFN和KV结构上都不同。本地模型用于检查因果性、计数和状态，不是把所有现代架构压缩成相同实现。
 
+## 从257个分数，到一个可手算的梯度
+
+先把词表缩成三个示意类别：logits为`[0,0,0]`，softmax为`[1/3,1/3,1/3]`，正确标签是类别1。该位置CE约1.0986，对三个logit的导数为`[1/3,−2/3,1/3]`。若直接用lr0.3对这三个分数做SGD，新分数为`[−0.1,0.2,−0.1]`，正确类概率约0.4030。
+
+这只是单位置、直接优化分数的算例。真实模型更新共享参数，参数又同时决定许多位置的分数；不能把每个logit当作独立可存储参数。一个batch改善也不保证另一个上下文的正确概率都提高。
+
+## 把block里的形状补全
+
+```text
+X [4,32,32]
+ LayerNorm → Q/K/V各[4,4,32,8]
+ QK^T / sqrt(8) → 因果分数[4,4,32,32]
+ softmax×V → 合并头[4,32,32] → 输出线性 → +X
+ LayerNorm → Linear[32,128] → GELU → Linear[128,32] → 残差
+ final norm → 词表投影[32,257] → [4,32,257]
+```
+
+32是隐藏宽度，4头使每头宽8。注意力连接不同位置，FFN在各位置应用同一组参数，残差连接保持主干形状。以上对应TinyBase的Pre-LN结构，不代表所有decoder的norm、FFN或KV头都相同。
+
+实现核对时，先看输入dtype为整数ID，输出最后维为词表，再确认flatten没有打乱`[B,S]`与标签顺序。[CE接口](https://docs.pytorch.org/docs/2.11/generated/torch.nn.CrossEntropyLoss.html)接收未归一化分数；在外面先softmax再交给CE，会改变本来应由log-softmax处理的目标。
+
 > **一句话听懂**：输入决定看什么，标签决定预测谁，mask与分母决定在哪学习、多大权重。
 
 > **到这里，你应该已经能听懂：**“先核对[B,S,V]和目标mask，再检查梯度异常。”

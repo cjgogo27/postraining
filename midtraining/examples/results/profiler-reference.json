@@ -1,0 +1,41 @@
+{
+  "status": "PASS",
+  "code_sha256": "1c5485fe1551fb393bbdda0e96c9fddddea92c33be310325de2873e1e7f9217f",
+  "lab_sha256": "fc56924e3fc5f7c81778ad741979a9ee4e4244dd0644cd825c9f665b49362a53",
+  "environment": {
+    "python": "3.12.5",
+    "torch": "2.11.0+cpu",
+    "device": "cpu",
+    "threads": 1
+  },
+  "warmup_updates": 2,
+  "recorded_updates": 4,
+  "recorded_targets": 512,
+  "events": [
+    {
+      "name": "mid/data",
+      "calls": 4,
+      "cpu_total_us": 8307.100000000002,
+      "self_cpu_us": 3282.7999999999784
+    },
+    {
+      "name": "mid/forward_loss",
+      "calls": 4,
+      "cpu_total_us": 13907.299999999994,
+      "self_cpu_us": 5487.499999999929
+    },
+    {
+      "name": "mid/backward",
+      "calls": 4,
+      "cpu_total_us": 18914.90000000001,
+      "self_cpu_us": 4587.600000000033
+    },
+    {
+      "name": "mid/clip_update",
+      "calls": 4,
+      "cpu_total_us": 27286.7,
+      "self_cpu_us": 5079.200000000037
+    }
+  ],
+  "scope": "Fresh random model, fixed lr .001, CPU-only four-update instrumented trace; no evaluation/save/I/O service/communication/GPU, no MFU, no throughput claim. Inclusive times overlap with child operators and profiler adds overhead."
+}

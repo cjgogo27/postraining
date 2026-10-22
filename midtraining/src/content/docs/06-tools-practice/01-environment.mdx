@@ -51,6 +51,36 @@ npm run preview
 
 从预览地址的`/postraining/midtraining/`进入。`npm run dev:midtraining`只启动中训练站开发；完整build先构建原后训练站，再构建独立中训练子站，二者标题、侧栏与搜索分开。
 
+## 每一步先看什么，再继续下一步
+
+```text
+解释器/依赖 → verify通过 → lab生成独立目录
+           → 固定报告计数 → 原始输出 → 新诊断/性能时间线
+```
+
+`ModuleNotFoundError`先核对当前python和pip是否同环境；`out`非空是防止覆盖旧证据，换新目录而非删旧报告；源码身份不匹配时先确认是否切换了版本，不能手工改checkpoint哈希强行恢复。完整流程不要求输出漂亮答案，要求检查对象与结果能对上。
+
+默认脚本只依赖torch/NumPy。公开基座另用Transformers/HF Hub；下载开关应显式提供。绘图的matplotlib是可选依赖，不应为了跑最短训练路线而安装生产平台。
+
+## 新增CPU profiler：看人工区间怎样包住算子
+
+```bash
+python midtraining/examples/profile_cpu.py --out runs/my-midtraining-profile
+```
+
+本轮实际CPU单线程、FP32，两次预热更新后记录四次更新/512目标。人工区间的inclusive CPU累计时间如下，单位毫秒，**不是每步延迟或无记录器吞吐**：
+
+| 区间 | 实际调用数 | CPU总时间ms |
+| --- | --- | --- |
+| mid/data | 4 | 8.3071 |
+| mid/forward_loss | 4 | 13.9073 |
+| mid/backward | 4 | 18.9149 |
+| mid/clip_update | 4 | 27.2867 |
+
+产物为`report.json`与Chrome trace格式的`trace.json`，后者可用支持该格式的时间线查看器打开。本轮验证文件可解析并含四类人工区间；不声称已经在某个时间线UI中人工拖拽检查。记录器有开销，算子行与人工父区间不能重复相加；四次短跑也不足以给优化器性能排名。
+
+该脚本使用新随机模型、固定lr0.001做标注示范，没有继承真实base、没有执行原lab评测/保存，也没有替代原来96更新的配比实验。[Profiler官方API](https://docs.pytorch.org/docs/2.11/profiler.html)定义了区间、活动和时间选项，解释结果时要保留CPU/GPU与inclusive/self的区别。
+
 > **一句话听懂**：先让最小命令产出可追溯记录，再扩大模型和系统复杂度。
 
 > **到这里，你应该已经能听懂：**“这份报告绑定了环境和代码，权重留在独立运行目录。”

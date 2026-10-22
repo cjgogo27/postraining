@@ -22,4 +22,54 @@ token是分词器定义的编号，不天然等于字或词。默认实验用UTF
 
 去[2.5编码与mask](/postraining/midtraining/02-data-tasks/05-tokenizer-packing-masks/)检查可见范围，去[4.1梯度](/postraining/midtraining/04-training-infrastructure/01-loss-gradients/)手算有效目标加权。
 
-来源：[PyTorch 2.11交叉熵定义](https://docs.pytorch.org/docs/2.11/generated/torch.nn.CrossEntropyLoss.html)。
+## 条件概率中的竖线，到底固定了什么
+
+`p(luma | Z0 tag:)`表示已经给定前缀之后，模型对后续文本的条件概率；它不是“luma这条知识为真的概率”。语言模型在拟合文本分布，任务真伪还需要外部证据与评分协议。
+
+假设一个极小的示意分词器恰好把回答分成三个token，条件概率依次0.5、0.8、0.25，则序列概率为0.1，总NLL为`−ln(0.1)≈2.3026`，平均每token约0.7675。若还要求EOS，EOS概率也必须计入，不能把没结束的前缀当作完整序列。
+
+这个三token示例是手算，不是本书字节词表对luma的编码。真实默认编码中答案及EOS有7个目标，6.3的新诊断逐项保留分数。
+
+## loss mask为什么影响“哪件事被优化”
+
+假设一条序列前缀有26个目标、答案与EOS有7个。全目标训练对33个位置计分；回答监督只对后7个计分。如果两者都叫“平均loss”，分母分别是33与7，优化的期望对象不同。attention仍可让答案读到前缀，屏蔽前缀loss并不表示前缀不可见。
+
+教师强制给出正确历史，例如预测答案第三个token时，前两个token来自真实答案。自由生成时它们来自模型自己，一次错选会改变后面的条件分布。所以正确序列logp改善、候选排名不变、实际输出仍错，可以同时出现。
+
+## 梯度与“正确答案概率上升”之间隔了共享参数
+
+一个位置的正确类对logits导数可写为`p−one_hot(y)`，下降方向会压低错误类、提升正确类分数。但参数同时影响多个位置和多个样本；将不同位置梯度相加后，可能出现方向冲突。4.1先用三个分数演示局部变化，3.4再用二维梯度解释分布取舍。
+
+学习率控制步长，优化器状态影响怎样使用历史方向，梯度裁剪限制本次梯度尺度。三者不能统一称为“让模型学得更快”的开关；它们改变的是更新过程，不直接规定哪条业务答案必须变对。
+
+## 四个能检验理解的短问题
+
+<details>
+<summary>同一段文本切成更多token，平均loss还能直接比吗？</summary>
+
+不能只比这个均值。预测单位、序列边界与上下文都可能变，须先统一协议或定义明确的文本归一化单位；NLL本身不是错误率。
+
+</details>
+
+<details>
+<summary>一句话生成错了，是否说明所有token概率都没改善？</summary>
+
+不说明。正确token概率可以上升却仍小于错误token，贪心选择不变；自回归还会受到先前错选影响。
+
+</details>
+
+<details>
+<summary>只保存权重，能否接着完全相同的一步更新？</summary>
+
+不一定。Adam状态、下一批、随机状态和学习率进度可能不同，需按4.6的恢复契约检查。
+
+</details>
+
+<details>
+<summary>loss平均值变了，是否总是数据分布发生变化？</summary>
+
+不是。标签右移、mask、分母、窗口、模型模式和数值实现变化，也会改变这个数。
+
+</details>
+
+来源：[PyTorch 2.11交叉熵定义](https://docs.pytorch.org/docs/2.11/generated/torch.nn.CrossEntropyLoss.html)，[固定上下文模型PPL协议](https://huggingface.co/docs/transformers/perplexity)。数字均为本页自编手算。

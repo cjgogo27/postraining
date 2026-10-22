@@ -47,6 +47,25 @@ python midtraining/examples/adapt_pretrained.py --download --out runs/my-midtrai
 
 本站没有继续对本轮中训练终点做SFT或RL，不能把另一篇后训练教材的旧成绩接在这里。本例只有一个真实基座seed、短模板与少量更新；没有真实维修、长上下文、对话、安全或生产能力结论。
 
+## 为什么公开基座不能沿用字节模型的整数
+
+SmolLM2词表、EOS和子词长度来自固定revision的tokenizer；`luma`可能被切成多个子词，不再是默认四个字母目标。即使原文相同，两模型的1,024目标也对应不同文本消费与预测单位，所以不能把PPL或每token耗时横向排名。
+
+同样需要绑定模型config与tokenizer文件，而不只保存远端模型名。远端main可能更新，固定revision才能把来源和实际下载文件SHA关联起来。本轮报告记录的134,515,008是实际独立参数量，不按模型名里的135M四舍五入当精确值。[固定模型卡](https://huggingface.co/HuggingFaceTB/SmolLM2-135M/blob/93efa2f097d58c2a74874c7e644dbc9b0cee75a2/README.md)提供来源与许可；成绩来自本站运行。
+
+## 一个可审查的后续交付目录
+
+```text
+adapted/         模型权重、config、配套tokenizer
+run_manifest    来源revision、代码/语料身份、完整训练计划
+evaluation      原始输出、结束原因、NLL窗口和评分器版本
+model_card      适用任务、失败、未测项、后续验收要求
+```
+
+这是交接对象示意，当前脚本实际保存adapted目录及report.json；没有宣称生成了名称为run_manifest的额外文件。下游可据这些信息建立新的SFT运行，明确聊天模板和回答mask，先做训练前基线，再比较后续训练结果。
+
+如果要研究“中训练是否为SFT提供更好起点”，应对原公开base与adapted分别采用相同SFT数据、预算、seed和评测；同时列中训练额外成本。只跑适配后SFT而没有原base对照，不能隔离中训练贡献。该下游实验尚未执行，不能接用另一篇后训练教材的成绩。
+
 > **一句话听懂**：交付的是权重、配套协议和证据，不是一条无法解释来源的模型路径。
 
 > **到这里，你应该已经能听懂：**“这个中训练终点可以作为SFT起点，但后续收益还没测。”

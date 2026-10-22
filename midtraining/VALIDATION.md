@@ -1,5 +1,52 @@
 # 实际验证：《听懂大模型中训练》
 
+## 2026-10-23第二轮：联网深读、逐节解释与新增诊断
+
+本轮基线`a3d672a026dfca1229db8f6e86266aeafa3c6b93`，起始工作树干净；发布前再次fetch，origin/main仍为该提交。下文第一轮实验记录保留其原版本/时间含义。
+
+### 内容与来源
+
+- 扩写29个正文小节全部，另补必要基础、阶段连接与3个附录；保持六章29节87问答、41页。21条角色答案随新解释增强。源检查中文字符统计23,461→37,629（约增加60%，包含页面标题/引用等，不当成纯正文词数）。原后训练正文没有修改。
+- 实际联网查询并阅读arXiv论文及官方资料，主要支持位置在SOURCE_AUDIT.md与附录D。新增Midtraining Bridges…的v2（2026-02-02）、DoReMi、BigCode近似去重、语言适配与PPL/ICL、FlashAttention、PyTorch Profiler等；既查元数据，也核对具体论断。没有用搜索摘要代替所有原文支持。
+- 将配比/加入时机、全文/关键区域/候选/自由生成、source token/专家assignment、可加载/数学等价/容差/位级一致分开。矩阵、Jaccard、梯度、流水线和消融为自编手算或设计，不列为集群实测。
+- 外链检查初次发现GitHub标题片段未出现在HTML id中，改为原文链接加明确章节名；修正后扫描57个URL/片段，其中ProLong同一页面的4个URL因一次读取超时未完成，随后单页重试HTTP200且S2/S3/S6锚点存在，其余通过。HTTP检查与人工论断核对分别记录。
+- HF Transformers v5.8.0 PPL页面本轮无法通过浏览工具打开，实际改读官方当前页；PyTorch保存加载教程当前显示2.14，其余主要API固定2.11，与实际运行2.11环境区分。
+
+### 新增代码与实际执行
+
+```bash
+python midtraining/examples/diagnose.py --run runs/midtraining-20261023 --out runs/midtraining-diagnostics-detail-20261023
+python midtraining/examples/profile_cpu.py --out runs/midtraining-profiler-detail-20261023
+python midtraining/examples/verify_diagnostics.py --out runs/midtraining-diagnostics-oracle-20261023
+python scripts/check-midtraining-records.py
+python -m compileall -q midtraining/examples scripts/check-midtraining-records.py
+```
+
+- diagnose实际PASS：原两seed八个状态，核对旧lab/数据及每个权重身份；每源前四个留出实体，逐篇33目标，前缀104、答案含EOS28。领域与回放支路关键区域NLL也改善；八状态各源四候选皆1/4，原自由生成0/4保持。表和逐候选logp发布于diagnostics-reference.json。这是事后解释性分析，不是新的预定主指标、独立test或追加训练。
+- 新诊断独立恒定logits手算检查5项PASS：CE=ln257、区域104/28分母、各7目标候选logp、并列候选的固定选择、函数调用不改变torch RNG。该夹具不代表真实模型能力。
+- CPU profiler实际PASS：新随机模型、固定lr0.001，2次预热后记录4更新/512目标；四类人工区间各4调用。trace.json约2.20MB，实际解析确认16条人工完整区间；汇总发布profiler-reference.json。CPU累计时间见6.1，不能换算GPU吞吐或MFU。
+- profiler发出“每个cycle末尾清理事件”的通用警告；该次没有多个记录cycle，4次调用与导出16事件均已核对。未声称在时间线UI中人工操作检查。
+- check-midtraining-records扩展后实际PASS：含新脚本SHA、旧权重身份、区域分母、候选计数、CPU记录数与oracle。原lab.py、adapt_pretrained.py、verify.py及原训练JSON与基线无diff；本轮未重跑原配比/真实基座训练，也未重跑原后训练训练实验。
+
+### 文档与显示检查
+
+```bash
+npm test
+npm run check:docs
+npm run build
+npm run check:built
+node scripts/check-midtraining-browser.cjs
+```
+
+- Node14项PASS。源检查原站45页/29节/87问答，新站41页/29节/87问答；双站86 HTML、19 KaTeX、缺失内部目标/锚点0、58问答组通过。
+- 一次构建在Jaccard示意的未转义集合花括号处报MDX ReferenceError，已改为行内代码；随后完整双站构建通过。原框架指令/i18n/404警告仍存在。
+- Headless Edge155.0.4283.62，1280×900及390×844，reduced-motion；初次17组PASS。实际查看诊断表截图发现手机表头逐字竖排，添加仅中训练站的手机表头nowrap，使用表内横向滚动；修复后19组PASS。
+- 最终19组涵盖两宽度遍历29正文与10阅读/附录页无页面横向溢出、新基础折叠区键盘展开/关闭、角色/预算/seed/原负输出、明暗、原站标题与偏好隔离及无JS。手机实际操作表内横滚并检查右侧0/4列；已查看桌面、修复前/后手机表截图。没有真实手机/Safari、线上浏览器或所有页面截图覆盖的宣称。
+
+新增脚本使用同一Python3.12.5/torch2.11.0+cpu环境，默认CPU1线程；未新建安装环境。未新增CUDA、多rank、TP/PP/CP/EP、AMP、弹性故障恢复、真实长依赖、生产性能与后续SFT/RL验证。上述解释和设计不填成绩。
+
+---
+
 日期2026-10-23，基线`7e7de34aa89e7a422b1221ac0110c1e514482125`。开始工作树干净，fetch后本地与远端一致。新书独立放在`midtraining/`，原后训练书不改写为中训练。
 
 ## 实验：预定计划、真实数据与失败结果
