@@ -1,5 +1,52 @@
 # 实际验证记录：《听懂大模型后训练》
 
+## 2026-10-22：RL分类、机制、Agent与蒸馏补充
+
+本轮基线`43cdcdcbfae46c2a262b322ba4f3d4d7ae9af7c8`，工作树开始干净，fetch后远端main一致。先阅读现有RL六节、编排/实践、问答与历史记录，再检索一手资料。六章29节87问答保留；新增RL地图、Agent/MARL扩展与10份资料导读，共44页面。原postcore.py/train.py/rlvr.py/pretrained_sft.py与基线内容逐文件核对未改。
+
+### 内容与引用
+
+- 在线/离线与on/off-policy分轴，给出缺覆盖反例及Bellman自举的直觉；PPO展开GAE、终止/截断、价值目标、四种clip与批量计数。
+- GRPO连接RLOO、DAPO与GSPO，区分长度归约、组标准化、保留样本分布与真实采样成本；Agent/MARL补动作/观察、角色、共享参数、CTDE与条件反事实基线。
+- OPD区分前向KL估计与梯度，OPSD明确特权信息、同参数教师和停止梯度；加入近期Semi-OPD条件化对照，不外推普遍优劣。
+- 10份重点资料的标题/首作者/版本与具体支持位置见附录F和SOURCE_AUDIT.md。选用2025–2026论文/官方文档，PPO/GAE/offline RL/RLOO/MAPPO基础另外列出，不称全网最新排名。
+
+### 实际CPU与JS检查
+
+环境沿用Windows11、Python3.12.5、torch2.11.0+cpu；未新增训练依赖。Node24.14.0/npm11.9.0及既有Astro7.3.1/Starlight0.42.0用于构建；本轮未声称重新安装。
+
+| 实际运行 | 结果与产物 |
+| --- | --- |
+| python examples/rl_mechanisms.py --out runs/rl-mechanisms-20261022 | PASS：12项CPU FP64/单线程数值与梯度夹具；rl-mechanisms-reference.json，源码SHA7655ef38f6affc645b67bbda36f904a2a4cc0e42e247d88f54ba12e4a1d72590与当前文件一致 |
+| python examples/verify.py --out runs/checks-20261022 | PASS：原16项，含SFT/DPO/有限动作RL的边界恢复和代码/数据/配置/环境变化拒绝；rl-regression-20261022.json保留原报告 |
+| python examples/verify_teaching.py --out runs/teaching-checks-20261022 | PASS：原5项手算/梯度/消息mask；同一回归报告内保留 |
+| python -m compileall -q examples | PASS |
+| npm test | PASS：原7项与新增3项PPO四区间、有限差分、输入检查，共10项 |
+
+12项新增检查实际核对：GAE优势0.78/0.4、截断自举与终止δ0.2/−0.6、四区间目标/梯度、IS目标0.6与截权0.48、缺覆盖的0.3/0.8、两种长度归约、几何ratio与token剪裁、RLOO、自编固定状态KL梯度与朴素反传抵消、教师停止梯度、双策略精确梯度0.09375/0.0625、固定构造回报LOO。全部为独立构造的小分布，容差atol=1e-12/rtol=1e-10；没有训练神经策略或执行真实反事实工具重放。
+
+### 构建、引用链接与实际浏览器
+
+| 实际执行 | 结果 |
+| --- | --- |
+| npm run check:docs | PASS：44页、29节、87角色问答，正文约4.25万汉字，不含独立问答JSON |
+| npm run build | PASS：44 HTML、Pagefind与sitemap；既有head-inject/i18n/404提示，无最终构建错误 |
+| npm run check:built | PASS：17个KaTeX实例无解析错误；内部资源/链接/片段缺失0，29组三角色答案完整 |
+| python scripts/check-rl-sources.py --out runs/rl-source-checks-final-20261022，及单项补查 | 10份资料标题/作者通过；14个外部片段最终全部确认。批次保留GSPO一次抓取超时的FAIL，单项重试HTTP200并确认S4存在；合并报告rl-source-checks-reference.json保留两份实际结果，不把超时改写成批次通过 |
+| scripts/check-rl-browser.cjs | PASS：新增13组，PPO四情境/滑块/键盘、深浅主题、角色折叠、GSPO公式折叠、三新页面与10条资料、关闭JS静态回退 |
+| scripts/check-browser.cjs | PASS：原13组重新运行，DPO/字节mask/RL分步/23样本对照/角色/主题/无JS回退 |
+| git diff --check | PASS；新文件暂存后再次检查 |
+
+浏览器使用已有Playwright与本机Edge155.0.4283.62，preview端口4327，视口1280×900和390×844，headless、reduced-motion。两组报告都无页面JS异常；分别保存为rl-browser-reference.json与browser-regression-20261022.json。实际打开新增PPO桌面浅色和移动深色组件截图核对，无截字或控件错位；截图留在忽略的runs目录。这是桌面浏览器的移动视口，不是真机。
+
+初次构建遇到details内部的跨行数学定界解析失败，改成合法单行公式后重建通过，并去除中文数学下标警告。外部抓取初次有verl/GAE超时，批次重跑后二者通过、GSPO仍超时；随后单项抓取成功，保留失败与补查证据。URL或片段存在只验证地址，科学论断仍按SOURCE_AUDIT.md的原文位置核对。
+
+### 本轮未运行的范围
+
+没有重训历史300步SFT、120步DPO、80轮表格RL或24步已有基座SFT，其原负结果与原始报告保留。没有完整LLM PPO/GRPO、critic/RM、agentic/MARL、CTDE、C3、OPD/OPSD/Semi-OPD神经训练，没有CUDA/DDP/多机/生产异步系统、吞吐或成本成绩。新增脚本没有优化器训练循环。未做全部页面、搜索、Firefox/Safari或真机触控验收。
+
+---
+
 ## 2026-10-16：教学主线与真实任务连接修订
 
 本轮基线HEAD：1dff43b2f6c189a652bed88cd127b61e8a70ebf0。先核对全部正文、阅读路线、附录、87问答、原代码与首版验证记录，再阅读参考样章及tutorial_writing_principles.md；没有只根据目录推断缺失。保留六章29节，增加一页必要基础，构建共41页。

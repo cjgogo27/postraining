@@ -1,0 +1,72 @@
+{
+  "status": "PASS",
+  "browser": "155.0.4283.62",
+  "checks": [
+    {
+      "viewport": 1280,
+      "name": "ppo_four_presets_slider_keyboard_and_no_page_overflow",
+      "status": "PASS"
+    },
+    {
+      "viewport": 1280,
+      "name": "ppo_theme_and_role_answer_toggle",
+      "status": "PASS"
+    },
+    {
+      "viewport": 1280,
+      "name": "gspo_details_formula_and_hand_value",
+      "status": "PASS"
+    },
+    {
+      "viewport": 1280,
+      "name": "online_offline_reading_map",
+      "status": "PASS"
+    },
+    {
+      "viewport": 1280,
+      "name": "agentic_marl_credit_and_details",
+      "status": "PASS"
+    },
+    {
+      "viewport": 1280,
+      "name": "ten_primary_readings_and_dates",
+      "status": "PASS"
+    },
+    {
+      "viewport": 390,
+      "name": "ppo_four_presets_slider_keyboard_and_no_page_overflow",
+      "status": "PASS"
+    },
+    {
+      "viewport": 390,
+      "name": "ppo_theme_and_role_answer_toggle",
+      "status": "PASS"
+    },
+    {
+      "viewport": 390,
+      "name": "gspo_details_formula_and_hand_value",
+      "status": "PASS"
+    },
+    {
+      "viewport": 390,
+      "name": "online_offline_reading_map",
+      "status": "PASS"
+    },
+    {
+      "viewport": 390,
+      "name": "agentic_marl_credit_and_details",
+      "status": "PASS"
+    },
+    {
+      "viewport": 390,
+      "name": "ten_primary_readings_and_dates",
+      "status": "PASS"
+    },
+    {
+      "name": "no_js_static_hand_case_and_gae",
+      "status": "PASS"
+    }
+  ],
+  "page_errors": [],
+  "scope": "Two viewports, local build; no real phone/Safari/Firefox, model inference, performance or all-page audit"
+}

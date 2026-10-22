@@ -15,6 +15,8 @@ title: 跨部门工程师阅读路线
 
 ## 先跑通，再定位
 
+RL专项按[数据/目标地图](/postraining/00-reading-guides/06-rl-map/) → 4.1 → 4.2 → 5.4检查实际采样分布与训练旧快照，再用[附录E](/postraining/07-appendix/e-agentic-multi-agent-rl/)核对agent事件、角色版本和信用分配。10份重点资料见[附录F](/postraining/07-appendix/f-rl-reading-list/)。新增rl_mechanisms.py只做CPU数值检查，不要求安装verl等生产框架。
+
 按[6.1环境](/postraining/06-tools-practice/01-environment-and-artifacts/)准备Python，完成6.2的SFT/DPO，再运行verify。重点观察：同样本的mask、DPO初始ln2、参考未更新、同边界恢复完全一致。不要因为loader成功就假定数据和概率语义正确。
 
 生产框架接口可沿原始论文/官方材料阅读，但本项目没有运行verl或多GPU。读5.4时用版本表和交接物理解拓扑，不把角色数量等同设备数。

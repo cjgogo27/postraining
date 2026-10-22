@@ -53,3 +53,13 @@ npm test
 固定SmolLM2-135M revision的CPU SFT实际24步；6个新订单ID的同模板状态题从0/6到6/6严格成功。另保留3个基础续写探针，不能据此推断客服泛化或原能力全面保留。奖励模型与工具轨迹本轮是算例/接口夹具，没有训练神经RM或工具型LLM RL。完整证据见VALIDATION.md与examples/results。
 
 浏览器QA入口为`scripts/check-browser.cjs`，需另行准备Playwright/Chromium并启动本地preview；可用PLAYWRIGHT_MODULE、BROWSER_EXECUTABLE指定已有运行时，不属于默认训练依赖。
+
+## RL专题补充（2026-10-22）
+
+[RL地图](https://cjgogo27.github.io/postraining/00-reading-guides/06-rl-map/)区分在线/离线与on/off-policy；4.2补两步GAE、critic目标、PPO四种剪裁和批量计数，4.3补RLOO/DAPO/GSPO，4.5补OPD梯度、OPSD特权教师与Semi-OPD。[附录E](https://cjgogo27.github.io/postraining/07-appendix/e-agentic-multi-agent-rl/)展开agentic/MARL，[附录F](https://cjgogo27.github.io/postraining/07-appendix/f-rl-reading-list/)整理10份重点一手资料，注明日期、版本和具体支持位置。保持六章29节87问答。
+
+```bash
+python examples/rl_mechanisms.py --out runs/rl-mechanisms
+```
+
+12项CPU FP64机制/梯度检查已经执行，报告在examples/results/rl-mechanisms-reference.json；没有新增完整语言模型PPO/GRPO、agent/MARL或OPD/OPSD训练成绩。原历史训练结果保留，当前验证范围以VALIDATION.md为准。

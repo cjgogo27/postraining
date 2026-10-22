@@ -4,6 +4,7 @@ description: "两个回答都得1分，但一个题目很容易，另一个很�
 ---
 
 import SectionQA from '../../../components/SectionQA.astro';
+import PPOClipExplorer from '../../../components/PPOClipExplorer.astro';
 
 
 > **系统位置**：接收旧轨迹、回报和基线，用概率比构造受限更新，交给新策略版本。 [回到1.3总图](/postraining/01-system-overview/03-posttraining-system-architecture/)。
@@ -43,7 +44,26 @@ $$\nabla_\theta J=\mathbb E_{y\sim\pi_\theta}[R(y)\nabla_\theta\log\pi_\theta(y)
 
 标准actor-critic路径中，奖励刻画结果，critic估计状态的回报基准，优势 $A_t$ 估计当前动作比基准好多少。终端奖励也可通过回报/优势估计分配到前面位置。具体折扣、GAE参数、价值目标和mask必须写清，不能直接把终端分数叫作每个token的优势。
 
-本节说明标准PPO机制，本站未实现完整语言模型critic或GAE训练。可先手算一个简化回报：终端奖励1，某状态基线0.7，简单差值优势0.3；换基线0.2则为0.8。这只是假设算例，不是价值模型实测。
+本节说明常见actor-critic PPO，不表示策略剪裁目标数学上必须搭配独立神经critic或只能用GAE。本站没有训练完整语言模型critic；下面把优势计算缩为可手算的两个动作。
+
+### 同一工单的两步GAE
+
+把“查订单”和“答复用户”各视为一个宏动作。奖励为 `[0,1]`，旧critic在两个动作前预测的状态价值为 `[0.2,0.6]`，任务真正结束后的价值为0。先取γ=1、λ=0.95，不额外加入KL奖励：
+
+$$\delta_t=r_t+\gamma(1-d_t)V_{old}(s_{t+1})-V_{old}(s_t),\qquad \widehat A_t=\delta_t+\gamma\lambda c_t\widehat A_{t+1}.$$
+
+d表示任务真正终止；c表示下一条TD残差是否仍属于本段连续轨迹。这里两步都有效，末步停止递推。[GAE原文§3](https://arxiv.org/html/1506.02438v6#S3)
+
+| 动作 | 当步奖励 | 旧V | 下一旧V | δ | 从后往前算出的A | 固定价值目标A+旧V |
+| --- | --- | --- | --- | --- | --- | --- |
+| 查单 | 0 | 0.2 | 0.6 | 0.4 | 0.4+0.95×0.4=0.78 | 0.98 |
+| 答复 | 1 | 0.6 | 0 | 0.4 | 0.4 | 1.00 |
+
+critic用固定目标拟合价值，例如对有效状态最小化均方误差；actor用停止梯度的A改变动作概率。V是状态的预期回报，Q是选定动作后的预期回报，A≈Q−V。它们都不是奖励模型的另一种名字。λ=1时本例A为 `[0.8,0.4]`；λ降低会更多依赖局部价值预测，方差与偏差的权衡要结合critic误差讨论。
+
+**任务终止与采样截断要分开。** 假设某次收集在尚未完成任务时停下，r=0、V=0.6、可继续状态的旧V=0.8，则允许自举的δ=0.2；若任务真的结束，δ=−0.6。长度上限究竟表示任务失败还是单纯rollout切段，由任务协议决定，不能一律填0或一律自举。padding不参与价值/策略损失，递推不能跨进下一条样本。
+
+宏动作GAE便于理解；逐token PPO还须明确两次工具调用间的折扣时间单位、观察token是否推进决策时间，以及每个动作位置的价值索引。本表不能直接当作任意框架的token布局。
 
 ## 受限代理目标
 
@@ -53,11 +73,38 @@ $$\min(\rho_t A_t,\ \operatorname{clip}(\rho_t,1-\epsilon,1+\epsilon)A_t).$$
 
 最大化该量，或取负作为最小化loss。若ρ=1.5、ε=0.2：A=1时取1.2，A=−1时取−1.5。负优势时不能因为名字叫clip就一律拿−1.2，min和符号一起决定目标。代码数值检查覆盖这两个手算。
 
+<PPOClipExplorer />
+
+| ρ / A | 未剪裁ρA | 剪裁候选 | min后的目标 | 对ρ的局部斜率 |
+| --- | --- | --- | --- | --- |
+| 1.5 / +1 | 1.5 | 1.2 | 1.2 | 0 |
+| 1.5 / −1 | −1.5 | −1.2 | −1.5 | −1 |
+| 0.5 / +1 | 0.5 | 0.8 | 0.5 | +1 |
+| 0.5 / −1 | −0.5 | −0.8 | −0.8 | 0 |
+
+正优势时，已经把好动作概率推得很高，就不再奖励继续提高这个样本的ratio；负优势时，已经把坏动作压得很低，就不再奖励继续压低。表里的0只说该样本代理项处于平坦区；共享参数上的其他样本、KL、熵或价值项仍可能改变它的概率。
+
+### 一轮到底固定什么，更新什么
+
+```text
+1 取得策略快照 → 采样并保存实际行为logp、结束原因和动作mask
+2 固定评分版本 → 计算奖励、旧价值、回报/优势与价值目标
+3 在同一批内：重算当前logp/V → 策略loss与价值loss → 反传/更新
+4 重复约定的mini-batch与epoch；old logp/优势/目标不随每次反传重算
+5 汇总KL、clip fraction、价值误差和质量 → 发布新actor版本 → 新采样
+```
+
+例如4个prompt各采2条得到8条轨迹，mini-batch为4条，每批数据做2个epoch，恰好4次actor优化器更新；micro-batch为1条时可用梯度累积拼出每次的4条，不应变成16次独立更新。critic可有独立更新日程，不能把actor和critic次数相加后统称“策略更新”。这些是自定计数算例，不是推荐超参数。[verl PPO的批量/epoch定义](https://verl.readthedocs.io/en/latest/algo/ppo.html#configuration)
+
+常见总loss为 `−有效位置的剪裁目标均值 + c_v×价值loss − c_e×熵`，另按约定选择参考KL放在奖励里或直接放在loss里；两条路径不自动等价，也不能不加说明地重复计入。优势归一化也会改变权重，先记录按何范围计算均值/方差，再比较运行。
+
 ## 两个参照，两个职责
 
 旧策略限定本批数据的行为基准；冻结参考策略常用于漂移惩罚，例如目标中减去 $\lambda D_{KL}(\pi_\theta\Vert\pi_{ref})$。KL与clip不是同一约束，也不必使用同一个系数。
 
 完整分布KL非负，但单个采样token的 `logπ−logπ_ref` 可以为负，不能把每条负值都判成计算错误。实现可能用采样估计或不同等价形式，必须记录期望在哪个分布下计算。有限动作实验能枚举4个动作，使用精确categorical KL，不声称复现语言模型采样KL实现。
+
+当前π、训练侧旧快照π_old、实际采样器μ、长期参考π_ref有时是四个不同对象。同一权重在不同精度、解码设置或后端上也可能有μ≠π_old；此时π/π_old不能单独声称完成对实际行为分布的校正。见[4.1](/postraining/04-online-rl-distillation/01-rollout-and-policy-versions/)与[5.4](/postraining/05-evaluation-diagnosis/04-training-rollout-orchestration/)。
 
 ## 哪些量要同时看
 
@@ -76,3 +123,5 @@ $$\min(\rho_t A_t,\ \operatorname{clip}(\rho_t,1-\epsilon,1+\epsilon)A_t).$$
 [2] [InstructGPT：监督示范、偏好与强化学习](https://arxiv.org/html/2203.02155v1)。
 
 [3] [Spinning Up：策略梯度推导与基线抵消](https://spinningup.openai.com/en/latest/spinningup/rl_intro3.html)。
+
+[4] [GAE：§3优势估计](https://arxiv.org/html/1506.02438v6#S3)；[verl PPO：配置与更新单位](https://verl.readthedocs.io/en/latest/algo/ppo.html)。两步GAE、四区间梯度是本站独立数值夹具，不是语言模型PPO训练成绩。

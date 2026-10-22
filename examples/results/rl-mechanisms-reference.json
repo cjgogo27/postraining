@@ -1,0 +1,192 @@
+{
+  "status": "PASS",
+  "count": 12,
+  "python": "3.12.5",
+  "torch": "2.11.0+cpu",
+  "device": "cpu",
+  "dtype": "float64",
+  "threads": 1,
+  "checks": [
+    {
+      "name": "two_action_gae_and_value_targets",
+      "deltas": [
+        0.39999999999999997,
+        0.4
+      ],
+      "advantages": [
+        0.78,
+        0.4
+      ],
+      "value_targets": [
+        0.98,
+        1.0
+      ]
+    },
+    {
+      "name": "termination_vs_rollout_cut_bootstrap",
+      "terminal_delta": -0.6,
+      "nonterminal_cut_delta": 0.20000000000000007,
+      "note": "Whether a time limit ends the task is a task definition"
+    },
+    {
+      "name": "ppo_four_clip_regions_and_gradients",
+      "cases": [
+        {
+          "ratio": 1.5,
+          "advantage": 1.0,
+          "objective": 1.2,
+          "d_objective_d_ratio": 0.0
+        },
+        {
+          "ratio": 1.5,
+          "advantage": -1.0,
+          "objective": -1.5,
+          "d_objective_d_ratio": -1.0
+        },
+        {
+          "ratio": 0.5,
+          "advantage": 1.0,
+          "objective": 0.5,
+          "d_objective_d_ratio": 1.0
+        },
+        {
+          "ratio": 0.5,
+          "advantage": -1.0,
+          "objective": -0.8,
+          "d_objective_d_ratio": 0.0
+        }
+      ]
+    },
+    {
+      "name": "behavior_old_current_ratios_and_is_bias",
+      "behavior_reward": 0.4,
+      "exact_target_reward": 0.6,
+      "capped_is_estimate": 0.48,
+      "current_over_old": 1.2,
+      "old_over_behavior": 1.25,
+      "current_over_behavior": 1.5
+    },
+    {
+      "name": "offline_missing_support_is_unidentifiable",
+      "target_values": [
+        0.3,
+        0.8
+      ],
+      "dataset": "only action A with reward .6; no evidence about B",
+      "missing_support_rejected": true
+    },
+    {
+      "name": "sequence_vs_token_reduction_changes_gradient",
+      "lengths": [
+        2,
+        8
+      ],
+      "sequence_objective": 0.0,
+      "token_objective": -0.6,
+      "sequence_gradient": [
+        0.25,
+        0.25,
+        -0.0625,
+        -0.0625,
+        -0.0625,
+        -0.0625,
+        -0.0625,
+        -0.0625,
+        -0.0625,
+        -0.0625
+      ],
+      "token_gradient": [
+        0.1,
+        0.1,
+        -0.1,
+        -0.1,
+        -0.1,
+        -0.1,
+        -0.1,
+        -0.1,
+        -0.1,
+        -0.1
+      ]
+    },
+    {
+      "name": "gspo_geometric_ratio_is_not_token_clip_or_exact_is",
+      "token_ratios": [
+        4.0,
+        0.25
+      ],
+      "joint_ratio": 1.0,
+      "geometric_ratio": 1.0,
+      "mean_token_clipped_objective": 0.725,
+      "expectation_of_square_root_ratio": 0.9486832980505138
+    },
+    {
+      "name": "rloo_excludes_own_reward",
+      "group_centered": [
+        -0.5,
+        -0.5,
+        0.5,
+        0.5
+      ],
+      "loo": [
+        -0.6666666666666666,
+        -0.6666666666666666,
+        0.6666666666666667,
+        0.6666666666666667
+      ]
+    },
+    {
+      "name": "fixed_state_reverse_kl_score_gradient_and_naive_cancellation",
+      "kl": 0.09151622184943572,
+      "full_gradient": [
+        0.1569326804818763,
+        -0.15693268048187622
+      ],
+      "enumerated_score_gradient": [
+        0.1569326804818762,
+        -0.1569326804818762
+      ],
+      "naive_gradient": [
+        1.1102230246251565e-16,
+        0.0
+      ],
+      "note": "Not a full trajectory/prefix-distribution gradient"
+    },
+    {
+      "name": "opsd_privileged_teacher_stop_gradient",
+      "student_gradient": [
+        -0.24930313888744784,
+        0.249303138887448
+      ],
+      "teacher_gradient_absent": true,
+      "same_context_equal_distribution_kl": 0.0,
+      "note": "Constructed distributions, not a neural teacher or answer-conditioned LLM"
+    },
+    {
+      "name": "two_agent_exact_team_gradient_and_conditional_baseline",
+      "team_reward": 0.125,
+      "gradients": [
+        0.09375,
+        0.0625
+      ],
+      "note": "Enumerated two binary policies; not LLM collaboration, CTDE training or a C3 reproduction"
+    },
+    {
+      "name": "fixed_context_local_replay_loo",
+      "returns": [
+        1.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "advantages": [
+        0.33333333333333337,
+        -1.0,
+        0.33333333333333337,
+        0.33333333333333337
+      ],
+      "context": "same question, prefix and continuation rule; constructed returns, no environment replay"
+    }
+  ],
+  "code_sha256": "7655ef38f6affc645b67bbda36f904a2a4cc0e42e247d88f54ba12e4a1d72590",
+  "scope": "Numerical/interface fixtures only; no LLM PPO/GRPO, agent, MARL or OPD/OPSD training"
+}

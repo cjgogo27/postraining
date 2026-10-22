@@ -27,6 +27,12 @@ prompt_id → actor_version → response_ids / old_logp / eos_or_truncated
 
 旧策略对应实际行为分布，本轮复用轨迹时保持固定；当前策略参与更新，下一轮采样再刷新。参考策略可长时间冻结，不应随着每次更新覆盖。日志要区分“rollout轮数”“优化器更新次数”和“权重同步次数”。
 
+上面先假设采样器与训练侧旧快照的分布一致。实际后端/精度/解码差异可能使行为分布μ不等于π_old；分别记录实际rollout logp和训练侧old logp，不能拿重算值覆盖实际行为身份。[3]
+
+## 在线与离线，先说明是哪一个含义
+
+本地断网运行也可以是online RL：新策略每轮继续采样。offline RL强调训练用预收集的固定经历，不能用新交互补齐证据；off-policy强调行为分布与目标策略不同。PPO有限复用一批旧轨迹不意味着能无限重复任意历史日志。完整对照与缺失动作覆盖的反例见[RL阅读地图](/postraining/00-reading-guides/06-rl-map/)。
+
 ## 从单轮回答扩展到工具轨迹
 
 工单助手这次没有直接拿到订单状态。下面是一条人工设计的完整经历，不是已训练模型的实测输出：
@@ -50,6 +56,8 @@ prompt_id → actor_version → response_ids / old_logp / eos_or_truncated
 可运行`python examples/verify_teaching.py --out runs/teaching-checks`，得到`tool-trace.json`与检查报告。夹具用原创字节消息边界，不是SmolLM2的聊天模板；逐位置验证用户/工具内容不计动作loss、两个assistant片段与其EOS参与目标，并正确右移。这里不执行外部工具。
 
 > 能分出“谁决定动作、谁返回观察、奖励何时出现”即可继续；old概率与采样分布是后续实现查阅。
+
+多轮不等于多智能体。若进一步把工单拆成查单员与答复员，需要增加agent身份、可见信息、各自策略版本和团队信用分配。[附录E](/postraining/07-appendix/e-agentic-multi-agent-rl/)沿同一任务展开；共享参数、CTDE和反事实基线属于扩展阅读，不增加默认实验依赖。
 
 
 ## 一个简单版本算例
@@ -75,3 +83,7 @@ prompt_id → actor_version → response_ids / old_logp / eos_or_truncated
 [1] [Proximal Policy Optimization Algorithms](https://arxiv.org/abs/1707.06347)。
 
 [2] [HybridFlow：RLHF 的混合编排](https://arxiv.org/abs/2409.19256)。
+
+[3] [verl Rollout Correction：实际采样器、旧策略与当前策略](https://verl.readthedocs.io/en/latest/algo/rollout_corr.html)。
+
+[4] [Agent Lightning：§3轨迹交接](https://arxiv.org/html/2508.03680v1#S3)。

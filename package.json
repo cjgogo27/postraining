@@ -9,7 +9,7 @@
     "preview": "astro preview --host 127.0.0.1",
     "check:docs": "node scripts/check-docs.mjs",
     "check:built": "node scripts/check-built.mjs",
-    "test": "node --test scripts/test-teaching.mjs"
+    "test": "node --test scripts/test-teaching.mjs scripts/test-rl.mjs"
   },
   "overrides": {
     "rolldown": "1.2.13"

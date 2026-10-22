@@ -2,6 +2,8 @@
 
 用途是核对后训练机制，不是生产助手发布。
 
+2026-10-22新增`rl_mechanisms.py`只枚举小分布检查GAE、PPO、归约、IS、LOO、蒸馏梯度与双角色信用关系，没有发布新模型。agentic/MARL/OPD/OPSD的语言模型训练仍未执行，不能用这些数值夹具或原有候选表格策略成绩替代。
+
 - TinyPolicy：68,608独立参数，257字节词表、EOS256、右padding0但mask排除、位置表32、width64、1层4头Pre-LN因果Transformer、FFN256、共享输入输出、dropout0。
 - 起点为随机权重，非外部预训练基座；数据为原创0–9加法模板，交换加数组划分，77train/23val，共用模板和数字，训练答案覆盖有局限。
 - 全参数CPU FP32；SFT按有效回答位置平均，DPO按pair平均原始回答logp和，包含EOS。默认训练不实现LoRA/AMP/DDP。

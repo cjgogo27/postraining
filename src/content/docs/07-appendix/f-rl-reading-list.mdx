@@ -1,0 +1,79 @@
+---
+title: "附录F RL的10份重点资料与阅读顺序"
+description: "核对到2026-10-22，兼顾近期进展、解释清晰度与实现可查性；附具体支持段落及使用边界。"
+---
+
+## 怎么选这10份
+
+检索核对日期为**2026-10-22**。综合近期性、原文解释和可查接口，选出下面10份重点资料；它们不是“全网最新十篇”或客观质量排行榜。以2025–2026的论文/官方文档为主，注明实际阅读版本；PPO、GAE和offline RL的原始基础另列，不伪装成新算法。蒸馏放在RL相邻方法中比较，不能因同样有rollout就统称RL。
+
+先完成[RL地图](/postraining/00-reading-guides/06-rl-map/)，再按问题查原文。每份资料只吸收明确的机制或实验条件，不拼接不同基座、任务、预算的成绩。
+
+## 1. verl：Proximal Policy Optimization (PPO)
+
+官方文档，页面标注更新2025-06-19；2026-10-22检索。[原文](https://verl.readthedocs.io/en/latest/algo/ppo.html)
+
+**先读哪里**：Key Components、Configuration、KL Divergence Control。**解决的问题**：把actor/critic、采样批量、mini-batch、micro-batch、epoch和KL放到实际接口上。**本书怎样采用**：4.2增加8条轨迹/4次更新算例。**边界**：页面上的常见actor-critic实现不代表PPO目标必须有独立神经critic；不复制网页中的配置拼写作为已验证命令。
+
+## 2. verl：Rollout Correction及数学说明
+
+Yingru Li，官方文档标注更新2026-09-23。[使用说明](https://verl.readthedocs.io/en/latest/algo/rollout_corr.html)、[数学说明§1–2](https://verl.readthedocs.io/en/latest/algo/rollout_corr_math.html)
+
+**先读哪里**：Overview、Three-Policy Framework、重要性权重/拒绝采样与诊断。**解决的问题**：实际采样分布、训练侧旧策略和当前策略可能不同。**本书怎样采用**：4.1/5.4补三种概率与0.4→0.5→0.6手算。**边界**：局部token校正、权重截断有各自近似；不能修复缺失支持，也不保证异步历史数据无损。
+
+## 3. DAPO: An Open-Source LLM Reinforcement Learning System at Scale
+
+Qiying Yu等，arXiv:2503.14476v2，2025-05-20修订。[原文§3](https://arxiv.org/html/2503.14476v2#S3)
+
+**先读哪里**：§3.1 Clip-Higher、§3.2 Dynamic Sampling、§3.3 Token-Level Loss、§3.4 Overlong Reward Shaping。**解决的问题**：采样信号、长度权重与长回答稳定性。**本书怎样采用**：4.3拆开“改了哪一项”及采样账本。**边界**：论文的KL/clip/长度设置是该实验设计，不是默认通用配方；未复现其大模型成绩。
+
+## 4. Group Sequence Policy Optimization
+
+Chujie Zheng等，arXiv:2507.18071v2，2025-07-28修订。[原文§4 Eq5–7](https://arxiv.org/html/2507.18071v2#S4)
+
+**先读哪里**：§3动机、§4.1定义、§4.2梯度、§5.3 MoE条件。**解决的问题**：token ratio与整回答评分不在同一个单位。**本书怎样采用**：4.3用 `[4,0.25]` 区分token clip与几何平均ratio。**边界**：长度归一化比值不是原联合轨迹的精确IS权重，不能从论文经验推出所有MoE训练都无需其他稳定性工程。
+
+## 5. The Landscape of Agentic Reinforcement Learning for LLMs: A Survey
+
+Guibin Zhang等，arXiv:2509.02547v5，2026-04-17修订；arXiv记录标注发表于TMLR。[原文§2](https://arxiv.org/html/2509.02547v5#S2)
+
+**先读哪里**：§2状态/动作/转移/奖励/目标，再查工具与记忆部分。**解决的问题**：从回答评分走向多步、部分可观测任务。**本书怎样采用**：RL地图与附录E的决策单位、动作/观察边界。**边界**：综述用来组织问题；具体算法的正确性仍回到原论文，单轮token生成也有序贯建模，不能简单说“单轮没有时间结构”。
+
+## 6. Agent Lightning: Train ANY AI Agents with Reinforcement Learning
+
+Xufang Luo等，arXiv:2508.03680v1，2025-08-05。[原文§3.1–3.4](https://arxiv.org/html/2508.03680v1#S3)
+
+**先读哪里**：Unified Data Interface、MDP in Agents、LightningRL、Training-Agent Disaggregation。**解决的问题**：执行工作流如何交接可训练的状态/动作/奖励。**本书怎样采用**：附录E轨迹契约与5.4事件账本。**边界**：统一接口不自动保证Markov性、奖励归因或任意agent可无改动获得收益；本站没有部署该框架。
+
+## 7. Contextual Counterfactual Credit Assignment for Multi-Agent Reinforcement Learning in LLM Collaboration
+
+Yanjun Chen等，arXiv:2603.06859v1，2026-03-06。[原文§2–3及§4条件](https://arxiv.org/html/2603.06859v1#S3)
+
+**先读哪里**：Context Freezing、Fixed-Continuation Replay、LOO Credit Extraction。**解决的问题**：团队终端奖励如何比较某一消息的局部贡献。**本书怎样采用**：附录E固定上下文、后续分布与留一基线算例。**边界**：严格假设内的局部估计不等于现实系统的无条件因果归因；增加的候选重放须计成本。
+
+## 8. Self-Distilled Reasoner: On-Policy Self-Distillation for Large Language Models
+
+Siyan Zhao等，arXiv:2601.18734v3，2026-03-20修订。[原文§3.2](https://arxiv.org/html/2601.18734v3#S3.SS2)
+
+**先读哪里**：同参数不同上下文、full-vocabulary divergence、sampled-token alternative、附录D。**解决的问题**：教师从哪里得到比学生更多的信息。**本书怎样采用**：4.5解释特权解答、停止梯度与推理条件隔离。**边界**：OPSD不是无信息自举；原文比较多种散度，不能把任何OPSD都写成固定reverse KL或永久冻结教师。
+
+## 9. Rethinking On-Policy Distillation of Large Language Models: Phenomenology, Mechanism, and Recipe
+
+Yaxuan Li等，arXiv:2604.13016v2，2026-04-15修订。[原文§2、§3、§5–6](https://arxiv.org/html/2604.13016v2#S2)
+
+**先读哪里**：sampled/full/top-k监督、thinking-pattern条件、冷启动和后段前缀退化。**解决的问题**：教师分数高，为什么学生仍学不好。**本书怎样采用**：4.5诊断师生兼容性、模板与后段分布。**边界**：论文提出的机制解释和配方有其模型/任务范围，不作为任意师生组合的必要充分条件。
+
+## 10. When Do We Need On-Policy Distillation? Distilling on Offline Student Rollouts Is Often Better
+
+Siyan Zhao等，arXiv:2610.11291v1，2026-10-08。[原文§2–4](https://arxiv.org/html/2610.11291v1#S2)
+
+**先读哪里**：Semi-OPD定义、师生重叠指标、对照预算、长前缀分析。**解决的问题**：持续重采样是否一定值得。**本书怎样采用**：4.5加入固定初始学生轨迹与持续刷新轨迹的对照设计。**边界**：这是近期预印本的特定师生实验，不能把“often”改写成离线蒸馏普遍更优，也不把离线蒸馏叫作完整离线RL。
+
+## 基础原文与继续阅读
+
+- [PPO（2017）§2–3](https://arxiv.org/pdf/1707.06347)：代理目标和剪裁的来源；[GAE §3](https://arxiv.org/html/1506.02438v6#S3)：两步优势递推的基础。
+- [Offline RL教程（2020）§2–4](https://arxiv.org/html/2005.01643v3#S2)：固定数据、覆盖与分布外动作；明确为基础资料，未称其为新论文。
+- [DeepSeekMath §4](https://arxiv.org/html/2402.03300v3#S4)：原始GRPO；[Back to Basics: Revisiting REINFORCE Style Optimization（2024）](https://arxiv.org/abs/2402.14740)：RLOO等无critic路线。
+- [Thinking Machines OPD](https://thinkingmachines.ai/blog/on-policy-distillation/)：实际公开实现的学生rollout与reverse-KL解释。与本页第8–10份并读，理解监督形式、成本和局限。
+
+逐项论断支持位置与自编算例边界另存[SOURCE_AUDIT.md](https://github.com/cjgogo27/postraining/blob/main/SOURCE_AUDIT.md)。资料日期与本站数值检查日期分开；引用不意味着本站复现论文系统。

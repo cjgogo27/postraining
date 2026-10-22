@@ -1,5 +1,11 @@
 # 实验记录与重跑范围
 
+## 2026-10-22：RL机制补充
+
+`rl-mechanisms-reference.json`来自`python examples/rl_mechanisms.py --out runs/rl-mechanisms-20261022`，12项CPU/FP64枚举数值与梯度检查，含代码SHA与环境。没有LLM/agent/MARL/蒸馏模型训练。原训练核心未改，历史SFT/DPO/RLVR与基座SFT不在本轮重新训练。
+
+`rl-regression-20261022.json`记录原16项恢复/协议和5项教学检查的本轮重跑；`rl-browser-reference.json`与`browser-regression-20261022.json`分别是新增13组与原13组实际浏览器检查。`rl-source-checks-reference.json`保留10份来源元数据、14个外部片段的批次与单项重试证据，包括超时FAIL；不把网络地址检查称为科学论断验证。
+
 2026-10-15本机实际执行。完整权重和日志留在runs，JSON保留配置、源码/数据身份、逐点指标和原始生成，正文明确区分假设与实测。
 
 | 文件 | 内容 | 重跑入口 |

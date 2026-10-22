@@ -33,6 +33,8 @@ import SectionQA from '../../../components/SectionQA.astro';
 
 当前策略 $\pi_\theta$ 参与更新；旧策略 $\pi_{old}$ 记录“这一批轨迹由谁产生”，在复用这批数据时保持固定；参考策略 $\pi_{ref}$ 用来约束漂移，常比旧策略保留得更久。奖励模型把回答映射成分数；价值模型/critic估计未来回报，标准PPO常用它估计优势。验证器可能只是程序，不需要神经网络。
 
+这里先假设旧快照与实际采样分布一致。若采样后端、精度或解码使行为分布μ与训练侧π_old不同，两份logp应分开保存；[4.1](/postraining/04-online-rl-distillation/01-rollout-and-policy-versions/)和[5.4](/postraining/05-evaluation-diagnosis/04-training-rollout-orchestration/)会拆开这个接口。单轮、工具型agent和多智能体是任务结构；在线/离线是采集条件；不要把它们与算法名混成一列，见[RL地图](/postraining/00-reading-guides/06-rl-map/)。
+
 | 对象 | 训练中是否通常求梯度 | 应保存或关联什么 |
 | --- | --- | --- |
 | 当前策略 | 是 | 权重、优化器、步数 |

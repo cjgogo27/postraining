@@ -1,0 +1,46 @@
+---
+import { clippedSurrogate } from '../lib/ppo.mjs';
+const initial=clippedSurrogate(1.5,1);
+---
+<section class="ppo-explorer" data-ppo-explorer aria-label="PPO正负优势剪裁手算器">
+  <p><strong>先预测：ratio越界以后，这一项还会推动它变化吗？</strong></p>
+  <div class="controls">
+    <label>优势A <select aria-label="优势A"><option value="1">+1：比基准好</option><option value="-1">−1：比基准差</option></select></label>
+    <label>当前/旧概率比ρ <input aria-label="概率比ρ" type="range" min="0.1" max="2" step="0.05" value="1.5" /><span data-ratio>1.50</span></label>
+  </div>
+  <div class="presets">
+    <button type="button" data-case="high-positive">ρ1.5 / A+1</button>
+    <button type="button" data-case="high-negative">ρ1.5 / A−1</button>
+    <button type="button" data-case="low-positive">ρ0.5 / A+1</button>
+    <button type="button" data-case="low-negative">ρ0.5 / A−1</button>
+  </div>
+  <output aria-live="polite">ρA={initial.raw.toFixed(2)}；剪裁候选={initial.candidate.toFixed(2)}；最大化的目标={initial.objective.toFixed(2)}；该样本在平坦区。</output>
+  <p>ε固定0.2；最小化loss时取负。这里仅计算标量目标，没有运行策略训练。边界点的导数由实现约定；平坦区也不限制其他loss项改变共享参数。</p>
+  <noscript>启用JavaScript可拖动；下方正文四行表格提供完整静态对照。</noscript>
+</section>
+<script>
+  import {clippedSurrogate} from '../lib/ppo.mjs';
+  for(const root of document.querySelectorAll<HTMLElement>('[data-ppo-explorer]')) {
+    const select=root.querySelector<HTMLSelectElement>('select')!;
+    const slider=root.querySelector<HTMLInputElement>('input')!;
+    function render() {
+      const rho=Number(slider.value), a=Number(select.value);
+      const x=clippedSurrogate(rho,a);
+      root.querySelector('[data-ratio]')!.textContent=rho.toFixed(2);
+      root.querySelector('output')!.textContent=`ρA=${x.raw.toFixed(2)}；剪裁候选=${x.candidate.toFixed(2)}；最大化的目标=${x.objective.toFixed(2)}；${x.plateau?'该样本在平坦区。':'该样本未进入严格平坦区。'}`;
+    }
+    slider.addEventListener('input',render);select.addEventListener('change',render);
+    root.querySelectorAll<HTMLButtonElement>('[data-case]').forEach(button=>button.addEventListener('click',()=>{
+      slider.value=button.dataset.case!.startsWith('high')?'1.5':'.5';
+      select.value=button.dataset.case!.endsWith('positive')?'1':'-1';render();
+    }));
+    render();
+  }
+</script>
+<style>
+  .ppo-explorer{padding:1rem;margin-block:1.5rem;border:1px solid var(--sl-color-gray-4);border-radius:.6rem;}
+  .controls,.presets{display:flex;flex-wrap:wrap;gap:.6rem;margin-block:1rem;}
+  .controls>label,.presets>button{margin:0;}.controls>label{display:grid;gap:.3rem;max-width:100%;}
+  select,button{padding:.5rem;background:var(--sl-color-bg);color:var(--sl-color-text);border:1px solid var(--sl-color-gray-4);border-radius:.35rem;max-width:100%;}
+  button{cursor:pointer;min-height:2.75rem;}input{width:15rem;max-width:100%;}output{display:block;font-weight:600;overflow-wrap:anywhere;}
+</style>

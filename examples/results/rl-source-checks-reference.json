@@ -1,0 +1,335 @@
+{
+  "status": "PASS",
+  "primary_count": 10,
+  "external_anchor_count": 14,
+  "batch_attempt": {
+    "status": "FAIL",
+    "checked_at_utc": "2026-10-22T13:05:09.656097+00:00",
+    "primary_count": 10,
+    "primary_sources": [
+      {
+        "name": "verl PPO",
+        "url": "https://verl.readthedocs.io/en/latest/algo/ppo.html",
+        "status": "PASS",
+        "title": "Proximal Policy Optimization",
+        "authors": [],
+        "citation_date": null,
+        "sha256": "8d0cfeb52b653f7f346ca03889b192caa016dfa784d67aac201c239360caad9f"
+      },
+      {
+        "name": "verl Rollout Correction",
+        "url": "https://verl.readthedocs.io/en/latest/algo/rollout_corr.html",
+        "status": "PASS",
+        "title": "Rollout Correction",
+        "authors": [],
+        "citation_date": null,
+        "sha256": "00d7478b35ce4d1bf498df2654d0fea23e4e413ee4003fc79981bc8290f2a2d1"
+      },
+      {
+        "name": "DAPO",
+        "url": "https://arxiv.org/abs/2503.14476v2",
+        "status": "PASS",
+        "title": "DAPO: An Open-Source LLM Reinforcement Learning System at Scale",
+        "authors": [
+          "Yu, Qiying",
+          "Zhang, Zheng",
+          "Zhu, Ruofei",
+          "Yuan, Yufeng",
+          "Zuo, Xiaochen",
+          "Yue, Yu",
+          "Dai, Weinan",
+          "Fan, Tiantian",
+          "Liu, Gaohong",
+          "Liu, Lingjun",
+          "Liu, Xin",
+          "Lin, Haibin",
+          "Lin, Zhiqi",
+          "Ma, Bole",
+          "Sheng, Guangming",
+          "Tong, Yuxuan",
+          "Zhang, Chi",
+          "Zhang, Mofan",
+          "Zhang, Wang",
+          "Zhu, Hang",
+          "Zhu, Jinhua",
+          "Chen, Jiaze",
+          "Chen, Jiangjie",
+          "Wang, Chengyi",
+          "Yu, Hongli",
+          "Song, Yuxuan",
+          "Wei, Xiangpeng",
+          "Zhou, Hao",
+          "Liu, Jingjing",
+          "Ma, Wei-Ying",
+          "Zhang, Ya-Qin",
+          "Yan, Lin",
+          "Qiao, Mu",
+          "Wu, Yonghui",
+          "Wang, Mingxuan"
+        ],
+        "citation_date": [
+          "2025/03/18"
+        ],
+        "sha256": "ace83751f71df99c68ac3116bb572f0c1784d76d7ce80a6916cf036f050e05bf"
+      },
+      {
+        "name": "GSPO",
+        "url": "https://arxiv.org/abs/2507.18071v2",
+        "status": "PASS",
+        "title": "Group Sequence Policy Optimization",
+        "authors": [
+          "Zheng, Chujie",
+          "Liu, Shixuan",
+          "Li, Mingze",
+          "Chen, Xiong-Hui",
+          "Yu, Bowen",
+          "Gao, Chang",
+          "Dang, Kai",
+          "Liu, Yuqiong",
+          "Men, Rui",
+          "Yang, An",
+          "Zhou, Jingren",
+          "Lin, Junyang"
+        ],
+        "citation_date": [
+          "2025/07/24"
+        ],
+        "sha256": "f95f7805528e2baf8d396c3b76ba4162193316d03f0f8bad51a9f6ed04cf8683"
+      },
+      {
+        "name": "Agentic survey",
+        "url": "https://arxiv.org/abs/2509.02547v5",
+        "status": "PASS",
+        "title": "The Landscape of Agentic Reinforcement Learning for LLMs: A Survey",
+        "authors": [
+          "Zhang, Guibin",
+          "Geng, Hejia",
+          "Yu, Xiaohang",
+          "Yin, Zhenfei",
+          "Zhang, Zaibin",
+          "Tan, Zelin",
+          "Zhou, Heng",
+          "Li, Zhongzhi",
+          "Xue, Xiangyuan",
+          "Li, Yijiang",
+          "Zhou, Yifan",
+          "Chen, Yang",
+          "Zhang, Chen",
+          "Fan, Yutao",
+          "Wang, Zihu",
+          "Huang, Songtao",
+          "Piedrahita-Velez, Francisco",
+          "Liao, Yue",
+          "Wang, Hongru",
+          "Yang, Mengyue",
+          "Ji, Heng",
+          "Wang, Jun",
+          "Yan, Shuicheng",
+          "Torr, Philip",
+          "Bai, Lei"
+        ],
+        "citation_date": [
+          "2025/09/02"
+        ],
+        "sha256": "305c17eaa509f8411d52f6b05232beede8bfca797b7da88122d1d6a6312e97d2"
+      },
+      {
+        "name": "Agent Lightning",
+        "url": "https://arxiv.org/abs/2508.03680v1",
+        "status": "PASS",
+        "title": "Agent Lightning: Train ANY AI Agents with Reinforcement Learning",
+        "authors": [
+          "Luo, Xufang",
+          "Zhang, Yuge",
+          "He, Zhiyuan",
+          "Wang, Zilong",
+          "Zhao, Siyun",
+          "Li, Dongsheng",
+          "Qiu, Luna K.",
+          "Yang, Yuqing"
+        ],
+        "citation_date": [
+          "2025/08/05"
+        ],
+        "sha256": "6dd5edc64b7707596f2b1587321b448be60862c7e71e85c1eccdb9c477bf5cc9"
+      },
+      {
+        "name": "C3",
+        "url": "https://arxiv.org/abs/2603.06859v1",
+        "status": "PASS",
+        "title": "Contextual Counterfactual Credit Assignment for Multi-Agent Reinforcement Learning in LLM Collaboration",
+        "authors": [
+          "Chen, Yanjun",
+          "Sun, Yirong",
+          "Wang, Hanlin",
+          "Zhang, Xinming",
+          "Shen, Xiaoyu",
+          "Li, Wenjie",
+          "Zhang, Wei"
+        ],
+        "citation_date": [
+          "2026/03/06"
+        ],
+        "sha256": "1f1c31f204a31cd723807ea44dd00d81d3e43a5032e5795af9c6f622163bbb23"
+      },
+      {
+        "name": "OPSD",
+        "url": "https://arxiv.org/abs/2601.18734v3",
+        "status": "PASS",
+        "title": "Self-Distilled Reasoner: On-Policy Self-Distillation for Large Language Models",
+        "authors": [
+          "Zhao, Siyan",
+          "Xie, Zhihui",
+          "Liu, Mengchen",
+          "Huang, Jing",
+          "Pang, Guan",
+          "Chen, Feiyu",
+          "Grover, Aditya"
+        ],
+        "citation_date": [
+          "2026/01/26"
+        ],
+        "sha256": "faed7607e971a4cf96a69bdc5b8110e95b1c25e86a9cb5e485578bf85e26bcb9"
+      },
+      {
+        "name": "Rethinking OPD",
+        "url": "https://arxiv.org/abs/2604.13016v2",
+        "status": "PASS",
+        "title": "Rethinking On-Policy Distillation of Large Language Models: Phenomenology, Mechanism, and Recipe",
+        "authors": [
+          "Li, Yaxuan",
+          "Zuo, Yuxin",
+          "He, Bingxiang",
+          "Zhang, Jinqian",
+          "Xiao, Chaojun",
+          "Qian, Cheng",
+          "Yu, Tianyu",
+          "Gao, Huan-ang",
+          "Yang, Wenkai",
+          "Liu, Zhiyuan",
+          "Ding, Ning"
+        ],
+        "citation_date": [
+          "2026/04/14"
+        ],
+        "sha256": "9a5cd6d86d7d3a2f57db2ac16621b348347b7044d6ba1821bb0862ac8886d1d5"
+      },
+      {
+        "name": "Semi-OPD",
+        "url": "https://arxiv.org/abs/2610.11291v1",
+        "status": "PASS",
+        "title": "When Do We Need On-Policy Distillation? Distilling on Offline Student Rollouts Is Often Better",
+        "authors": [
+          "Zhao, Siyan",
+          "Fu, Yonggan",
+          "Jiang, Jindong",
+          "Liu, Shih-Yang",
+          "Bian, Song",
+          "Lee, Byung-Kwan",
+          "Sreenivas, Sharath Turuvekere",
+          "Dai, Wenliang",
+          "Ye, Hanrong",
+          "Grover, Aditya",
+          "Molchanov, Pavlo"
+        ],
+        "citation_date": [
+          "2026/10/08"
+        ],
+        "sha256": "993cf04753e1dcecbe806e317abeb24b83a1e66964087ef758d0ab3511269cfe"
+      }
+    ],
+    "external_anchors": [
+      {
+        "url": "https://arxiv.org/html/1506.02438v6#S3",
+        "status": "PASS",
+        "error": null
+      },
+      {
+        "url": "https://arxiv.org/html/2005.01643v3#S2",
+        "status": "PASS",
+        "error": null
+      },
+      {
+        "url": "https://arxiv.org/html/2005.01643v3#S4",
+        "status": "PASS",
+        "error": null
+      },
+      {
+        "url": "https://arxiv.org/html/2103.01955v4#S3.SS2",
+        "status": "PASS",
+        "error": null
+      },
+      {
+        "url": "https://arxiv.org/html/2402.03300v3#S4",
+        "status": "PASS",
+        "error": null
+      },
+      {
+        "url": "https://arxiv.org/html/2503.14476v2#S3",
+        "status": "PASS",
+        "error": null
+      },
+      {
+        "url": "https://arxiv.org/html/2507.18071v2#S4",
+        "status": "FAIL",
+        "error": "The read operation timed out"
+      },
+      {
+        "url": "https://arxiv.org/html/2508.03680v1#S3",
+        "status": "PASS",
+        "error": null
+      },
+      {
+        "url": "https://arxiv.org/html/2509.02547v5#S2",
+        "status": "PASS",
+        "error": null
+      },
+      {
+        "url": "https://arxiv.org/html/2601.18734v3#S3.SS2",
+        "status": "PASS",
+        "error": null
+      },
+      {
+        "url": "https://arxiv.org/html/2603.06859v1#S3",
+        "status": "PASS",
+        "error": null
+      },
+      {
+        "url": "https://arxiv.org/html/2604.13016v2#S2",
+        "status": "PASS",
+        "error": null
+      },
+      {
+        "url": "https://arxiv.org/html/2610.11291v1#S2",
+        "status": "PASS",
+        "error": null
+      },
+      {
+        "url": "https://verl.readthedocs.io/en/latest/algo/ppo.html#configuration",
+        "status": "PASS",
+        "error": null
+      }
+    ],
+    "fetch_failures_before_one_retry": [
+      {
+        "url": "https://arxiv.org/html/2507.18071v2",
+        "error": "The read operation timed out"
+      },
+      {
+        "url": "https://arxiv.org/html/2610.11291v1",
+        "error": "<urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1000)>"
+      }
+    ],
+    "code_sha256": "f509e073555fe8862f5096a100aa8b258ac65ec02af2c2cf541db2f6ab494ae7",
+    "scope": "Metadata title/author and HTML fragment presence only; manual claim review in SOURCE_AUDIT.md"
+  },
+  "supplemental_retry": {
+    "url": "https://arxiv.org/html/2507.18071v2",
+    "status": "PASS",
+    "http": 200,
+    "sha256": "64560d250da7b6638c98b987e11e5680cb5535a5cc6bca56d2c2b29f2306ca61",
+    "fragment": "S4",
+    "fragment_present": true
+  },
+  "scope": "Combined actual metadata/anchor outcomes: batch retained its timeout; one supplemental successful fetch completed the missing anchor. Scientific claims reviewed manually in SOURCE_AUDIT.md."
+}
