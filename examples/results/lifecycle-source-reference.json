@@ -1,0 +1,146 @@
+{
+  "status": "PASS",
+  "count": 8,
+  "initial_batch": {
+    "status": "PARTIAL",
+    "checked_at_utc": "2026-10-22T15:53:47.265232+00:00",
+    "checks": [
+      {
+        "url": "https://arxiv.org/abs/2604.07941v2",
+        "status": "PASS",
+        "http": 200,
+        "sha256": "d179f71d064fd1a2956afeb2a0e3da10688ef5ead6b3ce4e99e1f4f770113647",
+        "name": "unified-review",
+        "title": "Large Language Model Post-Training: A Unified View of Off-Policy and On-Policy Learning",
+        "authors": [
+          "Zhao, Shiwan",
+          "Wang, Zhihu",
+          "Zhao, Xuyang",
+          "Zhou, Jiaming",
+          "Xu, Caiyue",
+          "Liu, Chenfei",
+          "Zhang, Liting",
+          "Jia, Yuhang",
+          "Zhang, Yanzhe",
+          "Yu, Hualong",
+          "Xu, Zichen",
+          "Li, Qicheng",
+          "Qin, Yong"
+        ]
+      },
+      {
+        "url": "https://arxiv.org/abs/2605.02913v1",
+        "status": "PASS",
+        "http": 200,
+        "sha256": "d195beffd3790b2cb61a4d7f6b1df14770189dd762f5af33433fb6189dd94ae4",
+        "name": "rollout-review",
+        "title": "Generate, Filter, Control, Replay: A Comprehensive Survey of Rollout Strategies for LLM Reinforcement Learning",
+        "authors": [
+          "Surana, Rohan",
+          "Mundada, Gagan",
+          "Jiang, Xunyi",
+          "Wang, Chuhan",
+          "Tang, Zhenwei",
+          "Jiao, Difan",
+          "Huang, Zihan",
+          "Xiong, Yuxin",
+          "Wu, Junda",
+          "Yu, Sheldon",
+          "Li, Xintong",
+          "Jain, Raghav",
+          "Kuang, Nikki",
+          "Zhou, Sizhe",
+          "Jin, Bowen",
+          "Chu, Zhendong",
+          "Yu, Tong",
+          "Rossi, Ryan",
+          "Huang, Kuan-Hao",
+          "Shang, Jingbo",
+          "Han, Jiawei",
+          "McAuley, Julian"
+        ]
+      },
+      {
+        "url": "https://arxiv.org/abs/2505.24298v5",
+        "status": "PASS",
+        "http": 200,
+        "sha256": "a39a43d85755841a07ac0617b9b57ca54b7b4b3bcc5b74850acb3ce6ca8c2bef",
+        "name": "areal",
+        "title": "AReaL: A Large-Scale Asynchronous Reinforcement Learning System for Language Reasoning",
+        "authors": [
+          "Fu, Wei",
+          "Gao, Jiaxuan",
+          "Shen, Xujie",
+          "Zhu, Chen",
+          "Mei, Zhiyu",
+          "He, Chuyi",
+          "Xu, Shusheng",
+          "Wei, Guo",
+          "Mei, Jun",
+          "Wang, Jiashu",
+          "Yang, Tongkai",
+          "Yuan, Binhang",
+          "Wu, Yi"
+        ]
+      },
+      {
+        "url": "https://arxiv.org/html/2604.07941v2",
+        "status": "PASS",
+        "http": 200,
+        "sha256": "738fb41e6dce3c4927563417fee67bc0454eef25241d3f95ffb0ede66ea14b2a",
+        "name": "unified-sections",
+        "title": "Large Language Model Post-Training: A Unified View of Off-Policy and On-Policy Learning",
+        "authors": [],
+        "anchors": {
+          "S3": true,
+          "S6": true
+        }
+      },
+      {
+        "url": "https://arxiv.org/html/2605.02913v1",
+        "status": "PASS",
+        "http": 200,
+        "sha256": "7d208c6b608bc95c5e789f727bd6810226f69e68f25949180c58706784017dfd",
+        "name": "rollout-section",
+        "title": "Generate, Filter, Control, Replay: A Comprehensive Survey of Rollout Strategies for LLM Reinforcement Learning",
+        "authors": [],
+        "anchors": {
+          "S3": true
+        }
+      },
+      {
+        "url": "https://arxiv.org/html/2505.24298v5",
+        "status": "FAIL",
+        "error": "The read operation timed out",
+        "name": "areal-section"
+      },
+      {
+        "url": "https://spinningup.openai.com/en/latest/spinningup/rl_intro.html",
+        "status": "PASS",
+        "http": 200,
+        "sha256": "eebcb24040b93eb304026642b23811d5ea6258c146baf1365564505b230e5b5f",
+        "name": "spinningup",
+        "title": "Part 1: Key Concepts in RL &mdash; Spinning Up  documentation",
+        "authors": []
+      },
+      {
+        "url": "https://rlhfbook.com/teach/course/lec4-chap6-p2/",
+        "status": "PASS",
+        "http": 200,
+        "sha256": "9a69394a21271730533340f98f848e72675db756b2b4679960f27a5d888cecb5",
+        "name": "rlhf-book-implementation",
+        "title": "Lecture 4: RL Implementation & Practice",
+        "authors": []
+      }
+    ],
+    "scope": "Source page metadata and fragment presence; manual claim/section reading recorded separately in SOURCE_AUDIT.md"
+  },
+  "supplemental_retry": {
+    "url": "https://arxiv.org/html/2505.24298v5",
+    "status": "PASS",
+    "http": 200,
+    "sha256": "b09117c9513659bf568cd710d9982ac18caf644c56cd2b290926b4592470ff2b",
+    "anchor_S4": true
+  },
+  "scope": "Actual source metadata/anchor outcomes; timeout retained, one successful supplemental fetch completed the missing page. Claim-level reading documented in SOURCE_AUDIT.md."
+}

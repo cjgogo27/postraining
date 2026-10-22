@@ -1,5 +1,56 @@
 # 实际验证记录：《听懂大模型后训练》
 
+## 2026-10-22后续：把RL基础、各阶段目标与执行系统接成一条链
+
+本轮基线`1b14cda41dbb609ffbfd21f383efea4fb477cde0`；开始工作树干净，fetch后远端一致。六章29节87角色问答保留；新增一页RL任务/回报/价值基础，共45页。此记录是同日后续修订，下面较早记录中的未运行范围按各自时间理解。
+
+### 解释与系统连接
+
+- 对照Spinning Up、Nathan Lambert的RLHF Book/实现课程、2026统一后训练与GFCR综述、AReaL v5及PyTorch2.11文档。人工阅读支持位置在SOURCE_AUDIT.md，近期综述用作分析框架，不当作普遍定理或固定recipe。
+- 新基础页连接任务/观察/策略、G/V/Q/A、Bellman/MC/TD、GAE与探索；1.3和SystemMap把示范、偏好、交互结果、教师反馈接入共同生命周期，区分学习反馈与实验决策。
+- 阶段导读、4.2、5.4和6.4沿输入/形状/分母/更新/发布/保存/验收接力。5.4补DP/分片/TP/PP、两个同步过程、AMP与各优化器成功计数、队列背压/数据年龄、KV身份及预算口径。
+- 8轨迹/28有效位置/40填充位置/4更新/56次重复消费是一组自编计数；固定PPO两窗口的2/4位置是独立数值子例。36GB静态状态和128MiB KV均为假设预算，没有GPU实测。
+
+### 新生命周期与真实两进程数值对照
+
+```bash
+python examples/posttraining_lifecycle.py --ddp --out runs/lifecycle-integration-final-20261022
+python examples/posttraining_lifecycle.py --out runs/lifecycle-single-final-20261022
+```
+
+两种模式都实际退出0，各10项PASS。Windows11、Python3.12.5、torch2.11.0+cpu、FP64/单进程内线程1；复用既有依赖，没有安装生产训练平台。源码按LF规范化SHA为`b57ba9fd79860d463a87de0c415ca24c7d39f5f4c671b7e4bcd094f05e33db20`，与发布报告绑定。
+
+- 12参数表格、4上下文/3候选：SFT4更新/16标签消费；DPO3更新/12pair消费，参数继承且AdamW重建、参考冻结；新RL2轮/32采样动作/4更新。采样actor0/2，发布2/4，复用期old logp不变。采样是有放回，不称4个不同候选。
+- 准入拒绝重复提交、过旧、未来版本、评分器变化、超时和空批次。第一轮完成后实际保存并重载，第二轮的模型、AdamW、参考、专用Generator、动作记录、提交清单与计数精确相同；改stage/code身份/world size拒绝。
+- 单独固定logits[2,4,3]的PPO子例：两个真实本机Gloo进程，各处理一条有效位置2/4的窗口，按默认DDP梯度平均语义使用全局分母6。梯度和一次SGD更新与单进程的最大绝对差均0，容差atol=1e-12/rtol=1e-10；错误平均局部均值的梯度差0.05694593956058974。
+- 另核对订单Bellman算例、奖励/β尺度、架构计数与显存假设的算术。没有给这些数值加上模型能力含义。
+
+实际报告为`examples/results/lifecycle-system-reference.json`；默认单进程报告与回归报告在`lifecycle-regression-reference.json`。中途补了未来版本反例和参数来源哈希后，用新目录重新执行，正式报告采用最终源码。Gloo有Windows地址族连接重试提示，两个进程最终正常完成；未把提示当作成功条件本身。
+
+### 本轮实际回归、构建和显示检查
+
+| 实际检查 | 结果 |
+| --- | --- |
+| python examples/verify.py --out runs/coherent-core-checks-20261022 | PASS：原16项数值/协议/恢复/变化拒绝检查 |
+| python examples/verify_teaching.py --out runs/coherent-teaching-checks-20261022 | PASS：原5项手算/梯度/消息mask |
+| python examples/rl_mechanisms.py --out runs/coherent-rl-mechanisms-20261022 | PASS：原12项RL机制检查 |
+| 原训练源码与基线逐文件diff | postcore/train/rlvr/pretrained_sft/rl_mechanisms均未变，历史训练结果未重跑 |
+| python -m compileall -q examples scripts/check-rl-sources.py | PASS |
+| npm test | PASS：10项JS |
+| npm run check:docs | PASS：45页、29节、87问答，正文约5.15万汉字，不含问答JSON |
+| npm run build / npm run check:built | PASS：45 HTML、搜索与sitemap；18个KaTeX实例，无缺失内部资源/目标/片段，29组三角色答案完整 |
+| 浏览器3套脚本 | PASS：新增13组与原13+13组共39组，页面JS异常0；详见lifecycle-browser-reference.json |
+| 新来源元数据/片段抓取 | 8项最终确认，保留AReaL页面超时的原PARTIAL与单项重试HTTP200/S4存在记录；lifecycle-source-reference.json不代替人工论断核验 |
+| git diff --check | PASS；新文件暂存后再次检查 |
+
+浏览器为已有Playwright/Edge155.0.4283.62，实际构建产物preview端口4328；1280×900、390×844，深浅主题、四入口/两反馈总图、基础/阶段/系统/综合实践、折叠与无JS回退。实际打开桌面浅色/移动深色总图和移动预算截图；初次元素截图受固定导航遮挡，改为只在截图时隐藏fixed/sticky导航后重拍，界面断言仍使用原布局。截图在忽略的runs目录。既有head-inject/i18n/404提示不导致构建失败。
+
+### 范围限制
+
+生命周期训练是12参数候选表格，权重确认只复制本地快照，没有网络RPC、生成端重新分片、真实工具/异步队列；恢复只覆盖完成轮边界与专用采样Generator，没有dropout、崩溃、写盘中断或多文件原子提交测试。两rank检查是独立固定张量的梯度/一次更新，不是DDP恢复或完整LLM PPO。没有GPU/AMP/FSDP/TP/PP运行、AReaL/verl生产实验、吞吐/显存/费用实测，也没有重训历史小LM、已有基座或OPD/OPSD。未验收所有浏览器、全站页面、搜索或真机触控。
+
+---
+
 ## 2026-10-22：RL分类、机制、Agent与蒸馏补充
 
 本轮基线`43cdcdcbfae46c2a262b322ba4f3d4d7ae9af7c8`，工作树开始干净，fetch后远端main一致。先阅读现有RL六节、编排/实践、问答与历史记录，再检索一手资料。六章29节87问答保留；新增RL地图、Agent/MARL扩展与10份资料导读，共44页面。原postcore.py/train.py/rlvr.py/pretrained_sft.py与基线内容逐文件核对未改。

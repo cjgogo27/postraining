@@ -1,5 +1,26 @@
 # 关键论断与来源支持位置
 
+## 2026-10-22：RL基础与训练系统贯穿修订
+
+本轮在已有10份方法资料之外，对照下列教材、近期综述与原始系统材料，重组解释关系。正文使用独立订单场景、形状与假设预算，不复制来源图形/实验成绩。先看定义和原文条件，再决定如何接入本书；不是见到“权威”就接受每个经验阈值或所有分类措辞。
+
+| 来源与所读版本 | 已阅读支持位置 | 采用与边界 |
+| --- | --- | --- |
+| [OpenAI Spinning Up Part1](https://spinningup.openai.com/en/latest/spinningup/rl_intro.html) | Key Concepts：state/observation、policy、trajectory、return；Value Functions、Bellman Equations、Advantage Functions | RL基础页的任务与G/V/Q/A；订单成本、Q0.4/0.8、V0.6为本站枚举算例；不声称读者短上下文天然Markov |
+| [Part2](https://spinningup.openai.com/en/latest/spinningup/rl_intro2.html)与既有Part3 | Model-Free vs Model-Based、What to Learn、价值/策略路线；Part3基线和policy gradient | 不将语言模型体量大解释成model-based RL；保留动作无关基线条件，不宣称准确V总能取得最小梯度方差 |
+| Nathan Lambert，[Training Overview](https://rlhfbook.com/c/03-training-overview)、[RL章](https://rlhfbook.com/c/06-policy-gradients) | Problem Formulation、Canonical Recipes；policy gradient、PPO/GAE与Implementation Details | 阶段与信号连接；原始recipe仍需回原论文，本站四入口图独立组织。在线版2026-10-22检索，主页标构建2026-10-14 |
+| [RLHF Book Lecture4](https://rlhfbook.com/teach/course/lec4-chap6-p2/) | From math to code；PPO implementation；The four models in memory；loss aggregation；async infrastructure；summary | 张量/mask/分母/资源接口；不复制课堂监控区间为普遍标准，不把常见PPO+GAE路径说成数学唯一选择 |
+| [统一后训练综述2604.07941v2](https://arxiv.org/html/2604.07941v2)，2026-04-16 | §2.2明确与通用online/offline术语不同；§2.3–2.4轨迹/接口；§3.4/3.6–3.7角色与限制；§6阶段交接 | 1.3与阶段契约；作为分析框架而非定理，不将SFT/蒸馏统称一般offline RL，不推导固定必经顺序 |
+| [GFCR综述2605.02913v1](https://arxiv.org/html/2605.02913v1) | §3.1–3.2管线分布和接口；§4生成、§5信号、§6预算/控制、§7Replay | 1.3与5.4的采样/筛选/队列/预算；其Replay含义更广，不全当训练经验回放。日期以arXiv记录为准，不从编号推定发表月份 |
+| [AReaL2505.24298v5](https://arxiv.org/html/2505.24298v5)，2026-03-02 | §3.2同步长尾；§4.1–4.2可中断生成、KV丢弃重算和多片段版本；§5.1–5.2陈旧度/解耦目标 | 5.4说明系统选择改变算法假设；不复制原文图形或速度，本站没有运行AReaL或GPU异步系统 |
+| [PyTorch2.11 DDP](https://docs.pytorch.org/docs/2.11/generated/torch.nn.parallel.DistributedDataParallel.html) | loss求和时的梯度平均说明及no_sync语义 | 本站固定PPO张量CPU两rank验证P/global_count；不代表分片参数、AMP或完整LLM PPO |
+| [PyTorch2.11 AMP examples](https://docs.pytorch.org/docs/2.11/notes/amp_examples.html) | Working with Unscaled Gradients；Gradient Accumulation；Multiple Models/Losses/Optimizers | 累积结束再unscale与clip、各优化器可能独立跳过；只讲接口，未执行CUDA AMP |
+| [DPO原文§3](https://arxiv.org/html/2305.18290v3#S3) | 正则化奖励目标与最优分布关系 | 本站二动作闭式检查奖励/β尺度，0.993307与0.999955不作为神经模型成绩 |
+
+新生命周期脚本绑定同一12参数表格在SFT/DPO/RL之间的参数来源、固定参考、AdamW新建和专用采样Generator；真实完成轮恢复与独立两rank固定张量对照分别报告。8轨迹/28位置/4更新是另一个教学计数算例；36GB状态与128MiB KV是不同的预算假设，不能混作运行实测。权重发布只模拟本地快照确认，不是网络RPC/重新分片验收。
+
+---
+
 ## 2026-10-22：RL专题扩充
 
 检索覆盖PPO/GAE、在线/离线与采样校正、GRPO变体、agentic RL、多智能体信用分配、OPD/OPSD和固定学生轨迹蒸馏。先用网页检索发现候选，再回到arXiv/官方文档核对标题、首作者、版本、日期及以下正文位置；没有引用聚合站或二手总结作为技术依据。选择兼顾近期性与教学用途，不声称是完整系统综述或全网最新排名。

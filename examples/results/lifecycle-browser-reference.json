@@ -1,0 +1,230 @@
+{
+  "status": "PASS",
+  "count": 39,
+  "reports": {
+    "integrated_13": {
+      "status": "PASS",
+      "browser": "155.0.4283.62",
+      "count": 13,
+      "checks": [
+        {
+          "viewport": 1280,
+          "name": "four_learning_signals_two_feedbacks_and_batch_ledger",
+          "status": "PASS"
+        },
+        {
+          "viewport": 1280,
+          "name": "system_map_dark_theme",
+          "status": "PASS"
+        },
+        {
+          "viewport": 1280,
+          "name": "mdp_return_bellman_foundations",
+          "status": "PASS"
+        },
+        {
+          "viewport": 1280,
+          "name": "stage_contract_and_manifest",
+          "status": "PASS"
+        },
+        {
+          "viewport": 1280,
+          "name": "parallel_layout_global_reduction_and_budget_details",
+          "status": "PASS"
+        },
+        {
+          "viewport": 1280,
+          "name": "actual_lifecycle_and_two_rank_scope_role_answer",
+          "status": "PASS"
+        },
+        {
+          "viewport": 390,
+          "name": "four_learning_signals_two_feedbacks_and_batch_ledger",
+          "status": "PASS"
+        },
+        {
+          "viewport": 390,
+          "name": "system_map_dark_theme",
+          "status": "PASS"
+        },
+        {
+          "viewport": 390,
+          "name": "mdp_return_bellman_foundations",
+          "status": "PASS"
+        },
+        {
+          "viewport": 390,
+          "name": "stage_contract_and_manifest",
+          "status": "PASS"
+        },
+        {
+          "viewport": 390,
+          "name": "parallel_layout_global_reduction_and_budget_details",
+          "status": "PASS"
+        },
+        {
+          "viewport": 390,
+          "name": "actual_lifecycle_and_two_rank_scope_role_answer",
+          "status": "PASS"
+        },
+        {
+          "name": "no_js_lifecycle_map_remains_readable",
+          "status": "PASS"
+        }
+      ],
+      "page_errors": [],
+      "scope": "Local built site, desktop/mobile viewports and selected teaching pages; no real device or all-browser audit"
+    },
+    "rl_13": {
+      "status": "PASS",
+      "browser": "155.0.4283.62",
+      "checks": [
+        {
+          "viewport": 1280,
+          "name": "ppo_four_presets_slider_keyboard_and_no_page_overflow",
+          "status": "PASS"
+        },
+        {
+          "viewport": 1280,
+          "name": "ppo_theme_and_role_answer_toggle",
+          "status": "PASS"
+        },
+        {
+          "viewport": 1280,
+          "name": "gspo_details_formula_and_hand_value",
+          "status": "PASS"
+        },
+        {
+          "viewport": 1280,
+          "name": "online_offline_reading_map",
+          "status": "PASS"
+        },
+        {
+          "viewport": 1280,
+          "name": "agentic_marl_credit_and_details",
+          "status": "PASS"
+        },
+        {
+          "viewport": 1280,
+          "name": "ten_primary_readings_and_dates",
+          "status": "PASS"
+        },
+        {
+          "viewport": 390,
+          "name": "ppo_four_presets_slider_keyboard_and_no_page_overflow",
+          "status": "PASS"
+        },
+        {
+          "viewport": 390,
+          "name": "ppo_theme_and_role_answer_toggle",
+          "status": "PASS"
+        },
+        {
+          "viewport": 390,
+          "name": "gspo_details_formula_and_hand_value",
+          "status": "PASS"
+        },
+        {
+          "viewport": 390,
+          "name": "online_offline_reading_map",
+          "status": "PASS"
+        },
+        {
+          "viewport": 390,
+          "name": "agentic_marl_credit_and_details",
+          "status": "PASS"
+        },
+        {
+          "viewport": 390,
+          "name": "ten_primary_readings_and_dates",
+          "status": "PASS"
+        },
+        {
+          "name": "no_js_static_hand_case_and_gae",
+          "status": "PASS"
+        }
+      ],
+      "page_errors": [],
+      "scope": "Two viewports, local build; no real phone/Safari/Firefox, model inference, performance or all-page audit"
+    },
+    "original_13": {
+      "status": "PASS",
+      "browser": "155.0.4283.62",
+      "headless": true,
+      "viewports": [
+        1280,
+        390
+      ],
+      "checks": [
+        {
+          "viewport": 1280,
+          "name": "role_query_storage_and_answer_toggle",
+          "status": "PASS"
+        },
+        {
+          "viewport": 1280,
+          "name": "dpo_presets_validation_reset_and_keyboard",
+          "status": "PASS"
+        },
+        {
+          "viewport": 1280,
+          "name": "token_views_shift_eos_attention_and_loss_mask",
+          "status": "PASS"
+        },
+        {
+          "viewport": 1280,
+          "name": "rl_four_steps_constant_groups_and_reset",
+          "status": "PASS"
+        },
+        {
+          "viewport": 1280,
+          "name": "fixed_23_sample_output_selection",
+          "status": "PASS"
+        },
+        {
+          "viewport": 1280,
+          "name": "theme_switch_and_no_page_horizontal_overflow",
+          "status": "PASS"
+        },
+        {
+          "viewport": 390,
+          "name": "role_query_storage_and_answer_toggle",
+          "status": "PASS"
+        },
+        {
+          "viewport": 390,
+          "name": "dpo_presets_validation_reset_and_keyboard",
+          "status": "PASS"
+        },
+        {
+          "viewport": 390,
+          "name": "token_views_shift_eos_attention_and_loss_mask",
+          "status": "PASS"
+        },
+        {
+          "viewport": 390,
+          "name": "rl_four_steps_constant_groups_and_reset",
+          "status": "PASS"
+        },
+        {
+          "viewport": 390,
+          "name": "fixed_23_sample_output_selection",
+          "status": "PASS"
+        },
+        {
+          "viewport": 390,
+          "name": "theme_switch_and_no_page_horizontal_overflow",
+          "status": "PASS"
+        },
+        {
+          "name": "no_javascript_content_fallback",
+          "status": "PASS"
+        }
+      ],
+      "count": 13,
+      "page_errors": [],
+      "scope": "Local built site, four teaching widgets, role questions, themes, overflow and JS fallback; not every browser, search or every article screenshot"
+    }
+  },
+  "scope": "Local built site, two viewports and selected pages; capture-only fixed/sticky navigation hiding avoids overlays in element screenshots; UI assertions use original layout"
+}

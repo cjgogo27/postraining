@@ -19,6 +19,8 @@ import PPOClipExplorer from '../../../components/PPOClipExplorer.astro';
 
 ## 从“多得分”到“改变生成概率”
 
+本节接收[RL基础](/postraining/00-reading-guides/07-rl-foundations/)里的任务、G/V/Q/A和TD概念。若还分不清奖励、回报与价值，先完成查单成本−0.1的例子；随后沿“估计信号→固定批次→代理loss→分布式更新”读下去。
+
 工单助手自己决定是否查单，直到读完工具返回、给出最终回答，才知道是否完成任务。没有每一步的标准答案可模仿，只有整条经历的结果。我们希望高回报轨迹下一次更常出现，先写成最大化期望回报 `J(θ)=E[y∼πθ][R(y)]`，暂把问题x固定。
 
 假设只有两个完整回答，正确答案概率p=0.25、奖励1，错误答案概率0.75、奖励0，期望回报就是0.25。对二选一logit z（p=sigmoid(z)），精确梯度为 `dJ/dz=p(1−p)=0.1875`。这个可枚举例子说明需要改变的是**采到回答的概率**，不是对字符串“5”做连续加减。
@@ -107,6 +109,20 @@ $$\min(\rho_t A_t,\ \operatorname{clip}(\rho_t,1-\epsilon,1+\epsilon)A_t).$$
 当前π、训练侧旧快照π_old、实际采样器μ、长期参考π_ref有时是四个不同对象。同一权重在不同精度、解码设置或后端上也可能有μ≠π_old；此时π/π_old不能单独声称完成对实际行为分布的校正。见[4.1](/postraining/04-online-rl-distillation/01-rollout-and-policy-versions/)与[5.4](/postraining/05-evaluation-diagnosis/04-training-rollout-orchestration/)。
 
 ## 哪些量要同时看
+
+### 从公式到张量，再交给5.4
+
+设N条回答、T个对齐动作位置。模型对真实前缀输出logits，取对应动作的logp为`[N,T]`；μ/old logp、mask、奖励/优势要按相同预测位置对齐。prompt和工具观察可以进入条件，但不能混进策略动作目标。PPO价值预测也要说明对应的是动作前状态还是动作后状态。
+
+| 传给loss的量 | 要做什么检查 |
+| --- | --- |
+| 当前动作logp | 用gather等取到实际动作，而不是最大概率候选；保留梯度 |
+| 旧/行为logp与优势 | 绑定采样快照，停止梯度；更新中不随当前策略覆盖 |
+| 动作/有效mask | 正确右移，EOS与截断按协议，不跨样本 |
+| critic当前预测/固定目标 | 只在定义的有效状态拟合，价值目标不连回actor优势计算图 |
+| actor、critic各自归约 | 明确token/回答单位与全局分母，不能因微批次长度不同换权重 |
+
+到这里才把loss交给累积、同步、裁剪和优化器。[5.4](/postraining/05-evaluation-diagnosis/04-training-rollout-orchestration/)用同一批对象解释：梯度同步形成一次全局更新，权重同步把更新结果发布给采样器。两者错一个，公式正确也可能训练错。
 
 奖励均值、优势分布、ratio范围、clip fraction、KL、critic误差、回答长度与独立任务质量需要联合观察。clip并不是“每次参数更新必然很小”的硬保证；KL变低也不等于质量更好。固定一批轨迹逐项重算，再尝试学习率、更新轮数或奖励缩放，是更可验证的诊断顺序。
 

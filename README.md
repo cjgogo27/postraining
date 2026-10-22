@@ -2,6 +2,8 @@
 
 从监督信号到策略更新，讲清SFT、偏好优化、PPO/GRPO、RLVR、蒸馏、评测与系统接口。面向跨部门工程师、学生、产品/PR；六章29节87个角色问答。
 
+贯穿路线：[RL任务/回报/价值基础](https://cjgogo27.github.io/postraining/00-reading-guides/07-rl-foundations/) → [共同生命周期总图](https://cjgogo27.github.io/postraining/01-system-overview/03-posttraining-system-architecture/) → 各阶段数据/目标 → [执行系统](https://cjgogo27.github.io/postraining/05-evaluation-diagnosis/04-training-rollout-orchestration/) → [阶段交接与综合验证](https://cjgogo27.github.io/postraining/06-tools-practice/04-stage-handoff-and-resume/)。教材/近期综述的对照位置见SOURCE_AUDIT.md，阶段不是固定必经顺序。
+
 - [在线章节与架构](https://cjgogo27.github.io/postraining/00-reading-guides/00-outline/)
 - [实际验证记录](VALIDATION.md)与[引用支持位置](SOURCE_AUDIT.md)
 - [写作/呈现归属](ATTRIBUTION.md)；文档CC BY-NC-SA 4.0、代码MIT。
@@ -63,3 +65,12 @@ python examples/rl_mechanisms.py --out runs/rl-mechanisms
 ```
 
 12项CPU FP64机制/梯度检查已经执行，报告在examples/results/rl-mechanisms-reference.json；没有新增完整语言模型PPO/GRPO、agent/MARL或OPD/OPSD训练成绩。原历史训练结果保留，当前验证范围以VALIDATION.md为准。
+
+## 后训练生命周期与系统综合练习
+
+```bash
+python examples/posttraining_lifecycle.py --out runs/lifecycle
+python examples/posttraining_lifecycle.py --ddp --out runs/lifecycle-ddp
+```
+
+沿用PyTorch依赖，每次新建out目录。12参数表格连接SFT→DPO→RL，检查阶段状态、固定参考、准入/提交、采样身份与边界恢复；`--ddp`另启两个真实本机CPU/Gloo进程，在固定PPO张量上核对有效位置2/4时的全局归约。报告为examples/results/lifecycle-system-reference.json，CPU/FP64，不是LLM分布式训练或生产RPC/队列性能。

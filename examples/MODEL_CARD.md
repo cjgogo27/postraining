@@ -2,6 +2,8 @@
 
 用途是核对后训练机制，不是生产助手发布。
 
+本书另有`posttraining_lifecycle.py`的12参数表格策略，专门验证跨阶段状态；固定PPO梯度子例的logits为[2,4,3]，可用两个真实CPU/Gloo进程对照。它们没有自然语言生成、工具执行或新能力成绩，与下列原模型分开。
+
 2026-10-22新增`rl_mechanisms.py`只枚举小分布检查GAE、PPO、归约、IS、LOO、蒸馏梯度与双角色信用关系，没有发布新模型。agentic/MARL/OPD/OPSD的语言模型训练仍未执行，不能用这些数值夹具或原有候选表格策略成绩替代。
 
 - TinyPolicy：68,608独立参数，257字节词表、EOS256、右padding0但mask排除、位置表32、width64、1层4头Pre-LN因果Transformer、FFN256、共享输入输出、dropout0。

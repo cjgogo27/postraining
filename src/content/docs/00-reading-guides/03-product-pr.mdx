@@ -25,3 +25,7 @@ SFT300步生成1/23正确，DPO120步为0/23，而固定pair排序从14/23到17/
 “在线”在RL里不等于联网；“多agent”不等于训练过多智能体策略；“自蒸馏”也可能用了额外训练解答。先读[RL地图](/postraining/00-reading-guides/06-rl-map/)与4.5的监督来源，再用[附录F](/postraining/07-appendix/f-rl-reading-list/)核对论文的模型/任务/预算条件。新数值夹具验证公式关系，不是新增语言模型能力成绩。
 
 从[1.3进入本路线](/postraining/01-system-overview/03-posttraining-system-architecture/?reader=product)，节首默认展开对应角色的问题；也可用选择器切换。需要补概率与梯度时读[必要基础](/postraining/00-reading-guides/05-essential-foundations/)。工单助手的单轮到工具轨迹接口见[4.1](/postraining/04-online-rl-distillation/01-rollout-and-policy-versions/)，已有基座实践见[6.2](/postraining/06-tools-practice/02-offline-sft-dpo/)。
+
+## 用共同生命周期检查结论
+
+按1.3 → [阶段契约](/postraining/00-reading-guides/04-stage-connections/) → 5.4 → 6.5，分开看行为缺口、监督来源、执行成本与独立验收。“4次更新”不表示4个新样本，“GPU忙”不表示任务质量提升，“完成两rank数值对照”不表示完整LLM分布式RL已跑通。

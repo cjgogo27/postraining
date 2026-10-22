@@ -24,3 +24,7 @@ RL专项按[数据/目标地图](/postraining/00-reading-guides/06-rl-map/) → 
 ## 使用本路线的提问视角
 
 从[1.3进入本路线](/postraining/01-system-overview/03-posttraining-system-architecture/?reader=engineer)，节首默认展开对应角色的问题；也可用选择器切换。需要补概率与梯度时读[必要基础](/postraining/00-reading-guides/05-essential-foundations/)。工单助手的单轮到工具轨迹接口见[4.1](/postraining/04-online-rl-distillation/01-rollout-and-policy-versions/)，已有基座实践见[6.2](/postraining/06-tools-practice/02-offline-sft-dpo/)。
+
+## 系统贯穿路线
+
+沿1.3 → 3.3 → 4.2 → 5.4 → 6.4跟踪同一个批次：目标分母、梯度归约、成功更新、权重发布与checkpoint提交是五个不同检查点。新增12参数生命周期与固定PPO窗口的两rank CPU测试可核对这些接口；未运行多GPU/生产框架。需要先补G/V/Q/A时读[RL基础](/postraining/00-reading-guides/07-rl-foundations/)。

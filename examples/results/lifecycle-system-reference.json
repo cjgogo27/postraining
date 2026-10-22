@@ -1,0 +1,203 @@
+{
+  "status": "PASS",
+  "count": 10,
+  "python": "3.12.5",
+  "torch": "2.11.0+cpu",
+  "device": "cpu",
+  "dtype": "float64",
+  "code_sha256": "b57ba9fd79860d463a87de0c415ca24c7d39f5f4c671b7e4bcd094f05e33db20",
+  "plan": {
+    "contexts": 4,
+    "actions": 3,
+    "group": 4,
+    "epochs": 2,
+    "lr": 0.02,
+    "kl": 0.01,
+    "dtype": "float64"
+  },
+  "checks": [
+    {
+      "name": "sft_to_dpo_inherits_weights_resets_optimizer_freezes_reference",
+      "sft_updates": 4,
+      "sft_demo_consumptions": 16,
+      "dpo_updates": 3,
+      "pair_consumptions": 12,
+      "base_weight_id": "401715e2fc7d25a153274c019aa66c8c0c4e281f7be2c7f85e9cdda48a34e12e",
+      "sft_weight_id": "773a838efbf2fed7870d2858bebb4764e1f7712805af10788d6cfe9e7c98b7c0",
+      "dpo_reference_id": "773a838efbf2fed7870d2858bebb4764e1f7712805af10788d6cfe9e7c98b7c0",
+      "dpo_weight_id": "22cd5f45019d13ef14dfbc24f0e4ab177e75ac9c3f952d25d2a359b2764759ec"
+    },
+    {
+      "name": "rl_new_run_snapshot_and_fixed_old_logp",
+      "first_actor": 0,
+      "after_updates": 2,
+      "shape": [
+        4,
+        4
+      ],
+      "positions": 16
+    },
+    {
+      "name": "batch_admission_rejections",
+      "rejected": [
+        "duplicate",
+        "stale",
+        "future",
+        "scorer",
+        "timeout",
+        "empty"
+      ]
+    },
+    {
+      "name": "rl_committed_boundary_restore_matches_weights_adam_rng_trace_counts",
+      "rl_updates": 4,
+      "rounds": 2,
+      "sampled_actions": 32,
+      "committed_batches": [
+        "rl-0",
+        "rl-1"
+      ],
+      "trace": [
+        {
+          "batch_id": "rl-0",
+          "sampled_actor": 0,
+          "published_actor": 2,
+          "actions": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              1,
+              1,
+              2,
+              2
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              2,
+              2,
+              0,
+              1
+            ]
+          ],
+          "sampled_actions": 16,
+          "old_logp_unchanged": true
+        },
+        {
+          "batch_id": "rl-1",
+          "sampled_actor": 2,
+          "published_actor": 4,
+          "actions": [
+            [
+              0,
+              2,
+              1,
+              1
+            ],
+            [
+              0,
+              1,
+              1,
+              0
+            ],
+            [
+              0,
+              0,
+              2,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "sampled_actions": 16,
+          "old_logp_unchanged": true
+        }
+      ],
+      "exact": true
+    },
+    {
+      "name": "restore_rejects_changed_stage_code_layout",
+      "cases": 3
+    },
+    {
+      "name": "bellman_value_and_centered_advantage",
+      "q": [
+        0.4,
+        0.8
+      ],
+      "value": 0.6000000000000001,
+      "advantage": [
+        -0.20000000000000007,
+        0.19999999999999996
+      ]
+    },
+    {
+      "name": "reward_scaling_changes_regularized_optimum_unless_kl_scales",
+      "initial": [
+        0.006692850924284856,
+        0.9933071490757153
+      ],
+      "reward_only": [
+        4.53978687024344e-05,
+        0.9999546021312976
+      ],
+      "reward_and_beta": [
+        0.006692850924284856,
+        0.9933071490757153
+      ]
+    },
+    {
+      "name": "architecture_batch_ledger",
+      "trajectories": 8,
+      "valid_positions": 28,
+      "padded_positions": 40,
+      "epochs": 2,
+      "actor_updates": 4,
+      "target_consumptions": 56
+    },
+    {
+      "name": "hypothetical_memory_arithmetic",
+      "actor_bytes_per_parameter": 16,
+      "actor_critic_reference_rm_GB": 36,
+      "kv_bytes": 134217728,
+      "kv_MiB": 128.0,
+      "note": "Assumptions only, no measured GPU memory"
+    },
+    {
+      "name": "unequal_mask_global_ppo_gradient",
+      "global_count": 6.0,
+      "local_counts": [
+        2,
+        4
+      ],
+      "naive_local_mean_max_gradient_error": 0.05694593956058974,
+      "real_two_process_ddp": true,
+      "backend": "gloo",
+      "ranks": [
+        {
+          "rank": 0,
+          "gradient_max_abs": 0.0,
+          "weight_max_abs": 0.0
+        },
+        {
+          "rank": 1,
+          "gradient_max_abs": 0.0,
+          "weight_max_abs": 0.0
+        }
+      ]
+    }
+  ],
+  "scope": "12-parameter table lifecycle and separate fixed PPO tensors; no LLM, GPU, RPC, actual tool or production asynchronous queue"
+}

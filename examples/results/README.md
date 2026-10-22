@@ -1,5 +1,11 @@
 # 实验记录与重跑范围
 
+## 2026-10-22后续：后训练生命周期与系统连接
+
+`lifecycle-system-reference.json`：实际运行`python examples/posttraining_lifecycle.py --ddp --out runs/lifecycle-integration-final-20261022`，10项检查。12参数表格完成SFT/DPO/RL交接和完成轮恢复；独立固定PPO张量由两个真实CPU/Gloo进程对照单进程，梯度与一次更新最大误差0，错误局部归约梯度差0.05694594。恢复不含生产队列，分布式子例也不构成LLM训练。
+
+`lifecycle-regression-reference.json`保留本轮重跑的原16+5+12项及新增脚本默认单进程模式的报告；没有重训历史能力曲线。`lifecycle-browser-reference.json`与`lifecycle-source-reference.json`分别记录本轮页面验收和新增来源抓取范围；实际状态、限制以报告与VALIDATION.md为准。
+
 ## 2026-10-22：RL机制补充
 
 `rl-mechanisms-reference.json`来自`python examples/rl_mechanisms.py --out runs/rl-mechanisms-20261022`，12项CPU/FP64枚举数值与梯度检查，含代码SHA与环境。没有LLM/agent/MARL/蒸馏模型训练。原训练核心未改，历史SFT/DPO/RLVR与基座SFT不在本轮重新训练。

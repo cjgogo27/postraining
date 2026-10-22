@@ -3,6 +3,8 @@ title: "RL阅读地图：先分清数据、目标和决策单位"
 description: "在线与离线、on-policy与off-policy、单轮与agent、多智能体、OPD与OPSD怎样放到同一张知识图里。"
 ---
 
+先读[RL基础](/postraining/00-reading-guides/07-rl-foundations/)中的回报、V/Q/A和Bellman关系，再用本页分清分类轴，之后接4.2的算法与5.4的执行系统。
+
 ## 同一个工单助手，为什么能有这么多名字
 
 我们希望助手根据订单表回答“订单A17发货了吗？”。起初直接把订单状态放进问题；后来让它自己决定是否调用查询工具；再后来分成查单员和答复员。这时“在线RL、PPO、agentic、多智能体、OPD”可能同时出现，却分别回答不同问题。

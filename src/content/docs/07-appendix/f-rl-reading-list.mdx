@@ -71,6 +71,20 @@ Siyan Zhao等，arXiv:2610.11291v1，2026-10-08。[原文§2–4](https://arxiv.
 
 ## 基础原文与继续阅读
 
+要把全书串起来，除上面逐项方法外，按下面的解释链对照教材/综述。不是继续增加必须记住的算法名称。
+
+| 对照来源 | 重点阅读 | 在本书哪里落地 |
+| --- | --- | --- |
+| [Spinning Up Part 1](https://spinningup.openai.com/en/latest/spinningup/rl_intro.html)、[Part 2](https://spinningup.openai.com/en/latest/spinningup/rl_intro2.html) | 任务、策略、回报、价值/Bellman、学策略还是价值/环境 | 新RL基础页，接4.2的GAE和策略梯度 |
+| Nathan Lambert的[Training Overview](https://rlhfbook.com/c/03-training-overview)与[RL章节](https://rlhfbook.com/c/06-policy-gradients) | 不同后训练阶段的组合、学习信号和参考职责 | 1.3四类入口、阶段契约导读 |
+| 同作者[RL实现课程Lecture 4](https://rlhfbook.com/teach/course/lec4-chap6-p2/) | 张量、mask、归约、资源和异步系统 | 4.2公式到张量，5.4全局更新与资源分项 |
+| Shiwan Zhao等，2026：[统一后训练综述v2](https://arxiv.org/html/2604.07941v2#S3) | §2–3的轨迹来源与监督接口；§6交接/组合 | 共同生命周期、任务缺口与阶段验收 |
+| Rohan Surana等，2026：[GFCR rollout综述v1](https://arxiv.org/html/2605.02913v1#S3) | §3管线分布，§4–7生成/信号/预算/复用 | 1.3样本账本，5.4队列/采样分布 |
+| Wei Fu等：[AReaL v5](https://arxiv.org/html/2505.24298v5#S4)，2026-03-02修订 | §4–5的生成/训练分离、片段版本和陈旧度 | 权重发布、KV重算与背压；未复现其GPU系统 |
+| PyTorch2.11：[DDP](https://docs.pytorch.org/docs/2.11/generated/torch.nn.parallel.DistributedDataParallel.html)与[AMP](https://docs.pytorch.org/docs/2.11/notes/amp_examples.html) | 梯度平均、有效batch、unscale/裁剪/跳过 | 3.3、5.4，6.4两rank CPU对照 |
+
+RLHF Book采用2026-10-22检索的在线版；主页标注最近构建2026-10-14，版本信息见[作者主页](https://rlhfbook.com/)。两篇新综述提供分析视角，不把其对“外部轨迹学习”的宽分类偷换成“所有SFT都是一般离线RL”；本书仍单独定义数据采集条件和概率关系。也不复制教程的数值监控范围作为通用健康阈值。
+
 - [PPO（2017）§2–3](https://arxiv.org/pdf/1707.06347)：代理目标和剪裁的来源；[GAE §3](https://arxiv.org/html/1506.02438v6#S3)：两步优势递推的基础。
 - [Offline RL教程（2020）§2–4](https://arxiv.org/html/2005.01643v3#S2)：固定数据、覆盖与分布外动作；明确为基础资料，未称其为新论文。
 - [DeepSeekMath §4](https://arxiv.org/html/2402.03300v3#S4)：原始GRPO；[Back to Basics: Revisiting REINFORCE Style Optimization（2024）](https://arxiv.org/abs/2402.14740)：RLOO等无critic路线。

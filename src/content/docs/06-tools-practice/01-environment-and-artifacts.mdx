@@ -70,6 +70,10 @@ npm run check:built
 
 <SectionQA id="6.1" mode="answer" />
 
+## 可选的系统综合练习
+
+6.4的`posttraining_lifecycle.py`沿用同一PyTorch依赖，默认单进程；显式`--ddp`才启动两个本机CPU/Gloo进程，需可用的回环端口。该脚本使用新out目录，保持与原SFT/DPO/RLVR和已有基座实验的产物分开。
+
 ## 参考资料
 
 [1] [PyTorch：保存与加载模型](https://docs.pytorch.org/tutorials/beginner/saving_loading_models.html)。
